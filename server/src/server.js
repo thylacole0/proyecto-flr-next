@@ -12,4 +12,6 @@ app.use(cors())
 
 app.use("/auth", authRouter)
 
+app.use("/main", require("./routes/main.js"))
+
 module.exports = app;

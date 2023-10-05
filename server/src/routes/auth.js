@@ -7,6 +7,7 @@ const Router = require('express');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator.js');
+const authorized = require('../middleware/authorization.js');
 
 const router = Router();
 
@@ -75,6 +76,15 @@ router.post('/login', async (req, res) => {
 
         res.json({ token });
 
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
+router.get('/verificacion', authorized,  async (req, res) => {
+    try {
+        res.json(true);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
