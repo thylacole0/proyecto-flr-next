@@ -76,7 +76,7 @@ const Login = () => {
                         
                     </form>
                     <div className="text-center">
-                            <a className="text-blue-500 hover:underline">Registrate</a>
+                            <a className="text-blue-500 hover:underline">Recuperar Contraseña</a>
                     </div>
                 </div>
             </div>
