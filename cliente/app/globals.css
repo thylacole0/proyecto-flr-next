@@ -18,6 +18,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-image: url('../public/abuelitos2.jpg');
+  /* background-image: url('../public/abuelitos2.jpg'); */
+  background-color: bisque;
   background-size: 100%;
 }
