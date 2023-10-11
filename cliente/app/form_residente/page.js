@@ -117,8 +117,8 @@ const ResidenteForm = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="fecha_nacimiento" className="block text-gray-700 font-bold mb-2">Fecha de Nacimiento:</label>
-                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    <label htmlFor="fechaNacimiento" className="block text-gray-700 font-bold mb-2">Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 </div>  
 
                 <div className="mb-4">
