@@ -103,7 +103,7 @@ const NurseForm = () => {
     return (
         <div className="container flex mt-20 justify-center items-center">
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
-                <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Guardia</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Enfermero</h2>
                 <div className="mb-4">
                     <label htmlFor="rutNurse" className="block text-gray-700 font-bold mb-2">RUT:</label>
                     <input type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={(e) => setRutNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />

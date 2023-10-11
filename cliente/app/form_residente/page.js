@@ -92,10 +92,6 @@ const ResidenteForm = () => {
     const handleChange = (selectedOption) => {
         setNacionalidad(selectedOption);
     };
-    
-    const handleChangeEnfermedad = (selectedOption) => {
-        setDescEnfermedad(e.target.value);
-    };
 
     return (
         <div className="container flex mt-20 justify-center items-center">
@@ -173,7 +169,7 @@ const ResidenteForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="descEnfermedad" className="block text-gray-700 font-bold mb-2">Descripcion Enfermedades:</label>
-                    <textarea id="descEnfermedad" name="descEnfermedad" value={descEnfermedad} onChange={(e) => setDescEnfermedad(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled={enfermedadCronica === "false"} />
+                    <textarea id="descEnfermedad" name="descEnfermedad" value={descEnfermedad} onChange={(e) => setDescEnfermedad(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled={enfermedadCronica === "false"} />
                 </div>  
 
                 <div className="mb-4">
@@ -190,7 +186,7 @@ const ResidenteForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="descDiscapacidad" className="block text-gray-700 font-bold mb-2">Descripcion Descapacidad:</label>
-                    <textarea id="descDiscapacidad" name="descDiscapacidad" value={descDiscapacidad} onChange={(e) => setDescDiscapacidad(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled={discapacidad === "false"} />
+                    <textarea id="descDiscapacidad" name="descDiscapacidad" value={descDiscapacidad} onChange={(e) => setDescDiscapacidad(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled={discapacidad === "false"} />
                 </div> 
 
                 <div className="mb-4">
@@ -207,18 +203,18 @@ const ResidenteForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="descAlergias" className="block text-gray-700 font-bold mb-2">Descripcion Alergias:</label>
-                    <textarea id="descAlergias" name="descAlergias" value={descAlergias} onChange={(e) => setDescAlergias(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled={alergias === "false"} />
+                    <textarea id="descAlergias" name="descAlergias" value={descAlergias} onChange={(e) => setDescAlergias(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled={alergias === "false"} />
                 </div>
 
                 <div className="mb-4">
                     <label htmlFor="medicamentos" className="block text-gray-700 font-bold mb-2">Medicamentos:</label>
-                    <textarea id="medicamentos" name="medicamentos" value={medicamentos} onChange={(e) => setMedicamentos(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                    <textarea id="medicamentos" name="medicamentos" value={medicamentos} onChange={(e) => setMedicamentos(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 </div> 
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <label htmlFor="foto" className="block text-gray-700 font-bold mb-2">Foto</label>
                     <input type="file" id="foto" name="foto" accept="image/*"  onChange={(e) => setFoto(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                </div>
+                </div> */}
 
                 <div className="flex items-center justify-between">
                     <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
