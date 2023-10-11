@@ -26,7 +26,7 @@ const ResidenteForm = () => {
     const [medicamentos, setMedicamentos] = useState('');
     const [alergias, setAlergias] = useState('');
     const [descAlergias, setDescAlergias] = useState('');
-    const [foto, setFoto] = useState('');
+    // const [foto, setFoto] = useState('');
     
      
 
