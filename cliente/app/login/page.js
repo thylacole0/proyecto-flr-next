@@ -3,35 +3,36 @@ import { useState } from 'react'
 import 'tailwindcss/tailwind.css';
 import '../../styles/globals.css'
 import React from 'react';
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import e from 'cors';
 
 const Login = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const router = useRouter();
+
     const onSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            const body = { username, password };
-            const response = await fetch("http://localhost:8080/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
+            const res = await signIn("credentials", { 
+                username,
+                password,
+                redirect: false
             });
-            const parseRes = await response.json();
-            if (parseRes.token) {
-                localStorage.setItem("token", parseRes.token);
-                // router.push("/main/dashboard");
-                window.location = "/main/dashboard";
-            } else {
-                console.log(parseRes);
+
+            if (res.error) {
+                console.log('credenciales incorrectas')
             }
+            router.replace('/dashboard');
         } catch (error) {
-            console.error(error.message);
+            console.log(error);
         }
     }
-  
+
     return (
         <div className="text-white h-[100vh] flex justify-center items-center bg-cover">
             <div className="bg-slate-900 border border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm  bg-opacity-60 relative">
@@ -46,8 +47,8 @@ const Login = () => {
                             <input
                                 type="text"
                                 id="username"
+                                name="username"
                                 className="block w-72 py-2.3 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer"
-                                value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
@@ -63,8 +64,8 @@ const Login = () => {
                             <input
                                 type="password"
                                 id="password"
+                                name="password"
                                 className="block w-72 py-2.3 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer"
-                                value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
