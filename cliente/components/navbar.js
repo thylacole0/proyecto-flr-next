@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react'; 
+import Link from 'next/link';
 
 const Navbar = () => {
     const [isClick, setIsClick] = useState(false);
@@ -21,13 +22,19 @@ const Navbar = () => {
                     </div>
                     <div className="hidden md:block">
                         <div className="ml-4 flex items-center space-x-4">
-                            <a href="#" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
-                                Home
+                            <a href="/form_visitante" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                                Formulario visitante
                             </a>
-                            <a href="#" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
-                                About
+                            <a href="form_residente" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                                Formulario residente
                             </a>
-                            <a href="#" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                            <a href="form_guardia" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                                Formulario guardia
+                            </a>
+                            <a href="form_nurse" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                                Formulario enfermero
+                            </a>
+                            <a href="login" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
                                 Logout
                             </a>
                         </div>
