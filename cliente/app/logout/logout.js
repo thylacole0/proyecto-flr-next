@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'; 
-import { useRouter } from 'next/router';
+// import React, { useState, useEffect } from 'react'; 
+// import { useRouter } from 'next/router';
 
-const Logout = () => {
-  const router = useRouter();
+// const Logout = () => {
+//   const router = useRouter();
 
-  useEffect(() => {
-    router.push('/login');
-  }, []);
+//   useEffect(() => {
+//     router.push('/login');
+//   }, []);
 
-  return <p>Cerrando sesión...</p>;
-};
+//   return <p>Cerrando sesión...</p>;
+// };
 
-export default Logout;
+// export default Logout;

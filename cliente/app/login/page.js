@@ -26,8 +26,10 @@ const Login = () => {
 
             if (res.error) {
                 console.log('credenciales incorrectas')
+                return;
             }
-            router.replace('/dashboard');
+            router.push('/home_test');
+            
         } catch (error) {
             console.log(error);
         }

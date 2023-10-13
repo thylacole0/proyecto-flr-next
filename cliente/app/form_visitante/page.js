@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link'; 
 import 'tailwindcss/tailwind.css';
 import Navbar from '../../components/navbar';
+// import pool from "../../util/db";
 
 
 const VisitForm = () => {
@@ -17,7 +18,7 @@ const VisitForm = () => {
     const [rutVinculado, setRutVinculado] = useState('');
     // const [fotoVisit, setFotoVisit] = useState('');      
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Handle form submission here
         if (celVisit.length === 9) {
@@ -27,6 +28,20 @@ const VisitForm = () => {
         } else {
             // El número de celular no es válido, muestra un mensaje de error
             setErrorCelular('El número de celular debe tener 9 dígitos');
+        }
+        // utilizar backend para insertar datos en la tabla visitante
+        try {
+            const body = { rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado };
+            const response = await fetch("http://localhost:8080/form_visitante", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            console.log(response);
+            window.location = "/home_test";
+            
+        } catch (error) {
+            console.log(error);
         }
     };
 

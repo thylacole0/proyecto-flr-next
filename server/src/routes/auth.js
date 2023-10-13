@@ -91,4 +91,16 @@ router.get('/verificacion', authorized,  async (req, res) => {
     }
 });
 
+router.post('/form_visitante', async (req, res) => {
+    try {
+        const { rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado } = req.body;
+        const newVisitante = await pool.query('INSERT INTO visitante (rut, nombres_vis, apellidos_vis, email_vis, telefono_vis, direccion_vis, rut_residente) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+        [rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado]);
+        res.json(newVisitante.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
 module.exports = router;

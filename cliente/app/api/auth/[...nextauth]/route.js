@@ -10,25 +10,23 @@ export const authOptions = {
             credentials: {},
             async authorize(credentials) {
                 const { username, password } = credentials;
-
-
                 try {
-                    const user = await pool.query("SELECT * FROM users WHERE username = $1", [
+                    const user = (await pool.query("SELECT * FROM users WHERE username = $1", [
                         username
-                    ]);
-    
-                    if (user.rows.length === 0) {
+                    ])).rows[0];
+                    if (!user) {
                         return null
                     }
                     const validPassword = await bcrypt.compare(
                         password,
-                        user.rows[0].password
+                        user.password
                     );
             
                     if (!validPassword) {
                         return null
                     }
-                    return user.rows[0];
+
+                    return user
                 } catch (error) {
                     console.error(error.message);
                 }
@@ -37,12 +35,31 @@ export const authOptions = {
     ],
 
     session: {
-        strategy: 'jwt'
+        jwt: true,
+        strategy: 'jwt',
     },
-    secret: process.env.jwtsecret,
+    callbacks: {
+        jwt: ({ token, user }) => {
+          if (user) {
+            token.user = user.username;
+            token.tipo_user = user.tipo_user;
+          }
+          return token;
+        },
+        session: ({ session, token }) => {
+          if (token) {
+            session.user = token.user;
+            session.tipo_user = token.tipo_user;
+          }
+          return session;
+        },
+    },
     pages: {
-        signIn: '/login'
-    },
+        signIn: '/login',
+        signOut: '/login',
+        error: '/login',
+        verifyRequest: '/login',
+    }
 };
 
 const handler = NextAuth(authOptions);
