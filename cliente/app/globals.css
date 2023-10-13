@@ -17,8 +17,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  /* background-image: url('../public/abuelitos2.jpg'); */
-  background-color: bisque;
+  /* background-image: url('../public/gradient_background.png'); */
   background-size: 100%;
+  background-color: #131b60;
 }

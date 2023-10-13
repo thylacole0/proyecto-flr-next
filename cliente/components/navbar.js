@@ -10,13 +10,13 @@ const Navbar = () => {
     };
   return (
     <>
-        <nav className="bg-rose-950">
+        <nav className="bg-color_navbar">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <a href="#" className="text-white">
-                                <img src="/Logo_blanco.png" alt="logo_fundacion" width="60" height="60" />
+                                <img src="/Logo_horizontal.png" alt="logo_fundacion" width="150" height="150" />
                             </a>
                         </div>
                     </div>
