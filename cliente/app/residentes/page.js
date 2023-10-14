@@ -13,13 +13,18 @@ const residentes = [
 
 const ResidentesPage = () => {
   return (
-    <div className={styles.body}>
-        <Navbar />
-        <div>
-        <TablaResidentes residentes={residentes} />
-        </div>  
-    </div>
-  );
-};
+    <> 
+      <nav >
+        <Navbar /> 
+      </nav>
+      <section>
+        <div className={styles.body}>
+          <TablaResidentes residentes={residentes} />
+        </div>
+        
+      </section>
+   
+  </>
+)};
 
 export default ResidentesPage;

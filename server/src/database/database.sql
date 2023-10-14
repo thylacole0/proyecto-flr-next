@@ -34,7 +34,7 @@ CREATE TABLE residente(
     desc_discapacidad_res VARCHAR(200),
     alergias_res BOOLEAN NOT NULL,
     desc_alergias_res VARCHAR(200),
-    medicamentos_res BOOLEAN NOT NULL,
+    medicamentos_res VARCHAR(200),
     id_fundacion integer references fundacion(id_fundacion)
 );
 

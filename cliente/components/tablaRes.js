@@ -24,6 +24,7 @@ const TablaResidentes = () => {
     try{
       const response = await axios.get("http://localhost:8080/allresidentes");
       const jsonDatos = await response.data;
+      console.log(jsonDatos); 
       setResidentes(jsonDatos);
     } catch (error) {
       console.log(error);
@@ -35,7 +36,7 @@ const TablaResidentes = () => {
   }, [])
 
   return (
-    <div className='flex justify-center min-h-screen'>
+    <div className='flex justify-center '>
       <div className={` ${styles['table-background']} container mx-auto mt-4 rounded-t-xl `}>
         <div className="flex justify-between items-center mr-5 ml-10 pt-4 pb-4">
           <h1 className="text-3xl font-bold mb-4 text-center">Residentes</h1>

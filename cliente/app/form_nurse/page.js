@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 import Link from 'next/link'; 
 import 'tailwindcss/tailwind.css';
+import Navbar from '../../components/navbar';
 import Select from 'react-select';
 import axios from 'axios';
 
@@ -117,81 +118,84 @@ const NurseForm = () => {
     };
 
     return (
-        <div className="container flex mt-20 justify-center items-center">
-            <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
-                <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Enfermero</h2>
-                <div className="mb-4">
-                    <label htmlFor="rutNurse" className="block text-gray-700 font-bold mb-2">RUT:</label>
-                    <input type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={(e) => setRutNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="nombresNurse" className="block text-gray-700 font-bold mb-2">Nombres:</label>
-                    <input type="text" id="nombresNurse" name="nombresNurse" value={nombresNurse} onChange={(e) => setNombresNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="apellidosNurse" className="block text-gray-700 font-bold mb-2">Apellidos:</label>
-                    <input type="text" id="apellidosNurse" name="apellidosNurse" value={apellidosNurse} onChange={(e) => setApellidosNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="correoNurse" className="block text-gray-700 font-bold mb-2">Correo Electrónico:</label>
-                    <input type="email" id="correoNurse" name="correoNurse" value={correoNurse} onChange={handleChangeCorreo} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="fechaNacimientoNurse" className="block text-gray-700 font-bold mb-2">Fecha de Nacimiento:</label>
-                    <input type="date" id="fechaNacimientoNurse" name="fechaNacimientoNurse" value={fechaNacimientoNurse} onChange={(e) => setFechaNacimientoNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>  
-
-                <div className="mb-4">
-                    <label htmlFor="celNurse" className="block text-gray-700 font-bold mb-2">Celular:</label>
-                    <div className="flex">
-                        <span className="text-gray-700 mr-2">+56</span>
-                        <input type="number" id="celNurse" name="celNurse" value={celNurse} onChange={handleChangeCelular} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+        <div>
+            <Navbar />
+            <div className="container flex mt-20 justify-center items-center">
+                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Enfermero</h2>
+                    <div className="mb-4">
+                        <label htmlFor="rutNurse" className="block text-gray-700 font-bold mb-2">RUT:</label>
+                        <input type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={(e) => setRutNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
-                </div>
 
-                <div className="mb-4">
-                    <label htmlFor="celauxNurse" className="block text-gray-700 font-bold mb-2">Contacto de emergencia:</label>
-                    <div className="flex">
-                        <span className="text-gray-700 mr-2">+56</span>
-                        <input type="number" id="celauxNurse" name="celauxNurse" value={celauxNurse} onChange={handleChangeCelularAux} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                    <div className="mb-4">
+                        <label htmlFor="nombresNurse" className="block text-gray-700 font-bold mb-2">Nombres:</label>
+                        <input type="text" id="nombresNurse" name="nombresNurse" value={nombresNurse} onChange={(e) => setNombresNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
-                </div>
 
-                <div className="mb-4">
-                    <label htmlFor="fechaContratoNurse" className="block text-gray-700 font-bold mb-2">Fecha de Contrato:</label>
-                    <input type="date" id="fechaContratoNurse" name="fechaContratoNurse" value={fechaContratoNurse} onChange={(e) => setFechaContratoNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>  
+                    <div className="mb-4">
+                        <label htmlFor="apellidosNurse" className="block text-gray-700 font-bold mb-2">Apellidos:</label>
+                        <input type="text" id="apellidosNurse" name="apellidosNurse" value={apellidosNurse} onChange={(e) => setApellidosNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="contratoNurse" className="block text-gray-700 font-bold mb-2">Tipo de contrato:</label>
-                    <Select instanceId="contratoNurse" name="contratoNurse" value={contratoNurse} onChange={handleChangeTurno} options={opcionesContrato} styles={customStyles} isClearable />
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="correoNurse" className="block text-gray-700 font-bold mb-2">Correo Electrónico:</label>
+                        <input type="email" id="correoNurse" name="correoNurse" value={correoNurse} onChange={handleChangeCorreo} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="turnoNurse" className="block text-gray-700 font-bold mb-2">Turno:</label>
-                    <Select instanceId="turnoNurse" name="turnoNurse" value={turnoNurse} onChange={handleChangeContrato} options={opcionesTurno} styles={customStyles} isClearable />
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="fechaNacimientoNurse" className="block text-gray-700 font-bold mb-2">Fecha de Nacimiento:</label>
+                        <input type="date" id="fechaNacimientoNurse" name="fechaNacimientoNurse" value={fechaNacimientoNurse} onChange={(e) => setFechaNacimientoNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>  
 
-                <div className="mb-4">
-                    <label htmlFor="especialidadNurse" className="block text-gray-700 font-bold mb-2">Especialidades:</label>
-                    <textarea id="especialidadNurse" name="especialidadNurse" value={especialidadNurse} onChange={(e) => setEspecialidadNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="celNurse" className="block text-gray-700 font-bold mb-2">Celular:</label>
+                        <div className="flex">
+                            <span className="text-gray-700 mr-2">+56</span>
+                            <input type="number" id="celNurse" name="celNurse" value={celNurse} onChange={handleChangeCelular} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                        </div>
+                    </div>
 
-                {/* <div className="mb-4">
-                    <label htmlFor="fotoGuard" className="block text-gray-700 font-bold mb-2">Foto</label>
-                    <input type="file" id="fotoGuard" name="fotoGuard" accept="image/*"  onChange={(e) => setFotoGuard(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                </div> */}
-                
-                {errorCelular && <p className="text-red-500 text-sm">{errorCelular}</p>}
-                <div className="flex items-center justify-between">
-                    <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
-                </div>             
-                
-            </form>
+                    <div className="mb-4">
+                        <label htmlFor="celauxNurse" className="block text-gray-700 font-bold mb-2">Contacto de emergencia:</label>
+                        <div className="flex">
+                            <span className="text-gray-700 mr-2">+56</span>
+                            <input type="number" id="celauxNurse" name="celauxNurse" value={celauxNurse} onChange={handleChangeCelularAux} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                        </div>
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="fechaContratoNurse" className="block text-gray-700 font-bold mb-2">Fecha de Contrato:</label>
+                        <input type="date" id="fechaContratoNurse" name="fechaContratoNurse" value={fechaContratoNurse} onChange={(e) => setFechaContratoNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>  
+
+                    <div className="mb-4">
+                        <label htmlFor="contratoNurse" className="block text-gray-700 font-bold mb-2">Tipo de contrato:</label>
+                        <Select instanceId="contratoNurse" name="contratoNurse" value={contratoNurse} onChange={handleChangeContrato} options={opcionesContrato} styles={customStyles} isClearable />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="turnoNurse" className="block text-gray-700 font-bold mb-2">Turno:</label>
+                        <Select instanceId="turnoNurse" name="turnoNurse" value={turnoNurse} onChange={handleChangeTurno} options={opcionesTurno} styles={customStyles} isClearable />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="especialidadNurse" className="block text-gray-700 font-bold mb-2">Especialidades:</label>
+                        <textarea id="especialidadNurse" name="especialidadNurse" value={especialidadNurse} onChange={(e) => setEspecialidadNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+
+                    {/* <div className="mb-4">
+                        <label htmlFor="fotoGuard" className="block text-gray-700 font-bold mb-2">Foto</label>
+                        <input type="file" id="fotoGuard" name="fotoGuard" accept="image/*"  onChange={(e) => setFotoGuard(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                    </div> */}
+                    
+                    {errorCelular && <p className="text-red-500 text-sm">{errorCelular}</p>}
+                    <div className="flex items-center justify-between">
+                        <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
+                    </div>             
+                    
+                </form>
+            </div>
         </div>
     );
 };
