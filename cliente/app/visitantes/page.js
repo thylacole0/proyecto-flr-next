@@ -1,12 +1,12 @@
 "use client";
 import React from 'react';
-import TablaResidentes from '../../components/tablaRes.js';
+import TablaVisitantes from '../../components/tablaVisitante.js';
 import Navbar from '../../components/navbar';
 import styles from '../residentes/residentes.module.css';
 
-const residentes = [];
+const visitantes = [];
 
-const ResidentesPage = () => {
+const VisitantesPage = () => {
   return (
     <> 
       <nav >
@@ -14,7 +14,7 @@ const ResidentesPage = () => {
       </nav>
       <section>
         <div className={styles.body}>
-          <TablaResidentes residentes={residentes} />
+          <TablaVisitantes visitantes={visitantes} />
         </div>
         
       </section>
@@ -22,4 +22,4 @@ const ResidentesPage = () => {
   </>
 )};
 
-export default ResidentesPage;
+export default VisitantesPage;

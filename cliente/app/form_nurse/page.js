@@ -116,7 +116,7 @@ const NurseForm = () => {
         const valor = e.target.value;
         setCorreoNurse(valor);
     };
-
+    
     return (
         <div>
             <Navbar />
