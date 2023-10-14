@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link'; 
 import 'tailwindcss/tailwind.css';
 import Select from 'react-select';
+import axios from 'axios';
 
 const GuardiaForm = () => {
     const [rutGuard, setRutGuard] = useState('');
@@ -36,6 +37,19 @@ const GuardiaForm = () => {
         } else {
             // El número de celular no es válido, muestra un mensaje de error
             setErrorCelular('El número de celular debe tener 9 dígitos');
+        }
+
+        // utilizar backend para insertar datos en la tabla guardia
+        try {
+            let contratoGuardia = contratoGuard.value;
+            const body = { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuardia };
+            console.log(body);
+            const response = axios.post("http://localhost:8080/form_guardia", body);
+            console.log(response);
+            window.location = "/home_test";
+            
+        } catch (error) {
+            console.log(error);
         }
 
     };
@@ -139,7 +153,7 @@ const GuardiaForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="contratoGuard" className="block text-gray-700 font-bold mb-2">Tipo de contrato:</label>
-                    <Select id="contratoGuard" name="contratoGuard" value={contratoGuard} onChange={handleChangeContrato} options={opcionesContrato} styles={customStyles} isClearable />
+                    <Select instanceId="contratoGuard" name="contratoGuard" value={contratoGuard} onChange={handleChangeContrato} options={opcionesContrato} styles={customStyles} isClearable />
                 </div>
 
                 {/* <div className="mb-4">

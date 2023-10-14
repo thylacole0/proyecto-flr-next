@@ -28,12 +28,27 @@ const ResidenteForm = () => {
     const [descAlergias, setDescAlergias] = useState('');
     // const [foto, setFoto] = useState('');
     
-     
 
     const handleSubmit = (event) => {
         event.preventDefault();
         // Handle form submission here
-
+        let estadoCivil = estCivil.value;
+        let tipoSangreRes = tipoSangre.value;
+        let nacionalidadRes = nacionalidad.value;
+        try {
+            const body = { 
+                rut, nombres, apellidos, fechaNacimiento, genero, nacionalidadRes, direccion, estadoCivil, 
+                fechaIngreso, sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad, 
+                discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias
+            };
+            console.log(body)
+            const response = axios.post("http://localhost:8080/form_residente", body);
+            console.log(response);
+            window.location = "/home_test";
+            
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const customStyles = {
@@ -127,7 +142,7 @@ const ResidenteForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="nacionalidad" className="block text-gray-700 font-bold mb-2">Nacionalidad:</label>
-                    <Select id="nacionalidad" name="nacionalidad" value={nacionalidad} onChange={handleChange} options={nacionalidades} styles={customStyles} isClearable defaultValue={{ value: 'Chile', label: 'Chile' }} />
+                    <Select instanceId="nacionalidad" name="nacionalidad" value={nacionalidad} onChange={handleChange} options={nacionalidades} styles={customStyles} isClearable defaultValue={{ value: 'Chile', label: 'Chile' }} />
                 </div>
 
                 <div className="mb-4">
@@ -137,7 +152,7 @@ const ResidenteForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="estCivil" className="block text-gray-700 font-bold mb-2">Estado Civil:</label>
-                    <Select id="estCivil" name="estCivil" value={estCivil} onChange={handleChangeCivil} options={opcionesEstCivil} styles={customStyles} isClearable />
+                    <Select instanceId="estCivil" name="estCivil" value={estCivil} onChange={handleChangeCivil} options={opcionesEstCivil} styles={customStyles} isClearable />
                 </div>
 
                 <div className="mb-4">
@@ -152,7 +167,7 @@ const ResidenteForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="tipoSangre" className="block text-gray-700 font-bold mb-2">Tipo Sangre:</label>
-                    <Select id="tipoSangre" name="tipoSangre" value={tipoSangre} onChange={handleChangeSangre} options={opcionesTipoSangre} styles={customStyles} isClearable />
+                    <Select instanceId="tipoSangre" name="tipoSangre" value={tipoSangre} onChange={handleChangeSangre} options={opcionesTipoSangre} styles={customStyles} isClearable />
                 </div> 
 
                 <div className="mb-4">

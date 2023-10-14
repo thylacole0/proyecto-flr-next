@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link'; 
 import 'tailwindcss/tailwind.css';
 import Select from 'react-select';
+import axios from 'axios';
+
 
 const NurseForm = () => {
     const [rutNurse, setRutNurse] = useState('');
@@ -22,6 +24,7 @@ const NurseForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
         // Handle form submission here
         if (celNurse.length === 9) {
             // El número de celular es válido, puedes continuar con el envío del formulario
@@ -40,6 +43,19 @@ const NurseForm = () => {
             setErrorCelular('El número de celular debe tener 9 dígitos');
         }
 
+        // utilizar backend para insertar datos en la tabla enfermero
+        try {
+            let contratoNurseValue = contratoNurse.value;
+            let turnoNurseValue = turnoNurse.value;
+            const body = { rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurseValue, turnoNurseValue, especialidadNurse };
+            console.log(body)
+            const response = axios.post("http://localhost:8080/form_nurse", body);
+            console.log(response);
+            window.location = "/home_test";
+            
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const customStyles = {
@@ -152,12 +168,12 @@ const NurseForm = () => {
 
                 <div className="mb-4">
                     <label htmlFor="contratoNurse" className="block text-gray-700 font-bold mb-2">Tipo de contrato:</label>
-                    <Select id="contratoNurse" name="contratoNurse" value={contratoNurse} onChange={handleChangeTurno} options={opcionesContrato} styles={customStyles} isClearable />
+                    <Select instanceId="contratoNurse" name="contratoNurse" value={contratoNurse} onChange={handleChangeTurno} options={opcionesContrato} styles={customStyles} isClearable />
                 </div>
 
                 <div className="mb-4">
                     <label htmlFor="turnoNurse" className="block text-gray-700 font-bold mb-2">Turno:</label>
-                    <Select id="turnoNurse" name="turnoNurse" value={turnoNurse} onChange={handleChangeContrato} options={opcionesTurno} styles={customStyles} isClearable />
+                    <Select instanceId="turnoNurse" name="turnoNurse" value={turnoNurse} onChange={handleChangeContrato} options={opcionesTurno} styles={customStyles} isClearable />
                 </div>
 
                 <div className="mb-4">
