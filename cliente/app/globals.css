@@ -17,6 +17,9 @@
 }
 
 body {
-  /* background-image: url('../public/gradient_background.png'); */
   background-size: 100%;
+}
+
+body[name=login] {
+  background-image: url('../public/gradient_background.png');
 }
