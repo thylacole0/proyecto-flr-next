@@ -9,16 +9,14 @@ const residentes = [];
 const ResidentesPage = () => {
   return (
     <> 
+    <body className={styles.body}>
       <nav >
         <Navbar /> 
       </nav>
       <section>
-        <div className={styles.body}>
           <TablaResidentes residentes={residentes} />
-        </div>
-        
       </section>
-   
+    </body>
   </>
 )};
 
