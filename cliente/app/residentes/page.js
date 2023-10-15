@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import TablaResidentes from '../../components/tablaRes.js';
 import Navbar from '../../components/navbar';
 import styles from '../residentes/residentes.module.css';
@@ -7,6 +7,8 @@ import styles from '../residentes/residentes.module.css';
 const residentes = [];
 
 const ResidentesPage = () => {
+
+  useEffect(() => {}, []);
   return (
     <> 
     <body className={styles.body} >

@@ -38,7 +38,7 @@ const style = {
     p: 4,
 };
 
-const BotonesCrudGuard = ({ handleDeleteRow, guardia }) => {
+const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
 
 
     // const [rut_res, setRut_res] = useState('123123');
@@ -72,15 +72,12 @@ const BotonesCrudGuard = ({ handleDeleteRow, guardia }) => {
             console.error(error);
         }
     }
-
-    console.log(celauxGuard);
-    console.log(tipoContratoGuard);
-
     const currencies = [ { value: 'Completo', label: 'Completo' }, { value: 'Part-Time', label: 'Part-Time' }];
-
-
     const primary = yellow[800];
     const secondary = red[900];
+    
+    useEffect(() => {
+    }, []);
 
     return (
         <div className="items-center">
@@ -118,7 +115,7 @@ const BotonesCrudGuard = ({ handleDeleteRow, guardia }) => {
                         <Button onClick={(e) => { modificarDatosGuardia(e); handleCloseDialog(); reload() }}>Editar</Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={handleDeleteRow} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
+                <Button onClick={(e) => {eliminarGuardia(); reload()}} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
                     Eliminar
                 </Button>
             </Stack>
