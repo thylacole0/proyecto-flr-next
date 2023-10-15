@@ -13,6 +13,7 @@ import { Delete } from '@mui/icons-material';
 import axios from 'axios';
 import moment from 'moment';
 import { useState } from 'react';
+import MenuItem from '@mui/material/MenuItem';
 
 // DIALOG IMPORT 
 import Dialog from '@mui/material/Dialog';
@@ -74,6 +75,9 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
         }
     }
 
+    const currencies = [ { value: 'Soltero', label: 'Soltero' }, { value: 'Casado', label: 'Casado' }, { value: 'Viudo', label: 'Viudo' }, { value: 'Separado', label: 'Separado' }];
+
+
     const primary = yellow[800];
     const secondary = red[900];
 
@@ -98,9 +102,14 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
                         <TextField margin="dense" id="3" label="Apellidos" type="text" fullWidth variant="outlined" value={apellidos} onChange={(e) => setApellidos(e.target.value)}
                         />
                         <TextField margin="dense" id="4" label="Dirección" type="text" fullWidth variant="outlined" value={direccion} onChange={(e) => setDireccion(e.target.value)}
-                        />
-                        <TextField margin="dense" id="5" label="Estado Civil" type="text" fullWidth variant="outlined" value={estadoCivil} onChange={(e) => setEstadoCivil(e.target.value)}
-                        />
+                        />              
+                        <TextField fullWidth margin="dense" id="outlined-select-currency" select label="Estado Civil" value={estadoCivil} onChange={(e) => setEstadoCivil(e.target.value)}>
+                            {currencies.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         <TextField margin="dense" id="6" label="Medicamentos" type="text" fullWidth variant="outlined" value={medicamentos} onChange={(e) => setMedicamentos(e.target.value)}
                         />
                         <input type="date" id="7" name="Fecha de nacimiento" defaultValue={fechaNac} onChange={(e) => setFechaNacimiento(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />

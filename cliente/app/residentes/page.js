@@ -11,15 +11,16 @@ const ResidentesPage = () => {
   useEffect(() => {}, []);
   return (
     <> 
-    <body className={styles.body} >
-      <nav >
-        <Navbar /> 
-      </nav>
-      <section>
+      <body className={styles.body} >
+        <nav >
+          <Navbar /> 
+        </nav>
+        <section>
           <TablaResidentes residentes={residentes} />
-      </section>
-    </body>
-  </>
-)};
+        </section>
+      </body>
+    </>
+  )
+};
 
 export default ResidentesPage;

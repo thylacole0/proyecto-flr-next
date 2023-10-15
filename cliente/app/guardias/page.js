@@ -17,7 +17,7 @@ const GuardiasPage = () => {
           <TablaGuardias guardias={guardias} />
       </section>
     </body>
-  </>
-)};
+    </>
+  )};
 
 export default GuardiasPage;
