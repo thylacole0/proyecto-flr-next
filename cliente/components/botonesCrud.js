@@ -1,3 +1,5 @@
+
+
 "use client";
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -35,17 +37,26 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
+};
 
-const BotonesCrud = ({handleDeleteRow, residente}) => {
+const BotonesCrud = ({ handleDeleteRow, residente }) => {
 
-    const [rut_res, setRut_res] = useState(residente.rut_res);
-    const [nombres, setNombres] = useState(residente.nombres_res);
-    const [apellidos, setApellidos] = useState(residente.apes_res);
-    const [direccion, setDireccion] = useState(residente.direccion_res);
-    const [estadoCivil, setEstadoCivil] = useState(residente.estadocivil_res);
-    const [fechaNacimiento, setFechaNacimiento] = useState(residente.fecha_nac_res);
-    const [medicamentos, setMedicamentos] = useState(residente.medicamentos_res);
+
+    // const [rut_res, setRut_res] = useState('123123');
+    // const [nombres, setNombres] = useState(residente.nombres_res);
+    // const [apellidos, setApellidos] = useState(residente.apes_res);
+    // const [direccion, setDireccion] = useState(residente.direccion_res);
+    // const [estadoCivil, setEstadoCivil] = useState(residente.estadocivil_res);
+    // const [fechaNacimiento, setFechaNacimiento] = useState(residente.fecha_nac_res);
+    // const [medicamentos, setMedicamentos] = useState(residente.medicamentos_res);
+
+    const [rut_res, setRut_res] = useState(residente[0]);
+    const [nombres, setNombres] = useState(residente[1]);
+    const [apellidos, setApellidos] = useState(residente[2]);
+    const [direccion, setDireccion] = useState(residente[3]);
+    const [estadoCivil, setEstadoCivil] = useState(residente[4]);
+    const [fechaNacimiento, setFechaNacimiento] = useState(residente[5]);
+    const [medicamentos, setMedicamentos] = useState(residente[6]);
 
     let fechaNac = moment(fechaNacimiento).utc().format('YYYY-MM-DD')
 
@@ -60,7 +71,6 @@ const BotonesCrud = ({handleDeleteRow, residente}) => {
             const body = { rut_res, nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos };
             const response = await axios.put(`http://localhost:8080/allresidentes/${rut_res}`, body);
 
-            console.log(response);
         } catch (error) {
             console.error(error);
         }
@@ -75,7 +85,7 @@ const BotonesCrud = ({handleDeleteRow, residente}) => {
     return (
         <div className="items-center">
             <Stack direction="row" spacing={2}>
-                <Button onClick = {handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
+                <Button onClick={handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
                     Editar
                 </Button>
                 <Dialog open={open} onClose={handleCloseDialog} id={`id${residente.rut_res}`}>
@@ -84,7 +94,7 @@ const BotonesCrud = ({handleDeleteRow, residente}) => {
                         <DialogContentText>
                             Aqui podras editar los datos del residente
                         </DialogContentText>
-                        
+
                         <TextField margin="dense" id="2" label="Nombres" type="text" fullWidth variant="outlined" value={nombres} onChange={(e) => setNombres(e.target.value)}
                         />
                         <TextField margin="dense" id="3" label="Apellidos" type="text" fullWidth variant="outlined" value={apellidos} onChange={(e) => setApellidos(e.target.value)}
@@ -100,7 +110,7 @@ const BotonesCrud = ({handleDeleteRow, residente}) => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseDialog}>Cancel</Button>
-                        <Button onClick={(e) => {modificarDatosResidente(e); handleCloseDialog(); reload()}}>Editar</Button>
+                        <Button onClick={(e) => { modificarDatosResidente(e); handleCloseDialog(); }}>Editar</Button>
                     </DialogActions>
                 </Dialog>
                 <Button onClick={handleDeleteRow} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>

@@ -9,7 +9,7 @@ const residentes = [];
 const ResidentesPage = () => {
   return (
     <> 
-    <body className={styles.body}>
+    <body className={styles.body} >
       <nav >
         <Navbar /> 
       </nav>

@@ -39,13 +39,13 @@ const style = {
 
 const BotonesCrudVis = ({handleDeleteRow, visitante}) => {
 
-    const [rutVis, setRutVis] = useState(visitante.rut);
-    const [nombresVisitante, setNombresVisitante] = useState(visitante.nombres_vis);
-    const [apellidosVisitante, setApellidosVisitante] = useState(visitante.apes_vis);
-    const [emailVisitante, setEmailVisitante] = useState(visitante.email_vis);
-    const [telefonoVisitante, setTelefonoVisitante] = useState(visitante.telefono_vis);
-    const [direccionVisitante, setDireccionVisitante] = useState(visitante.direccion_vis);
-    const [rutResidente, setRutResidente] = useState(visitante.rut_residente);
+    const [rutVis, setRutVis] = useState(visitante[0]);
+    const [nombresVisitante, setNombresVisitante] = useState(visitante[1]);
+    const [apellidosVisitante, setApellidosVisitante] = useState(visitante[2]);
+    const [emailVisitante, setEmailVisitante] = useState(visitante[3]);
+    const [telefonoVisitante, setTelefonoVisitante] = useState(visitante[4]);
+    const [direccionVisitante, setDireccionVisitante] = useState(visitante[5]);
+    const [rutResidente, setRutResidente] = useState(visitante[6]);
 
     const [open, setOpen] = useState(false);
     const handleOpenDialog = () => setOpen(true);
@@ -57,6 +57,8 @@ const BotonesCrudVis = ({handleDeleteRow, visitante}) => {
         try {
             const body = { rutVis, nombresVisitante, apellidosVisitante, emailVisitante, telefonoVisitante, direccionVisitante, rutResidente};
             const response = await axios.put(`http://localhost:8080/allvisitantes/${rutVis}`, body);
+
+            console.log('Se modifico correctamente');
 
             console.log(response);
         } catch (error) {
@@ -74,7 +76,7 @@ const BotonesCrudVis = ({handleDeleteRow, visitante}) => {
                     Editar
                 </Button>
                 <Dialog open={open} onClose={handleCloseDialog} id={`id${visitante.rutVis}`}>
-                    <DialogTitle>Editar información del visitante</DialogTitle>
+                    <DialogTitle>Editar informaciÃ³n del visitante</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
                             Aqui podras editar los datos del visitante

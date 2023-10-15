@@ -17,6 +17,29 @@ app.use("/main", require("./routes/main.js"))
 
 // CRUD VISITANTES
 
+app.delete('/allresidentes/:rut_res', async (req, res) => {
+    try {
+        const { rut_res } = req.params;
+        const deleteResidente = await pool.query('DELETE FROM residente WHERE rut_res = $1', [rut_res]);
+        res.json('Eliminado con exitoooooo');
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+app.put('/allresidentes/:rut_res', async (req, res) => {
+    try {
+        console.log(req.body)
+        const { rut_res } = req.params;
+        const { nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos } = req.body;
+        const updateResidente = await pool.query("UPDATE residente SET nombres_res = $1, apes_res = $2, direccion_res = $3, estadocivil_res = $4, fecha_nac_res = $5, medicamentos_res = $6 WHERE rut_res = $7",
+        [nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos, rut_res]);
+        res.json('Updateado con exitoooooooo');
+    } catch (error){
+        console.error(error.message);
+    }
+})
+
 // Registrar ficha visitante
 app.post('/form_visitante', async (req, res) => {
     try {
@@ -65,7 +88,8 @@ app.put('/allvisitantes/:rutVis', async (req, res) => {
         const { nombresVisitante, apellidosVisitante, emailVisitante, telefonoVisitante, direccionVisitante, rutResidente } = req.body;
         const updateVisitante = await pool.query('UPDATE visitante SET nombres_vis = $1, apes_vis = $2, email_vis = $3, telefono_vis = $4, direccion_vis = $5, rut_residente = $6 WHERE rut = $7' ,
         [nombresVisitante, apellidosVisitante, emailVisitante, telefonoVisitante, direccionVisitante, rutResidente, rutVis]);
-        res.json(updateVisitante.rows);
+        res.json('Updateado el visitante con exito');
+
     } catch (error) {
         console.error(error.message);
     }
@@ -261,7 +285,7 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
         
     try {
         const { rut_res } = req.params;
-        console.log(rut_res)
+        console.log(req.params)
         const residente = await pool.query('SELECT * FROM residente WHERE rut_res = $1', [rut_res]);
         res.json(residente.rows);
     } catch (error) {
@@ -271,28 +295,9 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
 });
 
 // Actualizar un residente
-app.put('/allresidentes/:rut_res', async (req, res) => {
-    try {
-        const { rut_res } = req.params;
-        const { nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos } = req.body;
-        const updateResidente = await pool.query('UPDATE residente SET nombres_res = $1, apes_res = $2, direccion_res = $3, estadocivil_res = $4, fecha_nac_res = $5, medicamentos_res = $6 WHERE rut_res = $7' ,
-        [nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos, rut_res]);
-        res.json(updateResidente.rows);
-    } catch (error) {
-        console.error(error.message);
-    }
-});
 
 // Eliminar un residente
-app.delete('/allresidentes/:rut_res', async (req, res) => {
-    try {
-        const { rut_res } = req.params;
-        const deleteResidente = await pool.query('DELETE FROM residente WHERE rut_res = $1', [rut_res]);
-        res.json(deleteResidente.rows);
-    } catch (error) {
-        console.error(error.message);
-    }
-});
+
 
 
 module.exports = app;
