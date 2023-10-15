@@ -59,7 +59,7 @@ export const authOptions = {
         signOut: '/login',
         error: '/login',
         verifyRequest: '/login',
-    }
+    },
 };
 
 const handler = NextAuth(authOptions);

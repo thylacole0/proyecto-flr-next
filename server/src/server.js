@@ -40,6 +40,16 @@ app.put('/allresidentes/:rut_res', async (req, res) => {
     }
 })
 
+app.delete('/allguardias/:rut_guardia', async (req, res) => {
+    try {
+        const { rut_guardia } = req.params;
+        const deleteGuardia = await pool.query('DELETE FROM guardia WHERE rut_guardia = $1', [rut_guardia]);
+        res.json('Eliminado con exitoooooo');
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
 // Registrar ficha visitante
 app.post('/form_visitante', async (req, res) => {
     try {
@@ -144,7 +154,6 @@ app.get('/allguardias/:rut_guardia', async (req, res) => {
     try {
         const { rut_guardia } = req.params;
         const guardia = await pool.query('SELECT * FROM guardia WHERE rut_guardia = $1', [rut_guardia]);
-        res.json(guardia.rows);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');

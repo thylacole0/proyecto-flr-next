@@ -11,11 +11,12 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  
   return (
     <html lang="en">
       <body className={styles.body}>
 
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider refetchOnWindowFocus={false}>{children}</AuthProvider>
         </body>
     </html>
   )

@@ -81,7 +81,6 @@ const TablaVisitantes = () => {
         name: "Acciones",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            console.log(tableMeta.rowData)
             return (
               <BotonesCrud handleDeleteRow={() => handleDeleteRow(tableMeta.rowData[0])} visitante={tableMeta.rowData}/>
             )

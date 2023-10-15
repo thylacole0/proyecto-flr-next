@@ -10,17 +10,28 @@ const TablaGuardias = () => {
 
   const [guardias, setGuardias] = useState([]);
 
-  const handleDeleteRow = (rut_guard) => {
+
+  const eliminarGuardia = rut_guard => {
     try {
       const response = axios.delete(`http://localhost:8080/allguardias/${rut_guard}`);
-      setGuardias(guardias.filter((guardia) => guardia.rut_guard !== rut_guard))
+      setGuardias(guardias.filter(guardia => guardia.rut_guard !== rut_guard))
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+
+  // const handleDeleteRow = rut_guard => {
+  //   try {
+  //     const response = axios.delete(`http://localhost:8080/allguardias/${rut_guard}`);
+
+  //     setGuardias(guardias.filter(guardia => guardia.rut_guard !== rut_guard))
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const getGuardias = async () => {
-
     try{
       const response = await axios.get("http://localhost:8080/allguardias");
       const jsonDatos = await response.data;
@@ -79,9 +90,9 @@ const TablaGuardias = () => {
       name: "Acciones",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(tableMeta.rowData[0])
+          
           return (
-            <BotonesCrudGuard handleDeleteRow={() => handleDeleteRow(tableMeta.rowData[0])} guardia={tableMeta.rowData}/>
+            <BotonesCrudGuard eliminarGuardia={() => eliminarGuardia(tableMeta.rowData[0])} guardia={tableMeta.rowData}/>
           )
         }
       }

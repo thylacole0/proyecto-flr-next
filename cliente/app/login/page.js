@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import 'tailwindcss/tailwind.css';
 import '../../styles/globals.css'
 import React from 'react';
@@ -35,6 +35,8 @@ const Login = () => {
         }
     }
 
+    useEffect(() => {
+    }, []);
     return (
         <>
             <body name="login">

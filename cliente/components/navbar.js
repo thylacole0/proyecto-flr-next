@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -70,7 +70,9 @@ const Navbar = () => {
         setAnchorElTablas(null);
     };
 
-    
+    useEffect((
+
+    ) => {}, []);
 
     
     return (
@@ -106,8 +108,8 @@ const Navbar = () => {
                                         open={Boolean(anchorElTablas)}
                                         onClose={handleCloseTablas}
                                         >
-                                        {tablitas.map((tablitas) => (
-                                            <MenuItem key={tablitas} onClick={handleCloseTablas}>
+                                        {tablitas.map((tablitas, i) => (
+                                            <MenuItem key={i} onClick={handleCloseTablas}>
                                                 <Link legacyBehavior href={tablitas.url}>
                                                     <a className=" hover:bg-white hover:text-black rounded-lg p-2">{tablitas.name}</a>
                                                 </Link>
@@ -135,8 +137,8 @@ const Navbar = () => {
                                         open={Boolean(anchorElUser)}
                                         onClose={handleCloseUserMenu}
                                         >
-                                        {pages.map((pages) => (
-                                            <MenuItem key={pages} onClick={handleCloseUserMenu}>
+                                        {pages.map((pages, i) => (
+                                            <MenuItem key={i} onClick={handleCloseUserMenu}>
                                                 <Link legacyBehavior href={pages.url}>
                                                     <a className=" hover:bg-white hover:text-black rounded-lg p-2">{pages.name}</a>
                                                 </Link>
@@ -163,8 +165,8 @@ const Navbar = () => {
                                         open={Boolean(anchorElLogout)}
                                         onClose={handleCloseLogout}
                                         >
-                                        {deslogueo.map((deslogueo) => (
-                                            <MenuItem key={deslogueo} onClick={handleCloseLogout}>
+                                        {deslogueo.map((deslogueo, i) => (
+                                            <MenuItem key={i} onClick={handleCloseLogout}>
                                                 <a className=" hover:bg-white hover:text-black rounded-lg p-2" onClick={() => signOut()}>
                                                  {deslogueo.name}
                                                 </a>
