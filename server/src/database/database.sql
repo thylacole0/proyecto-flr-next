@@ -80,9 +80,9 @@ VALUES
 
 INSERT INTO visitante (rut, nombres_vis, apes_vis, email_vis, telefono_vis, direccion_vis, rut_residente)
 VALUES
-  ('123456789-0', 'María Rodríguez', 'López', 'maria@email.com', 56912345678, 'Calle Principal 123, Ciudad Capital', 'residente001'),
-  ('987654321-2', 'Juan Pérez', 'González', 'juan@email.com', 56998765432, 'Avenida Central 456, Ciudad Grande', 'residente002'),
-  ('333222111-4', 'Luisa Fernández', 'Martínez', 'luisa@email.com', 5693332221114, 'Calle Secundaria 789, Ciudad Pequeña', 'residente003');
+  ('123456789-0', 'María Rodríguez', 'López', 'maria@email.com', 909987654, 'Calle Principal 123, Ciudad Capital', 'residente001'),
+  ('987654321-2', 'Juan Pérez', 'González', 'juan@email.com', 912345678, 'Avenida Central 456, Ciudad Grande', 'residente002'),
+  ('333222111-4', 'Luisa Fernández', 'Martínez', 'luisa@email.com', 976597659, 'Calle Secundaria 789, Ciudad Pequeña', 'residente003');
 
 INSERT INTO residente (rut_res, nombres_res, apes_res, genero_res, nacion_res, direccion_res, estadocivil_res, fecha_nac_res, fecha_ingreso_res, sis_prevision_res, tipo_sangre_res, enfermedad_cronica_res, desc_enfermedad_res, discapacidad_res, desc_discapacidad_res, alergias_res, desc_alergias_res, medicamentos_res, id_fundacion)
 VALUES
