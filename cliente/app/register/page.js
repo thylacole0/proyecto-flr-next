@@ -4,6 +4,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import MenuItem from '@mui/material/MenuItem';
+import axios from "axios";
+
 
 const StyledTextField = styled(TextField)({
     marginBottom: "1rem",
@@ -33,7 +35,7 @@ const RegisterPage = () => {
         password: '',
         confirmPassword: '',
         tipo_user: '',
-        estado_user: 'Activo',
+        estado_user: true,
     });
 
 
@@ -45,7 +47,7 @@ const RegisterPage = () => {
         }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const errors = {};
         if (!formData.username) {
@@ -66,65 +68,86 @@ const RegisterPage = () => {
         } 
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
-            console.log('Form submitted:', formData);
+            delete formData.confirmPassword;
+            try {
+                const { username, password, tipo_user, estado_user } = formData;
+                const body = { username, password, tipo_user, estado_user };
+                const response = await axios.post(`http://localhost:8080/auth/register`, body);
+                console.log(response);
+            }
+            catch (error) {
+                console.error(error);
+            }
         }
+
     };
 
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md">
-                <h1 className="text-2xl font-bold mb-4">Register</h1>
+        <div className="flex items-center justify-center h-[100vh]">
+            <div className="bg-white p-11 rounded shadow-md">
+                <h1 className="text-2xl font-bold mb-2 text-center">Registrar nuevo usuario</h1>
                 <form onSubmit={handleSubmit}>
-                    <StyledTextField
-                        label="Nombre de usuario"
-                        variant="outlined"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        error={!!formErrors.username}
-                        helperText={formErrors.username}
-                        fullWidth
-                    />
-                    <StyledTextField
-                        label="Contraseña"
-                        variant="outlined"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        error={!!formErrors.password}
-                        helperText={formErrors.password}
-                        fullWidth
-                    />
-                    <StyledTextField
-                        label="Confirmar contraseña"
-                        name="confirmPassword"
-                        type="password"
-                        value={formData.confirmPassword}
-                        onChange={handleInputChange}
-                        error={!!formErrors.confirmPassword}
-                        helperText={formErrors.confirmPassword}
-                        fullWidth
-                    />
-                    <TextField
-                        id="filled-select-currency"
-                        select
-                        label="Tipo de usuario"
-                        defaultValue=""
-                        helperText="Selecciona el tipo de usuario"
-                        onChange={handleInputChange}
-                        error={!!formErrors.tipo_user}
-                        name="tipo_user"
-                    >
-                        {tipo_usuario.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <Button variant="contained" color="secondary" type="submit" fullWidth>
-                        Register
+                    <div className="relative my-4">
+                        
+                        <StyledTextField
+                        className="w-full"
+                            label="Nombre de usuario"
+                            variant="outlined"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            error={!!formErrors.username}
+                            helperText={formErrors.username}
+                        />
+                    </div>
+                    <div className="relative my-2">
+                        <StyledTextField
+                        className="w-full"
+                            label="Contraseña"
+                            variant="outlined"
+                            name="password"
+                            type="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            error={!!formErrors.password}
+                            helperText={formErrors.password}
+                        />
+                    </div>
+                    <div className="relative my-4">
+                        <StyledTextField
+                            className="w-full"
+                            label="Confirmar contraseña"
+                            variant="outlined"
+                            name="confirmPassword"
+                            type="password"
+                            value={formData.confirmPassword}
+                            onChange={handleInputChange}
+                            error={!!formErrors.confirmPassword}
+                            helperText={formErrors.confirmPassword}
+                        />
+                    </div>
+                    <div className="relative my-4">
+                        <TextField
+                            className="w-full"
+                            id="filled-select-currency"
+                            select
+                            label="Tipo de usuario"
+                            defaultValue=""
+                            helperText="Selecciona el tipo de usuario"
+                            onChange={handleInputChange}
+                            error={!!formErrors.tipo_user}
+                            name="tipo_user"
+                        >
+                            {tipo_usuario.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </div>
+                    <Button type="submit" fullWidth className="w-full mb-4 text-[18px] mt-6 rounded-full bg-violet-900 text-white hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2">
+                        Registrar usuario
                     </Button>
                 </form>
             </div>

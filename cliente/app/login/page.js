@@ -7,6 +7,7 @@ import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import e from 'cors';
+import { Button } from '@mui/material';
 
 const Login = () => {
 
@@ -45,7 +46,7 @@ const Login = () => {
                         <div >
                             <h2 className="text-4xl text-whitefont-bold text-center mb-6">Iniciar sesión</h2>
                             <form onSubmit={onSubmit} className='form'>
-                                <div className="text-red-500 mb-2"></div>
+                                <div className="text-red-500 mb-2">
                                 <div className=" relative my-4">
                                     <label htmlFor="username" className="absolote text-sm text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" placeholder=''>
                                         Nombre de Usuario:
@@ -80,7 +81,7 @@ const Login = () => {
                                 >
                                     Iniciar Sesión
                                 </button>
-
+                                </div>
                             </form>
                             <div className="text-center">
                                 <a className="text-blue-500 hover:underline">Recuperar Contraseña</a>
