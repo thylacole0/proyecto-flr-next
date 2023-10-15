@@ -166,6 +166,17 @@ app.put('/allguardias/:rut_guardia', async (req, res) => {
     }
 });
 
+// Eliminar un guardia
+app.delete('/allguardias/:rut_guardia', async (req, res) => {
+    try {
+        const { rut_guardia } = req.params;
+        const deleteGuardia = await pool.query('DELETE FROM guardia WHERE rut_guardia = $1', [rut_guardia]);
+        res.json(deleteGuardia.rows);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // CRUD ENFERMEROS
 
 // Registrar ficha enfermero
@@ -201,7 +212,7 @@ app.get('/allenfermeros/:rut_enfer', async (req, res) => {
     try {
         const { rut_enfer } = req.params;
         console.log(rut_enfer)
-        const enfermero = await pool.query('SELECT * FROM enfermero WHERE rut_res = $1', [rut_enfer]);
+        const enfermero = await pool.query('SELECT * FROM enfermero WHERE rut_enfer = $1', [rut_enfer]);
         res.json(enfermero.rows);
     } catch (error) {
         console.error(error.message);
@@ -210,12 +221,12 @@ app.get('/allenfermeros/:rut_enfer', async (req, res) => {
 });
 
 // Actualizar un enfermero
-app.put('/allresidentes/:rut_enfer', async (req, res) => {
+app.put('/allenfermeros/:rut_enfer', async (req, res) => {
     try {
         const { rut_enfer } = req.params;
-        const { nombresEnfermero, apellidosEnfermero, emailEnfermero, celEnfermero, celauxEnfermero, tipoContratoEnfermero, fechaNacimientoEnfermero, fechaContratoEnfermero, turnoEnfermero, especialidadEnfermero } = req.body;
-        const updateEnfermero = await pool.query('UPDATE enfermero SET nombres_enfer = $1, apes_enfer = $2, correo_enfer = $3, cel_enfer = $4, celaux_enfer = $5, tipo_contrato_enfer = $6, fecha_nac_enfer = $7, fecha_contrato_enfer = $8, turno_enfer = $9, especialidad_enfer = $10 WHERE rut_enfer = $11' ,
-        [nombresEnfermero, apellidosEnfermero, emailEnfermero, celEnfermero, celauxEnfermero, tipoContratoEnfermero, fechaNacimientoEnfermero, fechaContratoEnfermero, turnoEnfermero, especialidadEnfermero, rut_enfer]);
+        const { nombresNurse, apellidosNurse, correoNurse, celNurse, celauxNurse, tipoContratoNurse, turnoNurse, especialidadNurse } = req.body;
+        const updateEnfermero = await pool.query('UPDATE enfermero SET nombres_enfer = $1, apes_enfer = $2, correo_enfer = $3, cel_enfer = $4, celaux_enfer = $5, tipo_contrato_enfer = $6, turno_enfer = $7, especialidad_enfer = $8 WHERE rut_enfer = $9' ,
+        [nombresNurse, apellidosNurse, correoNurse, celNurse, celauxNurse, tipoContratoNurse, turnoNurse, especialidadNurse, rut_enfer]);
         res.json(updateEnfermero.rows);
     } catch (error) {
         console.error(error.message);
@@ -223,7 +234,7 @@ app.put('/allresidentes/:rut_enfer', async (req, res) => {
 });
 
 // Eliminar un enfermero
-app.delete('/allresidentes/:rut_enfer', async (req, res) => {
+app.delete('/allenfermeros/:rut_enfer', async (req, res) => {
     try {
         const { rut_enfer } = req.params;
         const deleteEnfermero = await pool.query('DELETE FROM enfermero WHERE rut_enfer = $1', [rut_enfer]);
@@ -275,7 +286,6 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
         
     try {
         const { rut_res } = req.params;
-        console.log(req.params)
         const residente = await pool.query('SELECT * FROM residente WHERE rut_res = $1', [rut_res]);
         res.json(residente.rows);
     } catch (error) {
@@ -284,9 +294,6 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
     }
 });
 
-// Actualizar un residente
-
-// Eliminar un residente
 
 
 
