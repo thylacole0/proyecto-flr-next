@@ -21,8 +21,11 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 // const pages = ['Guardia', 'Enfermero', 'Residente', 'Visitante'];
 const pages = [{name: 'Guardia', url: '/form_guardia'}, {name: 'Enfermero', url: '/form_nurse'}, {name: 'Residente', url: '/form_residente'}, {name: 'Visitante', url: '/form_visitante'}]
+const tablitas = [{name: 'Guardia', url: '/guardias'}, {name: 'Enfermero', url: '/enfermeros'}, {name: 'Residente', url: '/residentes'}, {name: 'Visitante', url: '/visitantes'}]
 const deslogueo = [{name: 'Logout'}]
-const opcion = ['Formularios']
+const formularios = ['Formularios']
+const tablas = ['Tablas']
+
 
 const Navbar = () => {
 
@@ -37,6 +40,7 @@ const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElLogout, setAnchorElLogout] = React.useState(null);
+    const [anchorElTablas, setAnchorElTablas] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -59,6 +63,13 @@ const Navbar = () => {
         setAnchorElLogout(null);
     };
 
+    const handleOpenTablas = (event) => {
+        setAnchorElTablas(event.currentTarget);
+    };
+    const handleCloseTablas = () => {
+        setAnchorElTablas(null);
+    };
+
     
 
     
@@ -76,9 +87,38 @@ const Navbar = () => {
                         </div>
                         <div className="hidden md:block">
                             <div className="ml-4 flex items-center space-x-4">
+                            {session && session.tipo_user === 'Administrador' && (
+                                    <Box sx={{ flexGrow: 0 }}>
+                                    <Button   Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }}> {tablas} </Button>
+                                    <Menu
+                                        sx={{ mt: '45px' }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElTablas}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={Boolean(anchorElTablas)}
+                                        onClose={handleCloseTablas}
+                                        >
+                                        {tablitas.map((tablitas) => (
+                                            <MenuItem key={tablitas} onClick={handleCloseTablas}>
+                                                <Link legacyBehavior href={tablitas.url}>
+                                                    <a className=" hover:bg-white hover:text-black rounded-lg p-2">{tablitas.name}</a>
+                                                </Link>
+                                            </MenuItem>
+                                        ))}
+                                    </Menu>
+                                </Box>
+                                )}
                                 {session && session.tipo_user === 'Administrador' && (
                                     <Box sx={{ flexGrow: 0 }}>
-                                    <Button   Button key={opcion} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }}> {opcion} </Button>
+                                    <Button   Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }}> {formularios} </Button>
                                     <Menu
                                         sx={{ mt: '45px' }}
                                         id="menu-appbar"

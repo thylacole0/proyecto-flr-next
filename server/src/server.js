@@ -143,7 +143,6 @@ app.get('/allguardias/:rut_guardia', async (req, res) => {
         
     try {
         const { rut_guardia } = req.params;
-        console.log(rut_guardia)
         const guardia = await pool.query('SELECT * FROM guardia WHERE rut_guardia = $1', [rut_guardia]);
         res.json(guardia.rows);
     } catch (error) {
@@ -156,21 +155,12 @@ app.get('/allguardias/:rut_guardia', async (req, res) => {
 app.put('/allguardias/:rut_guardia', async (req, res) => {
     try {
         const { rut_guardia } = req.params;
-        const { nombresGuardia, apellidosGuardia, emailGuardia, celGuardia, celauxGuardia, tipoContratoGuardia, fechaNacimientoGuardia } = req.body;
-        const updateGuardia = await pool.query('UPDATE guardia SET nombres_guardia = $1, apes_guardia = $2, correo_guardia = $3, cel_guardia = $4, celaux_guardia = $5, tipo_contrato_guardia = $6, fecha_nac_guardia = $7, fecha_contrato_guardia = $8 WHERE rut_guardia = $9' ,
-        [nombresGuardia, apellidosGuardia, emailGuardia, celGuardia, celauxGuardia, tipoContratoGuardia, fechaNacimientoGuardia, rut_guardia]);
+        console.log(rut_guardia)
+        const { nombresGuard, apellidosGuard, correoGuard, celGuard, celauxGuard, tipoContratoGuard } = req.body;
+        const updateGuardia = await pool.query('UPDATE guardia SET nombres_guardia = $1, apes_guardia = $2, correo_guardia = $3, cel_guardia = $4, celaux_guardia = $5, tipo_contrato_guardia = $6 WHERE rut_guardia = $7' ,
+        [nombresGuard, apellidosGuard, correoGuard, celGuard, celauxGuard, tipoContratoGuard, rut_guardia ]);
         res.json(updateGuardia.rows);
-    } catch (error) {
-        console.error(error.message);
-    }
-});
-
-// Eliminar un guardia
-app.delete('/allguardias/:rut_guardia', async (req, res) => {
-    try {
-        const { rut_guardia } = req.params;
-        const deleteGuardia = await pool.query('DELETE FROM guardia WHERE rut_guardia = $1', [rut_guardia]);
-        res.json(deleteGuardia.rows);
+        console.log('Updateo correctamente')
     } catch (error) {
         console.error(error.message);
     }

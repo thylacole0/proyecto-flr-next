@@ -13,6 +13,7 @@ import { Delete } from '@mui/icons-material';
 import axios from 'axios';
 import moment from 'moment';
 import { useState } from 'react';
+import MenuItem from '@mui/material/MenuItem';
 
 // DIALOG IMPORT 
 import Dialog from '@mui/material/Dialog';
@@ -37,7 +38,7 @@ const style = {
     p: 4,
 };
 
-const BotonesCrud = ({ handleDeleteRow, residente }) => {
+const BotonesCrudGuard = ({ handleDeleteRow, guardia }) => {
 
 
     // const [rut_res, setRut_res] = useState('123123');
@@ -48,37 +49,38 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
     // const [fechaNacimiento, setFechaNacimiento] = useState(residente.fecha_nac_res);
     // const [medicamentos, setMedicamentos] = useState(residente.medicamentos_res);
 
-    const [rut_res, setRut_res] = useState(residente[0]);
-    const [nombres, setNombres] = useState(residente[1]);
-    const [apellidos, setApellidos] = useState(residente[2]);
-    const [direccion, setDireccion] = useState(residente[3]);
-    const [estadoCivil, setEstadoCivil] = useState(residente[4]);
-    const [fechaNacimiento, setFechaNacimiento] = useState(residente[5]);
-    const [medicamentos, setMedicamentos] = useState(residente[6]);
-
-    let fechaNac = moment(fechaNacimiento).utc().format('YYYY-MM-DD')
+    const [rutGuard, setRutGuard] = useState(guardia[0]);
+    const [nombresGuard, setNombresGuard] = useState(guardia[1]);
+    const [apellidosGuard, setApellidosGuard] = useState(guardia[2]);
+    const [correoGuard, setCorreoGuard] = useState(guardia[3]);
+    const [celGuard, setCelGuard] = useState(guardia[4]);
+    const [celauxGuard, setCelauxGuard] = useState(guardia[5]);
+    const [tipoContratoGuard, setTipoContratoGuard] = useState(guardia[6]);
 
     const [open, setOpen] = useState(false);
     const handleOpenDialog = () => setOpen(true);
     const handleCloseDialog = () => setOpen(false);
     const reload = () => window.location.reload();
 
-    const modificarDatosResidente = async (e) => {
+    const modificarDatosGuardia = async (e) => {
         e.preventDefault();
         try {
-            const body = { rut_res, nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos };
-            const response = await axios.put(`http://localhost:8080/allresidentes/${rut_res}`, body);
+            const body = { rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuard, celauxGuard, tipoContratoGuard };
+            const response = await axios.put(`http://localhost:8080/allguardias/${rutGuard}`, body);
 
         } catch (error) {
             console.error(error);
         }
     }
 
+    console.log(celauxGuard);
+    console.log(tipoContratoGuard);
+
+    const currencies = [ { value: 'Completo', label: 'Completo' }, { value: 'Part-Time', label: 'Part-Time' }];
+
+
     const primary = yellow[800];
     const secondary = red[900];
-
-    useEffect(() => {
-    }, [fechaNac]);
 
     return (
         <div className="items-center">
@@ -86,29 +88,34 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
                 <Button onClick={handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
                     Editar
                 </Button>
-                <Dialog open={open} onClose={handleCloseDialog} id={`id${residente.rut_res}`}>
-                    <DialogTitle>Editar información del residente</DialogTitle>
+                <Dialog open={open} onClose={handleCloseDialog} id={`id${guardia.rutGuard}`}>
+                    <DialogTitle>Editar información del Guardia</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Aqui podras editar los datos del residente
+                            Aqui podras editar los datos del guardia
                         </DialogContentText>
 
-                        <TextField margin="dense" id="2" label="Nombres" type="text" fullWidth variant="outlined" value={nombres} onChange={(e) => setNombres(e.target.value)}
+                        <TextField margin="dense" id="2" label="Nombres" type="text" fullWidth variant="outlined" value={nombresGuard} onChange={(e) => setNombresGuard(e.target.value)}
                         />
-                        <TextField margin="dense" id="3" label="Apellidos" type="text" fullWidth variant="outlined" value={apellidos} onChange={(e) => setApellidos(e.target.value)}
+                        <TextField margin="dense" id="3" label="Apellidos" type="text" fullWidth variant="outlined" value={apellidosGuard} onChange={(e) => setApellidosGuard(e.target.value)}
                         />
-                        <TextField margin="dense" id="4" label="Dirección" type="text" fullWidth variant="outlined" value={direccion} onChange={(e) => setDireccion(e.target.value)}
+                        <TextField margin="dense" id="4" label="Correo" type="text" fullWidth variant="outlined" value={correoGuard} onChange={(e) => setCorreoGuard(e.target.value)}
                         />
-                        <TextField margin="dense" id="5" label="Estado Civil" type="text" fullWidth variant="outlined" value={estadoCivil} onChange={(e) => setEstadoCivil(e.target.value)}
+                        <TextField margin="dense" id="5" label="Celular" type="text" fullWidth variant="outlined" value={celGuard} onChange={(e) => setCelGuard(e.target.value)}
                         />
-                        <TextField margin="dense" id="6" label="Medicamentos" type="text" fullWidth variant="outlined" value={medicamentos} onChange={(e) => setMedicamentos(e.target.value)}
+                        <TextField margin="dense" id="6" label="Numero de emergencia" type="text" fullWidth variant="outlined" value={celauxGuard} onChange={(e) => setCelauxGuard(e.target.value)}
                         />
-                        <input type="date" id="7" name="Fecha de nacimiento" defaultValue={fechaNac} onChange={(e) => setFechaNacimiento(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-
+                        <TextField fullWidth margin="dense" id="outlined-select-currency" select label="Tipo de Contrato" value={tipoContratoGuard} onChange={(e) => setTipoContratoGuard(e.target.value)}>
+                            {currencies.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseDialog}>Cancel</Button>
-                        <Button onClick={(e) => { modificarDatosResidente(e); handleCloseDialog(); reload()}}>Editar</Button>
+                        <Button onClick={(e) => { modificarDatosGuardia(e); handleCloseDialog(); reload() }}>Editar</Button>
                     </DialogActions>
                 </Dialog>
                 <Button onClick={handleDeleteRow} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
@@ -119,4 +126,4 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
     );
 };
 
-export default BotonesCrud;
+export default BotonesCrudGuard;

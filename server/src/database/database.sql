@@ -63,3 +63,10 @@ CREATE TABLE enfermero(
     turno_enfer VARCHAR(20) NOT NULL,
     especialidad_enfer VARCHAR(20) NOT NULL
 )
+
+INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, tipo_contrato_guardia, fecha_nac_guardia, fecha_contrato_guardia)
+VALUES
+  ('1234563434', 'Juan', 'Pérez', 'juan.perez@email.com', 123456789, 987654321, 'Completo', '1990-05-15', '2022-03-10'),
+  ('2345678901', 'María', 'Gómez', 'maria.gomez@email.com', 987654321, 123456789, 'Part-Time', '1985-10-20', '2022-06-25'),
+  ('3456789012', 'Carlos', 'López', 'carlos.lopez@email.com', 555555555, 111111111, 'Completo', '1995-02-18', '2022-09-30'),
+  ('4567890123', 'Laura', 'Rodríguez', 'laura.rodriguez@email.com', 999888777, 222333444, 'Part-Time', '1988-07-04', '2022-11-05');

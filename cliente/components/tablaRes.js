@@ -44,7 +44,7 @@ const TablaResidentes = () => {
       selectableRowsOnClick: false,
       selectableRowsHeader: false,
       filter: false,
-      tableId: 'visitantes'
+      tableId: 'residentes'
     }
   
     // Columnas de la tabla
@@ -99,7 +99,7 @@ const TablaResidentes = () => {
     <>
       <div className="flex justify-center items-center mr-5 ml-10 pt-4 pb-4">
         <MUIDataTable
-          title={"Visitantes"}
+          title={"Residentes"}
           data={residentes}
           columns={columns}
           options={options}
