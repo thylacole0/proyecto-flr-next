@@ -3,7 +3,26 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
 
+
+
+// const pages = ['Guardia', 'Enfermero', 'Residente', 'Visitante'];
+const pages = [{name: 'Guardia', url: '/form_guardia'}, {name: 'Enfermero', url: '/form_nurse'}, {name: 'Residente', url: '/form_residente'}, {name: 'Visitante', url: '/form_visitante'}]
+const deslogueo = [{name: 'Logout'}]
+const opcion = ['Formularios']
 
 const Navbar = () => {
 
@@ -14,6 +33,35 @@ const Navbar = () => {
     const toggleNavbar = () => {
         setIsClick(!isClick);
     };
+
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElLogout, setAnchorElLogout] = React.useState(null);
+
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+    const handleOpenLogout = (event) => {
+        setAnchorElLogout(event.currentTarget);
+    };
+    const handleCloseLogout = () => {
+        setAnchorElLogout(null);
+    };
+
+    
+
+    
     return (
         <>
             <nav className="bg-color_navbar">
@@ -28,32 +76,62 @@ const Navbar = () => {
                         </div>
                         <div className="hidden md:block">
                             <div className="ml-4 flex items-center space-x-4">
-
                                 {session && session.tipo_user === 'Administrador' && (
-                                    <a href="/form_visitante" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
-                                        Formulario visitante
-                                    </a>
+                                    <Box sx={{ flexGrow: 0 }}>
+                                    <Button   Button key={opcion} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }}> {opcion} </Button>
+                                    <Menu
+                                        sx={{ mt: '45px' }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElUser}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={Boolean(anchorElUser)}
+                                        onClose={handleCloseUserMenu}
+                                        >
+                                        {pages.map((pages) => (
+                                            <MenuItem key={pages} onClick={handleCloseUserMenu}>
+                                                <Link legacyBehavior href={pages.url}>
+                                                    <a className=" hover:bg-white hover:text-black rounded-lg p-2">{pages.name}</a>
+                                                </Link>
+                                            </MenuItem>
+                                        ))}
+                                    </Menu>
+                                </Box>
                                 )}
-                                {session && session.tipo_user === 'Administrador' && (
-                                    <a href="form_residente" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
-                                        Formulario residente
-                                    </a>
-                                )}
-
-                                {session && session.tipo_user === 'Administrador' && (<a href="form_guardia" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
-                                    Formulario guardia
-                                </a>)}
-
-                                {session && session.tipo_user === 'Administrador' && (<a href="form_nurse" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
-                                    Formulario enfermero
-                                </a>)}
-
-                                <div className="text-white block hover:text-black rounded-lg p-2">
-                                    <span className="text-white">{session?.user}</span>
-                                </div>
-                                <a href="login" className="text-white hover:bg-white hover:text-black rounded-lg p-2" onClick={() => signOut()}>
-                                    Logout
-                                </a>
+                                <Box sx={{ flexGrow: 0 }}>
+                                    <Button Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }}> {session?.user} </Button>
+                                    <Menu
+                                        sx={{ mt: '45px' }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElLogout}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={Boolean(anchorElLogout)}
+                                        onClose={handleCloseLogout}
+                                        >
+                                        {deslogueo.map((deslogueo) => (
+                                            <MenuItem key={deslogueo} onClick={handleCloseLogout}>
+                                                <a className=" hover:bg-white hover:text-black rounded-lg p-2" onClick={() => signOut()}>
+                                                 {deslogueo.name}
+                                                </a>
+                                            </MenuItem>
+                                        ))}
+                                    </Menu>
+                                </Box>
                             </div>
                         </div>
                         <div className="md:hidden flex items-center">
