@@ -92,6 +92,7 @@ const ResidenteForm = () => {
 
 
     useEffect(() => {
+
         // Realizar una solicitud a la API de REST Countries para obtener la lista de países
         axios.get('https://restcountries.com/v3.1/all')
           .then((response) => {

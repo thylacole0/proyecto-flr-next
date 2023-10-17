@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={styles.body}>
 
-        <AuthProvider refetchOnWindowFocus={false}>{children}</AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
         </body>
     </html>
   )

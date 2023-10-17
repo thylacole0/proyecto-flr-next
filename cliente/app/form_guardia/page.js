@@ -111,7 +111,7 @@ const GuardiaForm = () => {
                     <Navbar /> 
                 </nav>
                 <section>
-                    <div className="container flex mt-20 justify-center items-center">
+                    <div className="container flex mt-20 justify-center items-center ">
                         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
                             <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Guardia</h2>
                             <div className="mb-4">

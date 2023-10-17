@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
-
+import { redirect } from 'next/navigation';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,9 +22,10 @@ import AdbIcon from '@mui/icons-material/Adb';
 // const pages = ['Guardia', 'Enfermero', 'Residente', 'Visitante'];
 const pages = [{name: 'Guardia', url: '/form_guardia'}, {name: 'Enfermero', url: '/form_nurse'}, {name: 'Residente', url: '/form_residente'}, {name: 'Visitante', url: '/form_visitante'}]
 const tablitas = [{name: 'Guardia', url: '/guardias'}, {name: 'Enfermero', url: '/enfermeros'}, {name: 'Residente', url: '/residentes'}, {name: 'Visitante', url: '/visitantes'}]
-const deslogueo = [{name: 'Logout'}]
+const deslogueo = [{name: 'Logout', url: '/login'} ]
 const formularios = ['Formularios']
 const tablas = ['Tablas']
+const register = ['Registrar usuario']
 
 
 const Navbar = () => {
@@ -70,6 +71,7 @@ const Navbar = () => {
         setAnchorElTablas(null);
     };
 
+
     useEffect((
 
     ) => {}, []);
@@ -82,73 +84,84 @@ const Navbar = () => {
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
                             <div className="flex-shrink-0">
-                                <a href="#" className="text-white">
+                                <a href="/home_test" className="text-white">
                                     <img src="/Logo_horizontal.png" alt="logo_fundacion" width="150" height="150" />
                                 </a>
                             </div>
                         </div>
+
                         <div className="hidden md:block">
+
                             <div className="ml-4 flex items-center space-x-4">
-                            {session && session.tipo_user === 'Administrador' && (
-                                    <Box sx={{ flexGrow: 0 }}>
-                                    <Button   Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }}> {tablas} </Button>
-                                    <Menu
-                                        sx={{ mt: '45px' }}
-                                        id="menu-appbar"
-                                        anchorEl={anchorElTablas}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        open={Boolean(anchorElTablas)}
-                                        onClose={handleCloseTablas}
-                                        >
-                                        {tablitas.map((tablitas, i) => (
-                                            <MenuItem key={i} onClick={handleCloseTablas}>
-                                                <Link legacyBehavior href={tablitas.url}>
-                                                    <a className=" hover:bg-white hover:text-black rounded-lg p-2">{tablitas.name}</a>
-                                                </Link>
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                </Box>
+                                {session && session.tipo_user === 'Administrador' && (
+
+                                    // add hover with tailwind
+                                    <Box sx={{ flexGrow: 0 }} >
+                                        <Button className=' hover:bg-color_navbar_hover rounded-lg p-2'>
+                                            <a href="/register" className='text-white'>Registrar usuario</a>
+                                        </Button>
+                                    </Box>
                                 )}
                                 {session && session.tipo_user === 'Administrador' && (
                                     <Box sx={{ flexGrow: 0 }}>
-                                    <Button   Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }}> {formularios} </Button>
-                                    <Menu
-                                        sx={{ mt: '45px' }}
-                                        id="menu-appbar"
-                                        anchorEl={anchorElUser}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        open={Boolean(anchorElUser)}
-                                        onClose={handleCloseUserMenu}
+                                        <Button Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> {tablas} </Button>
+                                        <Menu
+                                            sx={{ mt: '45px' }}
+                                            id="menu-appbar"
+                                            anchorEl={anchorElTablas}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            keepMounted
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            open={Boolean(anchorElTablas)}
+                                            onClose={handleCloseTablas}
                                         >
-                                        {pages.map((pages, i) => (
-                                            <MenuItem key={i} onClick={handleCloseUserMenu}>
-                                                <Link legacyBehavior href={pages.url}>
-                                                    <a className=" hover:bg-white hover:text-black rounded-lg p-2">{pages.name}</a>
-                                                </Link>
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                </Box>
+                                            {tablitas.map((tablitas, i) => (
+                                                <MenuItem key={i} onClick={handleCloseTablas}>
+                                                    <Link legacyBehavior href={tablitas.url}>
+                                                        <a className=" hover:bg-white hover:text-black rounded-lg p-2">{tablitas.name}</a>
+                                                    </Link>
+                                                </MenuItem>
+                                            ))}
+                                        </Menu>
+                                    </Box>
+                                )}
+                                {session && session.tipo_user === 'Administrador' && (
+                                    <Box sx={{ flexGrow: 0 }}>
+                                        <Button Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> {formularios} </Button>
+                                        <Menu
+                                            sx={{ mt: '45px' }}
+                                            id="menu-appbar"
+                                            anchorEl={anchorElUser}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            keepMounted
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            open={Boolean(anchorElUser)}
+                                            onClose={handleCloseUserMenu}
+                                        >
+                                            {pages.map((pages, i) => (
+                                                <MenuItem key={i} onClick={handleCloseUserMenu}>
+                                                    <Link legacyBehavior href={pages.url}>
+                                                        <a className=" hover:bg-white hover:text-black rounded-lg p-2">{pages.name}</a>
+                                                    </Link>
+                                                </MenuItem>
+                                            ))}
+                                        </Menu>
+                                    </Box>
                                 )}
                                 <Box sx={{ flexGrow: 0 }}>
-                                    <Button Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }}> {session?.user} </Button>
+                                    <Button Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> {session?.user} </Button>
                                     <Menu
                                         sx={{ mt: '45px' }}
                                         id="menu-appbar"
@@ -164,14 +177,15 @@ const Navbar = () => {
                                         }}
                                         open={Boolean(anchorElLogout)}
                                         onClose={handleCloseLogout}
-                                        >
+                                    >
                                         {deslogueo.map((deslogueo, i) => (
                                             <MenuItem key={i} onClick={handleCloseLogout}>
                                                 <a className=" hover:bg-white hover:text-black rounded-lg p-2" onClick={() => signOut()}>
-                                                 {deslogueo.name}
+                                                    {deslogueo.name}
                                                 </a>
                                             </MenuItem>
                                         ))}
+
                                     </Menu>
                                 </Box>
                             </div>
@@ -188,6 +202,7 @@ const Navbar = () => {
                                 )}
                             </button>
                         </div>
+
                     </div>
                 </div>
                 <div>
