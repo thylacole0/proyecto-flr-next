@@ -40,6 +40,20 @@ app.put('/allresidentes/:rut_res', async (req, res) => {
     }
 })
 
+app.put('/actualizarficharesidente/:rut_res', async (req, res) => {
+    try {
+        console.log(req.body)
+        const { rut_res } = req.params;
+        const { enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias  } = req.body;
+        const updateResidente = await pool.query("UPDATE residente SET enfermedad_cronica_res = $1, desc_enfermedad_res = $2, discapacidad_res = $3, desc_discapacidad_res = $4, alergias_res = $5, desc_alergias_res = $6, medicamentos_res = $7 WHERE rut_res = $8",
+        [enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias , rut_res]);
+        res.json('Updateado con exitoooooooo');
+    } catch (error){
+        console.error(error.message);
+    }
+})
+
+
 app.delete('/allguardias/:rut_guardia', async (req, res) => {
     try {
         const { rut_guardia } = req.params;
