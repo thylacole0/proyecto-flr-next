@@ -1,4 +1,3 @@
-"use client";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -73,7 +72,7 @@ const BotonesCrudVis = ({handleDeleteRow, visitante}) => {
         <div className="items-center">
             <Stack direction="row" spacing={2}>
                 <Button onClick = {handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
-                    Editar
+                     <span>Editar</span>
                 </Button>
                 <Dialog open={open} onClose={handleCloseDialog} id={`id${visitante.rutVis}`}>
                     <DialogTitle>Editar informaciÃ³n del visitante</DialogTitle>
@@ -96,12 +95,12 @@ const BotonesCrudVis = ({handleDeleteRow, visitante}) => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseDialog}>Cancel</Button>
-                        <Button onClick={(e) => {modificarDatosVisitante(e); handleCloseDialog(); reload()}}>Editar</Button>
+                        <Button onClick={handleCloseDialog}> <span>Cancel</span></Button>
+                        <Button onClick={(e) => {modificarDatosVisitante(e); handleCloseDialog(); reload()}}> <span>Editar</span></Button>
                     </DialogActions>
                 </Dialog>
                 <Button onClick={handleDeleteRow} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
-                    Eliminar
+                     <span>Eliminar</span>
                 </Button>
             </Stack>
         </div>

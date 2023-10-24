@@ -39,13 +39,13 @@ const HomeTest = () => {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                    Nuestra Inspiradora Historia
+                      Nuestra Inspiradora Historia
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                    La Fundación Las Rosas nació de un profundo amor por los ancianos y 
-                    el deseo de proporcionarles un hogar cálido y amoroso. En 1965, Don Juan y Doña María, inspirados por su profundo compromiso con la comunidad, 
-                    abrieron las puertas de la primera residencia para ancianos en Chile. Desde entonces, hemos estado comprometidos en brindar apoyo,
-                     cuidado y compañía a los ancianos más vulnerables de nuestro país.
+                      La Fundación Las Rosas nació de un profundo amor por los ancianos y
+                      el deseo de proporcionarles un hogar cálido y amoroso. En 1965, Don Juan y Doña María, inspirados por su profundo compromiso con la comunidad,
+                      abrieron las puertas de la primera residencia para ancianos en Chile. Desde entonces, hemos estado comprometidos en brindar apoyo,
+                      cuidado y compañía a los ancianos más vulnerables de nuestro país.
                     </Typography>
                   </CardContent>
                 </Card>
@@ -60,10 +60,10 @@ const HomeTest = () => {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                    Programas de Apoyo a los Ancianos
+                      Programas de Apoyo a los Ancianos
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                    En la Fundación Las Rosas, nos enorgullece ofrecer una amplia gama de programas diseñados para brindar apoyo y alegría a nuestros residentes. Nuestros programas incluyen atención de enfermería de alta calidad, actividades recreativas adaptadas a las necesidades individuales, y una dieta equilibrada que promueve la salud y el bienestar.
+                      En la Fundación Las Rosas, nos enorgullece ofrecer una amplia gama de programas diseñados para brindar apoyo y alegría a nuestros residentes. Nuestros programas incluyen atención de enfermería de alta calidad, actividades recreativas adaptadas a las necesidades individuales, y una dieta equilibrada que promueve la salud y el bienestar.
                     </Typography>
                   </CardContent>
                 </Card>
@@ -78,10 +78,10 @@ const HomeTest = () => {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                    Colabora con Nosotros
+                      Colabora con Nosotros
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                    La Fundación Las Rosas no podría hacer lo que hacemos sin la ayuda de personas como tú. Tienes la oportunidad de marcar la diferencia en la vida de nuestros ancianos. Puedes colaborar con nosotros a través de donaciones generosas, dedicando tu tiempo como voluntario, o incluso organizando eventos de recaudación de fondos para apoyar nuestra causa.
+                      La Fundación Las Rosas no podría hacer lo que hacemos sin la ayuda de personas como tú. Tienes la oportunidad de marcar la diferencia en la vida de nuestros ancianos. Puedes colaborar con nosotros a través de donaciones generosas, dedicando tu tiempo como voluntario, o incluso organizando eventos de recaudación de fondos para apoyar nuestra causa.
                     </Typography>
                   </CardContent>
                 </Card>

@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
@@ -104,7 +103,7 @@ const Navbar = () => {
                                 )}
                                 {session && session.tipo_user === 'Administrador' && (
                                     <Box sx={{ flexGrow: 0 }}>
-                                        <Button Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> {tablas} </Button>
+                                        <Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> <span>{tablas}</span> </Button>
                                         <Menu
                                             sx={{ mt: '45px' }}
                                             id="menu-appbar"
@@ -133,7 +132,7 @@ const Navbar = () => {
                                 )}
                                 {session && session.tipo_user === 'Administrador' && (
                                     <Box sx={{ flexGrow: 0 }}>
-                                        <Button Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> {formularios} </Button>
+                                        <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'><span>{formularios} </span> </Button>
                                         <Menu
                                             sx={{ mt: '45px' }}
                                             id="menu-appbar"
@@ -161,7 +160,7 @@ const Navbar = () => {
                                     </Box>
                                 )}
                                 <Box sx={{ flexGrow: 0 }}>
-                                    <Button Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> {session?.user} </Button>
+                                    <Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> <span>{session?.user}</span> </Button>
                                     <Menu
                                         sx={{ mt: '45px' }}
                                         id="menu-appbar"

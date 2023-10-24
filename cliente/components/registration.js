@@ -156,7 +156,7 @@ const RegisterPage = () => {
                     </div>
 
                     <Button type="submit" fullWidth className="w-full mb-4 text-[18px] mt-6 rounded-full bg-violet-900 text-white hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2">
-                        Registrar usuario
+                        <span>Registrar usuario</span>
                     </Button>
 
                     <a href="/home_test" className="flex justify-end">Volver al inicio</a>

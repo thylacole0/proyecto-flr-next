@@ -1,4 +1,3 @@
-"use client";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -83,7 +82,7 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
         <div className="items-center">
             <Stack direction="row" spacing={2}>
                 <Button onClick={handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
-                    Editar
+                     <span>Editar</span>
                 </Button>
                 <Dialog open={open} onClose={handleCloseDialog} id={`id${guardia.rutGuard}`}>
                     <DialogTitle>Editar información del Guardia</DialogTitle>
@@ -111,12 +110,12 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
                         </TextField>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseDialog}>Cancel</Button>
-                        <Button onClick={(e) => { modificarDatosGuardia(e); handleCloseDialog(); reload() }}>Editar</Button>
+                        <Button onClick={handleCloseDialog}> <span>Cancel</span></Button>
+                        <Button onClick={(e) => { modificarDatosGuardia(e); handleCloseDialog(); reload() }}> <span>Editar</span></Button>
                     </DialogActions>
                 </Dialog>
                 <Button onClick={(e) => {eliminarGuardia(); reload()}} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
-                    Eliminar
+                    <span>Eliminar</span>
                 </Button>
             </Stack>
         </div>

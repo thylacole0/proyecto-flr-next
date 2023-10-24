@@ -1,13 +1,12 @@
+'use client'
 import Link from "next/link";
+import Calendario from "@/components/bitacoraRes";
+
 
 function Page() {
     return (
         <div>
-        <h1>Home Page</h1>
-        <p>Solo los logeados pueden ver esta pagina</p>
-        <Link href="/main/dashboard">
-            <a>Main</a>
-        </Link>
+        <Calendario />
         </div>
     );
 }

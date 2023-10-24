@@ -89,7 +89,6 @@ const TablaEnfermeros = () => {
       name: "Acciones",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(tableMeta.rowData[0])
           return (
             <BotonesCrudNurse handleDeleteRow={() => handleDeleteRow(tableMeta.rowData[0])} enfermero={tableMeta.rowData}/>
           )

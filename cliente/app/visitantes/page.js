@@ -9,16 +9,12 @@ const visitantes = [];
 const VisitantesPage = () => {
   return (
     <> 
-    <body className={styles.body}>
-    <nav >
         <Navbar /> 
-      </nav>
       <section>
         <div className={styles.body}>
           <TablaVisitantes visitantes={visitantes} />
         </div>
       </section>
-      </body>
 
   </>
 )};

@@ -8,16 +8,13 @@ const guardias = [];
 
 const GuardiasPage = () => {
   return (
-    <> 
-    <body className={styles.body} >
-      <nav >
-        <Navbar /> 
-      </nav>
+    <>
+      <Navbar />
       <section>
-          <TablaGuardias guardias={guardias} />
+        <TablaGuardias guardias={guardias} />
       </section>
-    </body>
     </>
-  )};
+  )
+};
 
 export default GuardiasPage;
