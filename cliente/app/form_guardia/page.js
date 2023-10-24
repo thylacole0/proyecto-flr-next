@@ -106,10 +106,7 @@ const GuardiaForm = () => {
 
     return (
         <> 
-            <body className={styles.body} >
-                <nav >
-                    <Navbar /> 
-                </nav>
+                <Navbar /> 
                 <section>
                     <div className="container flex mt-20 justify-center items-center ">
                         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
@@ -178,7 +175,6 @@ const GuardiaForm = () => {
                         </form>
                     </div>
                 </section>
-            </body>
         </>
     );
 };

@@ -8,16 +8,13 @@ const enfermeros = [];
 
 const EnfermerosPage = () => {
   return (
-    <> 
-    <body className={styles.body} >
-      <nav >
-        <Navbar /> 
-      </nav>
+    <>
+      <Navbar />
       <section>
-          <TablaEnfermeros enfermeros={enfermeros} />
+        <TablaEnfermeros enfermeros={enfermeros} />
       </section>
-    </body>
-  </>
-)};
+    </>
+  )
+};
 
 export default EnfermerosPage;

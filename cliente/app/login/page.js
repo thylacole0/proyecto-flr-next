@@ -7,7 +7,6 @@ import axios from 'axios';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import e from 'cors';
-import { Button } from '@mui/material';
 
 const Login = () => {
 
@@ -19,7 +18,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const res = await signIn("credentials", { 
+            const res = await signIn("credentials", {
                 username,
                 password,
                 redirect: false
@@ -30,7 +29,7 @@ const Login = () => {
                 return;
             }
             router.push('/home_test');
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -40,13 +39,12 @@ const Login = () => {
     }, []);
     return (
         <>
-            <body name="login">
-                <div className="text-white h-[100vh] flex justify-center items-center bg-cover">
-                    <div className="bg-slate-900 border border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm  bg-opacity-60 relative">
-                        <div >
-                            <h2 className="text-4xl text-whitefont-bold text-center mb-6">Iniciar sesión</h2>
-                            <form onSubmit={onSubmit} className='form'>
-                                <div className="text-red-500 mb-2">
+            <div className="text-white h-[100vh] flex justify-center items-center bg-cover">
+                <div className="bg-slate-900 border border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm  bg-opacity-60 relative">
+                    <div >
+                        <h2 className="text-4xl text-whitefont-bold text-center mb-6">Iniciar sesión</h2>
+                        <form onSubmit={onSubmit} className='form'>
+                            <div className="text-red-500 mb-2">
                                 <div className=" relative my-4">
                                     <label htmlFor="username" className="absolote text-sm text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" placeholder=''>
                                         Nombre de Usuario:
@@ -81,19 +79,18 @@ const Login = () => {
                                 >
                                     Iniciar Sesión
                                 </button>
-                                </div>
-                            </form>
-                            <div className="text-center">
-                                <a className="text-blue-500 hover:underline">Recuperar Contraseña</a>
                             </div>
+                        </form>
+                        <div className="text-center">
+                            <a className="text-blue-500 hover:underline">Recuperar Contraseña</a>
                         </div>
                     </div>
                 </div>
-            </body>
+            </div>
         </>
 
 
     );
-  };
-  
-  export default Login;
+};
+
+export default Login;
