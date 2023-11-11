@@ -370,7 +370,7 @@ app.post('/upload/:rut_res', upload.array('file', 3), async (req, res) => {
         const { rut_res, id_fundacion } = req.body;
 
         const newDocument = await pool.query(
-            'INSERT INTO portafolio (nom_documento, fecha_creacion, archivo, Residente_rut_res, Residente_Fundacion_id_fundacion) VALUES ($1, $2, $3, $4, $5)',
+            'INSERT INTO portafolio_clinico (nom_documento, fecha_creacion, archivo, Residente_rut_res, Residente_Fundacion_id_fundacion) VALUES ($1, $2, $3, $4, $5)',
             [originalname, new Date(), path, rut_res, id_fundacion]
         );
 

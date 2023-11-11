@@ -116,11 +116,11 @@ const CalendarioRes = () => {
     }
 
     return (
-        <div className='relative w-[1200px] min-w-[850px] m-auto p-1 flex rounded-xl bg-slate-600'>
+        <div className='relative w-[90%] h-[70%] min-w-[70%] m-auto p-1 flex rounded-xl bg-slate-600'>
             <div className='w-[90%] p-5'>
                 <div className='relative w-full h-full flex justify-between flex-wrap flex-col'>
                     <FullCalendar
-                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}    
                         initialView="timeGridWeek"
                         headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay' }}
                         weekends={true}

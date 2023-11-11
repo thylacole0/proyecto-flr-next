@@ -13,6 +13,9 @@ import TextField from '@mui/material/TextField';
 import moment from 'moment';
 import MenuItem from '@mui/material/MenuItem';
 import { useSearchParams } from 'next/navigation'
+import SaveIcon from '@mui/icons-material/Save';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 
 
 const FormFicha = () => {
@@ -42,6 +45,8 @@ const FormFicha = () => {
 
 
     let fechaNac = moment(fechaNacimiento).utc().format('DD-MM-YYYY')
+
+    const reload = () => window.location.reload();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -110,8 +115,8 @@ const FormFicha = () => {
     return (
         <> 
                 <section>
-                    <div className="container flex mt-20 justify-center items-center">
-                        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
+                    <div className="container flex mt-5 justify-center items-center">
+                        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-4/5">
                             <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ficha Residente</h2>
                             <TextField margin="dense" id="1" label="RUT" type="text" fullWidth variant="outlined" value={rut_res} onChange={(e) => setRut(e.target.value)} disabled={true}
                             />
@@ -199,7 +204,9 @@ const FormFicha = () => {
                             />
 
                             <div className="flex items-center justify-between mt-5">
-                                <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
+                                <Button variant="contained" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " onClick={(e) => { modificarDatosResidente(e); reload()}} endIcon={<SaveIcon />}>
+                                    Guardar
+                                </Button>
                             </div>             
                             
                         </form>

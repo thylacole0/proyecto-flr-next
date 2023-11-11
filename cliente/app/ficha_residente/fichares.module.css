@@ -1,0 +1,21 @@
+.container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50% ;
+    grid-auto-flow: column;
+    justify-items: stretch;
+}
+
+.itema {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+.itemb {
+    grid-column: 2;
+    grid-row: 1;
+  }
+.itemc {
+    grid-column: 2;
+    grid-row: 2;
+  }
