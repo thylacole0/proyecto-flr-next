@@ -4,16 +4,18 @@ import styles from './tablaRes.module.css';
 import GoToFicha from './botonToRes.js';
 import axios from 'axios';
 import MUIDataTable from 'mui-datatables';
-
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
 const TablaResidentesEnfermero = () => {
 
-    
     const [residentes, setResidentes] = useState([]);
 
-    const handleOnClick = (rut_res) => {
-        console.log(rut_res);
-        window.location.href = "/ficha_residente/";
+    const router = useRouter();
+    const pathName = usePathname();
+    const searchParams = useSearchParams();
+
+    const handleOnClick = (rut_res) => () => {
+      router.push(`/ficha_residente?rut_res=${rut_res}`);
     }
 
     const getResidentes = async () => {
@@ -21,13 +23,11 @@ const TablaResidentesEnfermero = () => {
     try{
         const response = await axios.get("http://localhost:8080/allresidentes");
         const jsonDatos = await response.data;
-        console.log(jsonDatos); 
         setResidentes(jsonDatos);
         } catch (error) {
         console.log(error);
         }
     };
-
     // Opciones de la tabla
     const options = {
       selectableRows: 'none',
@@ -77,10 +77,8 @@ const TablaResidentesEnfermero = () => {
       name: "Acciones",
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
-            
-            console.log(tableMeta.rowData[0])
             return (
-                <GoToFicha onClick={() => handleOnClick(tableMeta.rowData[0])}/>
+              <button onClick={handleOnClick(tableMeta.rowData[0])}>Clickaqui</button>
             );
         }
       }
@@ -90,6 +88,7 @@ const TablaResidentesEnfermero = () => {
 
   useEffect(() => {
     getResidentes();
+    
   }, [])
 
   return (

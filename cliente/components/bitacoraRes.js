@@ -15,9 +15,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { set } from 'react-hook-form';
-
+import {useSearchParams} from 'next/navigation';
 
 const CalendarioRes = () => {
+
+    let rut_residente = ''
+
+    const searchParams = useSearchParams();
+    if (searchParams.get('rut_res') !== null) {
+        rut_residente = searchParams.get('rut_res');
+        console.log(rut_residente)
+    }
 
     const [events, setEvents] = useState([]);
     const [isActive, setIsActive] = useState(true);
@@ -47,7 +55,7 @@ const CalendarioRes = () => {
                 fecha_bit: fechaBitacora, // la fecha del clic
                 hora_bit: horaBitacora, // la hora del evento
                 contenido_bit: contenidoBitacora, // el nombre del evento
-                rut_res: '12.345.678-0' // el rut del residente
+                rut_res: rut_residente // el rut del residente
             };
 
             fetch('http://localhost:8080/bitacora_res', {
@@ -71,6 +79,7 @@ const CalendarioRes = () => {
                 debugger
                 // Agregar el evento a la lista de eventos en el estado del componente
                 setEvents(events => [...events, newEvent]);
+                setContenidoBitacora('')
                 handleCloseDialog();
             })
             .catch((error) => {
@@ -84,7 +93,7 @@ const CalendarioRes = () => {
     };
 
     useEffect(() => {
-        fetchEventsForUser('12.345.678-0'); // reemplaza '12.345.678-0' con el rut_res del usuario
+        fetchEventsForUser(rut_residente); // reemplaza '12.345.678-0' con el rut_res del usuario
     }, []);
     
     function fetchEventsForUser(rut_res) {
@@ -116,7 +125,6 @@ const CalendarioRes = () => {
                         headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay' }}
                         weekends={true}
                         events={events}
-                        editable={true}
                         selectable={true}
                         selectMirror={true}
                         dayMaxEvents={true}

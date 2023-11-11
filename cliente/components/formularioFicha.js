@@ -12,32 +12,36 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import moment from 'moment';
 import MenuItem from '@mui/material/MenuItem';
+import { useSearchParams } from 'next/navigation'
 
 
 const FormFicha = () => {
 
+    let rut_residente = ''
+
+    const searchParams = useSearchParams();
+    if (searchParams.get('rut_res') !== null) {
+        rut_residente = searchParams.get('rut_res');
+    }
+
     const [residente, setResidente] = useState([]);
+    const [rut_res, setRut] = useState('');
+    const [nombres, setNombres] = useState('');
+    const [apellidos, setApellidos] = useState('');
+    const [fechaNacimiento, setFechaNacimiento] = useState('');
+    const [genero, setGenero] = useState('');
+    const [sisPrevision, setSisPrevision] = useState('');
+    const [tipoSangre, setTipoSangre] = useState('');
+    const [enfermedadCronica, setEnfermedadCronica] = useState('');
+    const [descEnfermedad, setDescEnfermedad] = useState('');
+    const [discapacidad, setDiscapacidad] = useState('');
+    const [descDiscapacidad, setDescDiscapacidad] = useState('');
+    const [alergias, setAlergias] = useState('true');
+    const [descAlergias, setDescAlergias] = useState('');
+    const [medicamentos, setMedicamentos] = useState('');
 
-    const [rut_res, setRut] = useState(residente.rut_res);
-    const [nombres, setNombres] = useState(residente[1]);
-    const [apellidos, setApellidos] = useState(residente[2]);
-    const [fechaNacimiento, setFechaNacimiento] = useState(residente[3]);
-    const [genero, setGenero] = useState(residente[4]);
-    const [sisPrevision, setSisPrevision] = useState(residente[5]);
-    const [tipoSangre, setTipoSangre] = useState(residente[6]);
-    const [enfermedadCronica, setEnfermedadCronica] = useState(residente[7]);
-    const [descEnfermedad, setDescEnfermedad] = useState(residente[8]);
-    const [discapacidad, setDiscapacidad] = useState(residente[9]);
-    const [descDiscapacidad, setDescDiscapacidad] = useState(residente[10]);
-    const [alergias, setAlergias] = useState(residente[11]);
-    const [descAlergias, setDescAlergias] = useState(residente[12]);
-    const [medicamentos, setMedicamentos] = useState(residente[13]);
-    // const [foto, setFoto] = useState('');
 
-    let fechaNac = moment(fechaNacimiento).utc().format('YYYY-MM-DD')
-    
-
-    console.log(residente, 'rut_res') 
+    let fechaNac = moment(fechaNacimiento).utc().format('DD-MM-YYYY')
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -49,9 +53,7 @@ const FormFicha = () => {
                 fechaIngreso, sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad, 
                 discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos
             };
-            console.log(body)
             const response = axios.post("http://localhost:8080/form_residente", body);
-            console.log(response);
             window.location = "/home_test";  
             
         } catch (error) {
@@ -66,10 +68,23 @@ const FormFicha = () => {
     const getResidente = async () => {
 
         try{
-          const response = await axios.get(`http://localhost:8080/allresidentes/123456789-0`);
+          const response = await axios.get(`http://localhost:8080/allresidentes/${rut_residente}`);
           const jsonDatos = await response.data;
-          console.log(jsonDatos, 'llego el json'); 
           setResidente(jsonDatos);
+          setRut(jsonDatos[0].rut_res);
+          setNombres(jsonDatos[0].nombres_res);
+          setApellidos(jsonDatos[0].apes_res);
+          setFechaNacimiento(jsonDatos[0].fecha_nac_res);
+          setGenero(jsonDatos[0].genero_res);
+          setSisPrevision(jsonDatos[0].sis_prevision_res);
+          setTipoSangre(jsonDatos[0].tipo_sangre_res);
+          jsonDatos[0].enfermedad_cronica_res == true? setEnfermedadCronica('Si') : setEnfermedadCronica('No');
+          setDescEnfermedad(jsonDatos[0].desc_enfermedad_res);
+          jsonDatos[0].discapacidad_re == true? setDiscapacidad('Si') : setDiscapacidad('No');
+          setDescDiscapacidad(jsonDatos[0].desc_discapacidad_res);
+          jsonDatos[0].alergias_res == true? setAlergias('Si') : setAlergias('No');
+          setDescAlergias(jsonDatos[0].desc_alergias_res);
+          setMedicamentos(jsonDatos[0].medicamentos_res);
         } catch (error) {
           console.log(error);
         }
@@ -87,11 +102,8 @@ const FormFicha = () => {
     }
 
     useEffect(() => {
-    }, [fechaNac]);
-
-    useEffect(() => {
         getResidente();
-    }, [])
+    }, [fechaNac])
 
 
 
