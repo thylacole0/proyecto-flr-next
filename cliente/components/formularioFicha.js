@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import moment from 'moment';
 import MenuItem from '@mui/material/MenuItem';
 
+
 const FormFicha = () => {
 
     const [residente, setResidente] = useState([]);
@@ -41,14 +42,12 @@ const FormFicha = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         // Handle form submission here
-        let estadoCivil = estCivil.value;
         let tipoSangreRes = tipoSangre.value;
-        let nacionalidadRes = nacionalidad.value;
         try {
             const body = { 
                 rut, nombres, apellidos, fechaNacimiento, genero, nacionalidadRes, direccion, estadoCivil, 
                 fechaIngreso, sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad, 
-                discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias
+                discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos
             };
             console.log(body)
             const response = axios.post("http://localhost:8080/form_residente", body);
@@ -98,7 +97,6 @@ const FormFicha = () => {
 
     return (
         <> 
-            <body className={styles.body}>
                 <section>
                     <div className="container flex mt-20 justify-center items-center">
                         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
@@ -123,7 +121,7 @@ const FormFicha = () => {
                             ))}
                             </TextField>
                             <FormControl>
-                                <FormLabel id="demo-row-radio-buttons-group-label">¿Tiene enfermedad Cronica?</FormLabel>
+                                <FormLabel  className="mt-5" margin="dense" id="demo-row-radio-buttons-group-label">¿Tiene enfermedad Cronica?</FormLabel>
                                 <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={enfermedadCronica} onChange={(e) => setEnfermedadCronica(e.target.value)}>
                                     <FormControlLabel value="Si" control={<Radio />} label="Si" />
                                     <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -131,6 +129,8 @@ const FormFicha = () => {
                             </FormControl>
                             <TextField
                                 id="outlined-multiline-static"
+                                margin="dense" 
+                                fullWidth
                                 label="Descripcion de las enfermedades"
                                 multiline
                                 rows={4}
@@ -138,7 +138,7 @@ const FormFicha = () => {
                                 onChange={(e) => setDescEnfermedad(e.target.value)}
                             />
                             <FormControl>
-                                <FormLabel id="demo-row-radio-buttons-group-label">¿Tiene alguna discapacidad?</FormLabel>
+                                <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Tiene alguna discapacidad?</FormLabel>
                                 <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={discapacidad} onChange={(e) => setDiscapacidad(e.target.value)}>
                                     <FormControlLabel value="Si" control={<Radio />} label="Si" />
                                     <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -146,6 +146,8 @@ const FormFicha = () => {
                             </FormControl>
                             <TextField
                                 id="outlined-multiline-static"
+                                margin="dense" 
+                                fullWidth
                                 label="Descripcion de las discapacidades"
                                 multiline
                                 rows={4}
@@ -153,22 +155,30 @@ const FormFicha = () => {
                                 onChange={(e) => setDescDiscapacidad(e.target.value)}
                             />
                             <FormControl>
-                                <FormLabel id="demo-row-radio-buttons-group-label">¿Es alergico a algo?</FormLabel>
-                                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={alergias} onChange={(e) => setAlergias(e.target.value)}>
+                                <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Es alergico a algo?</FormLabel>
+                                <RadioGroup  margin="dense" row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={alergias} onChange={(e) => setAlergias(e.target.value)}>
                                     <FormControlLabel value="Si" control={<Radio />} label="Si" />
                                     <FormControlLabel value="No" control={<Radio />} label="No" />
                                 </RadioGroup>
                             </FormControl>
                             <TextField
                                 id="outlined-multiline-static"
+                                margin="dense" 
+                                fullWidth
                                 label="Descripcion de las alergias"
                                 multiline
                                 rows={4}
                                 value={descAlergias}
                                 onChange={(e) => setDescAlergias(e.target.value)}
                             />
+                            <FormControl>
+                                <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">Medicamentos</FormLabel>
+                            </FormControl>
                             <TextField
                                 id="outlined-multiline-static"
+                                className="mt-5"
+                                margin="dense" 
+                                fullWidth
                                 label="Medicamentos que toma actualmente"
                                 multiline
                                 rows={4}
@@ -176,14 +186,13 @@ const FormFicha = () => {
                                 onChange={(e) => setMedicamentos(e.target.value)}
                             />
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between mt-5">
                                 <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
                             </div>             
                             
                         </form>
                     </div>
                 </section>
-            </body>
         </>           
     );
 };

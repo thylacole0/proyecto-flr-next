@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require('multer');
 const authRouter = require("./routes/auth.js");
 const pool = require("./database/db.js");
 
@@ -14,6 +15,26 @@ app.use(cors())
 app.use("/auth", authRouter)
 
 app.use("/main", require("./routes/main.js"))
+
+
+// SET UP MULTER FOR FILE UPLOAD
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      if (file.mimetype === 'application/pdf') {
+        cb(null, 'src/uploads/documents/')
+      } else if (file.mimetype.startsWith('image/')) {
+        cb(null, 'src/uploads/images/')
+      } else {
+        cb({message: 'Este formato de archivo no es soportado'}, false)
+      }
+    },
+    filename: function(req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // CRUD VISITANTES
 
@@ -134,21 +155,21 @@ app.delete('/allvisitantes/:rutVis', async (req, res) => {
 // CRUD GUARDIAS
 
 // Registrar ficha guardia
-app.post('/form_guardia', async (req, res) => {
-
+app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
     try {
-        //creando el body del request
+        // Creando el body del request
         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuardia } = req.body;
-        // insertando los datos en la tabla guardia
-        const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia,fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-        [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuardia]);
-        // retornando el nuevo guardia
+        // Obtén la ruta de la imagen subida desde req.file.path
+        const rutaImagen = req.file.path;
+        // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
+        const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+        [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuardia, rutaImagen]);
+        // Retornando el nuevo guardia
         res.json(newGuardia.rows[0]);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
     }
-
 });
 
 // Obtener todos los guardias
@@ -311,6 +332,23 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
         const { rut_res } = req.params;
         const residente = await pool.query('SELECT * FROM residente WHERE rut_res = $1', [rut_res]);
         res.json(residente.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
+app.post('/upload/:rut_res', upload.array('file', 3), async (req, res) => {
+    try {
+        const { originalname, path } = req.file;
+        const { rut_res, id_fundacion } = req.body;
+
+        const newDocument = await pool.query(
+            'INSERT INTO portafolio (nom_documento, fecha_creacion, archivo, Residente_rut_res, Residente_Fundacion_id_fundacion) VALUES ($1, $2, $3, $4, $5)',
+            [originalname, new Date(), path, rut_res, id_fundacion]
+        );
+
+        res.json(newDocument.rows);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');

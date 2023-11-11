@@ -1,23 +1,19 @@
 "use client";
-import React from 'react';
 import FormFicha from '../../components/formularioFicha.js';
+import UploadArchivos from '../../components/uploadArchivos.js';
 import Navbar from '../../components/navbar';
 import styles from '../residentes/residentes.module.css';
-
-const residentes = [];
+import React, { useEffect, useState } from 'react';
 
 const FichaPage = () => {
   return (
     <> 
-    <body className={styles.body} >
-      <nav >
-        <Navbar /> 
-      </nav>
+      <Navbar /> 
       <section>
-          <FormFicha residentes={residentes} />
+        <FormFicha/>
       </section>
-    </body>
-  </>
-)};
+    </>
+  );
+};
 
 export default FichaPage;

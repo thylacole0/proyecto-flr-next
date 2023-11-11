@@ -20,41 +20,43 @@ const GuardiaForm = () => {
     const [errorCelular, setErrorCelular] = useState('');
     const [fechaContratoGuard, setFechaContratoGuard] = useState('');
     const [contratoGuard, setContratoGuard] = useState('');
-    // const [fotoGuard, setFotoGuard] = useState('');      
+    const [fotoGuard, setFotoGuard] = useState('');      
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Handle form submission here
-        if (celGuardia.length === 9) {
-            // El número de celular es válido, puedes continuar con el envío del formulario
-            setErrorCelular('');
-            // Aquí puedes realizar otras acciones como enviar los datos al servidor
-        } else {
-            // El número de celular no es válido, muestra un mensaje de error
+        if (celGuardia.length !== 9 || celauxGuardia.length !== 9) {
             setErrorCelular('El número de celular debe tener 9 dígitos');
+            return;
         }
-        if (celauxGuardia.length === 9) {
-            // El número de celular es válido, puedes continuar con el envío del formulario
-            setErrorCelular('');
-            // Aquí puedes realizar otras acciones como enviar los datos al servidor
-        } else {
-            // El número de celular no es válido, muestra un mensaje de error
-            setErrorCelular('El número de celular debe tener 9 dígitos');
-        }
+    
+        setErrorCelular('');
 
-        // utilizar backend para insertar datos en la tabla guardia
         try {
             let contratoGuardia = contratoGuard.value;
-            const body = { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuardia };
-            console.log(body);
-            const response = axios.post("http://localhost:8080/form_guardia", body);
+            const formData = new FormData();
+            formData.append('rutGuard', rutGuard);
+            formData.append('nombresGuard', nombresGuard);
+            formData.append('apellidosGuard', apellidosGuard);
+            formData.append('correoGuard', correoGuard);
+            formData.append('fechaNacimientoGuard', fechaNacimientoGuard);
+            formData.append('celGuardia', celGuardia);
+            formData.append('celauxGuardia', celauxGuardia);
+            formData.append('fechaContratoGuard', fechaContratoGuard);
+            formData.append('contratoGuardia', contratoGuardia);
+            formData.append('fotoGuard', fotoGuard);
+    
+            const response = await axios.post("http://localhost:8080/form_guardia", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             console.log(response);
-            window.location = "/home_test";
+            // window.location = "/home_test";
             
         } catch (error) {
             console.log(error);
         }
-
     };
 
     const customStyles = {
@@ -162,10 +164,10 @@ const GuardiaForm = () => {
                                 <Select instanceId="contratoGuard" name="contratoGuard" value={contratoGuard} onChange={handleChangeContrato} options={opcionesContrato} styles={customStyles} isClearable />
                             </div>
 
-                            {/* <div className="mb-4">
+                            <div className="mb-4">
                                 <label htmlFor="fotoGuard" className="block text-gray-700 font-bold mb-2">Foto</label>
-                                <input type="file" id="fotoGuard" name="fotoGuard" accept="image/*"  onChange={(e) => setFotoGuard(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                            </div> */}
+                                <input type="file" id="fotoGuard" name="fotoGuard" accept="image/*" onChange={(e) => setFotoGuard(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                            </div>
                             
                             {errorCelular && <p className="text-red-500 text-sm">{errorCelular}</p>}
                             <div className="flex items-center justify-between">

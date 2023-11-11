@@ -11,10 +11,10 @@ const ResidentesPage = () => {
   useEffect(() => {}, []);
   return (
     <> 
-          <Navbar /> 
-        <section>
-          <TablaResidentes residentes={residentes} />
-        </section>
+      <Navbar /> 
+      <section>
+        <TablaResidentes residentes={residentes} />
+      </section>
     </>
   )
 };
