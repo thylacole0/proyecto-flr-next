@@ -35,6 +35,32 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+// API para las bitacoras
+
+app.get('/bitacora_res/:rut_res', async (req, res) => {
+    try {
+        const { rut_res } = req.params;
+        const allBitacoras = await pool.query('SELECT * FROM bitacora WHERE rut_res = $1', [rut_res]);
+        console.log(allBitacoras.rows)
+        res.json(allBitacoras.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
+app.post('/bitacora_res', async (req, res) => {
+    const { fecha_bit, hora_bit, contenido_bit, rut_res } = req.body;
+    try {
+      const result = await pool.query(
+        'INSERT INTO bitacora (fecha_bit, hora_bit, contenido_bit, rut_res) VALUES ($1, $2, $3, $4) RETURNING *',
+        [fecha_bit, hora_bit, contenido_bit, rut_res]
+      );
+      res.json(result.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
 // CRUD VISITANTES
 
