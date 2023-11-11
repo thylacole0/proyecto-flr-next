@@ -11,6 +11,9 @@ module.exports = {
         'color_navbar': '#ac0c3c',
         'color_navbar_hover': '#95002c'
       },
+      transitionDuration: {
+        '0.5': '0.5s',
+      },
     },
   },
   plugins: [],
