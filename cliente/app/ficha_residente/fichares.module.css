@@ -1,4 +1,4 @@
-.container {
+/* .container {
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 50% 50% ;
@@ -18,4 +18,20 @@
 .itemc {
     grid-column: 2;
     grid-row: 2;
-  }
+  } */
+.layout {
+
+    display: grid;
+    grid:
+      "Form Form Adjuntos Adjuntos Adjuntos" 1fr
+      "Form Form Adjuntos Adjuntos Adjuntos" 1fr
+      "Form Form Calendar Calendar Calendar" 1fr
+      "Form Form Calendar Calendar Calendar" 1fr
+      "Form Form Calendar Calendar Calendar" 1fr
+      / 1fr 1fr 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.Form { grid-area: Form; }
+.Adjuntos { grid-area: Adjuntos; }
+.Calendar { grid-area: Calendar; }

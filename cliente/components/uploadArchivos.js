@@ -70,10 +70,10 @@ const UploadArchivos = () => {
             formData.append(`file${index}`, file);
         });
         formData.append('nom_documento', fileName);
-        formData.append('rut_res', rut_res);
-        formData.append('id_fundacion', 1); // Asegúrate de obtener el valor correcto para id_fundacion
+        formData.append('Residente_rut_res', rut_res);
+        formData.append('Residente_Fundacion_id_fundacion', 1); // Asegúrate de obtener el valor correcto para id_fundacion
 
-        const response = await fetch('/upload/:rut_res', {
+        const response = await fetch(`/upload/${rut_res}`, {
             method: 'POST',
             body: formData,
         });

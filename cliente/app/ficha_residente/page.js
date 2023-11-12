@@ -15,14 +15,14 @@ const FichaPage = () => {
   return (
     <> 
       <Navbar /> 
-      <section className={styles.container}>
-        <div className={styles.itema}>
+      <section className={styles.layout}>
+        <div className={styles.Form}>
           <FormFicha/>
         </div>
-        <div className={styles.itemb}>
+        <div className={styles.Adjuntos}>
           <UploadArchivos rut_res = {rut_res}/>
         </div>
-        <div className={styles.itemc}>
+        <div className={styles.Calendar}>
           <CalendarioRes rut_res = {rut_res}/>
         </div>
       </section>
