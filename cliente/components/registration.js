@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -23,7 +23,6 @@ const StyledTextField = styled(TextField)({
 const RegisterPage = () => {
 
     const tipo_usuario = [
-        ,
         {
             value: 'Enfermero',
             label: 'Enfermero',
@@ -37,6 +36,7 @@ const RegisterPage = () => {
             label: 'Guardia',
         },
     ];
+
 
     const [formErrors, setFormErrors] = useState({});
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -56,9 +56,12 @@ const RegisterPage = () => {
             [name]: value,
         }));
     };
-
-    const handleSubmit = async (event) => {
+    const guardiaFormRef = useRef();
+    const submitRegistration = async (event) => {
         event.preventDefault();
+        
+        const formData1 = guardiaFormRef.current.getFormData();
+
         const errors = {};
         if (!formData.username) {
             errors.username = 'El nombre de usuario es requerido';
@@ -78,27 +81,52 @@ const RegisterPage = () => {
         }
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
-            delete formData.confirmPassword;
-
             try {
                 const { username, password, tipo_user, estado_user } = formData;
                 const body = { username, password, tipo_user, estado_user };
-                const response = await axios.post(`http://localhost:8080/auth/register`, body);
-                redirect('/home_test');
+                const response = await axios.post(`http://localhost:8080/auth/register`, body)
+                console.log('respuesta 1', response)
             }
             catch (error) {
                 console.error(error);
             }
-        } else {
+        }
+
+        try {
+            const formData = { ...guardiaFormRef.current.getFormData(), ...formData1}
+            console.log('formdata', formData)
+        
+            // Crear una instancia de FormData
+            const body = new FormData();
+        
+            // Agregar los datos al formulario
+            for (const key in formData) {
+                if (key === 'fotoGuard') {
+                    // Suponiendo que 'fotoGuard' es un objeto File o Blob
+                    body.append(key, formData[key], formData[key].name);
+                } else {
+                    body.append(key, formData[key]);
+                }
+            }
+        
+            const response1 = await axios.post("http://localhost:8080/form_guardia", body, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('respuesta 2', response1)
+            
+        } catch (error) {
+            console.error(error);
         }
 
     };
 
     return (
-        <div className="flex items-center justify-center h-[100vh]">
+        <div className="flex items-center justify-center">
             <div className="bg-white p-11 rounded shadow-md">
                 <h1 className="text-2xl font-bold mb-2 text-center">Registrar nuevo usuario</h1>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={submitRegistration}>
                     <div className="relative my-4">
 
                         <StyledTextField
@@ -156,19 +184,14 @@ const RegisterPage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        
-                        <div>
-
-                            {
-                                formData.tipo_user === 'Enfermero' ? <NurseForm /> :
-                                formData.tipo_user === 'Visitante' ? <VisitForm /> :
-                                formData.tipo_user === 'Guardia' ? <GuardiaForm /> :
-                                null
-                            }
-                        </div>
+                        {
+                            formData.tipo_user === 'Enfermero' ? <NurseForm /> :
+                            formData.tipo_user === 'Visitante' ? <VisitForm /> :
+                            formData.tipo_user === 'Guardia' ? <GuardiaForm ref={guardiaFormRef}/> :
+                            null
+                        }
 
                     </div>
-
                     <Button type="submit" fullWidth className="w-full mb-4 text-[18px] mt-6 rounded-full bg-violet-900 text-white hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2">
                         <span>Registrar usuario</span>
                     </Button>

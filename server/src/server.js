@@ -197,12 +197,16 @@ app.delete('/allvisitantes/:rutVis', async (req, res) => {
 app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
     try {
         // Creando el body del request
-        const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuardia } = req.body;
+        const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard } = req.body;
+        console.log(req.file)
+        console.log(req.body)
         // Obtén la ruta de la imagen subida desde req.file.path
         const rutaImagen = req.file.path;
+        console.log('nombresGuard:', nombresGuard);
+        console.log('contratoGuardia:', contratoGuard);
         // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-        [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuardia, rutaImagen]);
+        [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen]);
         // Retornando el nuevo guardia
         res.json(newGuardia.rows[0]);
     } catch (error) {
