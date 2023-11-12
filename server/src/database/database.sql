@@ -85,6 +85,15 @@ CREATE TABLE bitacora (
     rut_res VARCHAR REFERENCES residente(rut_res)
 );
 
+CREATE TABLE reserva (
+    id_reserva SERIAL PRIMARY KEY,
+    fecha_reserva DATE NOT NULL,
+    hora_reserva TIME NOT NULL,
+    estado_reserva VARCHAR(255) NOT NULL,
+    rut_vis VARCHAR(12) REFERENCES Visitante(rut_vis),
+    rut_res VARCHAR(12) REFERENCES Residente(rut_res)
+);
+
 
 -- INSERTAR VALORES DE PRUEBA
 

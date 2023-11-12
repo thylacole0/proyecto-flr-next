@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { set } from 'react-hook-form';
 import {useSearchParams} from 'next/navigation';
+import esLocale from '@fullcalendar/core/locales/es';
 
 const CalendarioRes = () => {
 
@@ -35,6 +36,7 @@ const CalendarioRes = () => {
     const [horaBitacora, setHoraBitacora] = useState(null);
     const [contenidoBitacora, setContenidoBitacora] = useState('');
     const [startEnd , setStartEnd] = useState(null);
+    const bitColors = ['#D2386C', '#6a6969', '#4A494D', '#750075', '#2f11d2', '#a01f71', '#0d9c12', '#8d1027', '#6fa504']
 
     const handleOpenDialog = (info) => {
         setSelectedDate(info.dateStr);
@@ -101,12 +103,16 @@ const CalendarioRes = () => {
             .then(response => response.json())
             .then(data => {
                 // Convertir los datos a la estructura de eventos de FullCalendar
-                const events = data.map(item => ({
-                    
-                    title: item.contenido_bit,
-                    start: `${item.fecha_bit.split('T')[0]}T${item.hora_bit}-03:00`,
-                    end: `${item.fecha_bit.split('T')[0]}T${item.hora_bit}-03:00`
-                }));
+                const events = data.map(item => {
+                    let color = bitColors[Math.floor(Math.random() * bitColors.length)]
+
+                    return {
+                        title: item.contenido_bit,
+                        start: `${item.fecha_bit.split('T')[0]}T${item.hora_bit}-03:00`,
+                        end: `${item.fecha_bit.split('T')[0]}T${item.hora_bit}-03:00`,
+                        backgroundColor: color,
+                    }
+                });
                 console.log(events)
                 setEvents(events);
             })
@@ -119,6 +125,7 @@ const CalendarioRes = () => {
         <div className='relative rounded-lg w-5/6 h-5/6 m-auto flex bg-white'>
             <div className='relative rounded-lg w-full max-h-[95%] flex bg-white overflow-auto'>
                 <div className='w-full p-10 rounded-lg'>
+                <h1 className='text-3xl mb-4 flex justify-center'>Bitacora</h1>
                     <FullCalendar
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         initialView="timeGridWeek"
@@ -130,33 +137,39 @@ const CalendarioRes = () => {
                         dayMaxEvents={true}
                         expandRows={true}
                         dateClick={handleOpenDialog}
-
+                        slotDuration={'01:00:00'}
+                        slotLabelInterval={'01:00:00'}
                         slotMinTime="06:00:00"
                         slotMaxTime="20:00:00"
+                        locale={esLocale}
+                        slotLabelFormat={{
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            omitZeroMinute: false,
+                            meridiem: 'short'
+                          }}
+                        allDaySlot={false}
                     />
                 </div>
             </div>    
             <Dialog open={open} onClose={handleCloseDialog} id='1'>
-                        <DialogTitle>Editar información del residente</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                Aqui podras editar los datos del residente
-                            </DialogContentText>
-    
-                            <TextField margin="dense" id="2" label="Fecha de la bitacora" type="text" fullWidth variant="outlined" value={fechaBitacora} onChange={(e) => setFechaBitacora(e.target.value)}
-                            />
-                            <TextField margin="dense" id="3" label="Hora de la bitacora" type="text" fullWidth variant="outlined" value={horaBitacora} onChange={(e) => setHoraBitacora(e.target.value)}
-                            />
-                            <TextField margin="dense" id="4" label="¿Qué ocurrio?" type="text" multiline rows={3} fullWidth variant="outlined" value={contenidoBitacora} onChange={(e) => setContenidoBitacora(e.target.value)}
-                            />              
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDialog}><span>Cancel</span></Button>
-                            <Button onClick={handleDateClick}><span>Enviar bitacora</span></Button>
-
-                        </DialogActions>
-                    </Dialog>
-
+                <DialogTitle>Editar información del residente</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Aqui podras editar los datos del residente
+                    </DialogContentText>
+                    <TextField margin="dense" id="2" label="Fecha de la bitacora" type="text" fullWidth variant="outlined" value={fechaBitacora} onChange={(e) => setFechaBitacora(e.target.value)}
+                    />
+                    <TextField margin="dense" id="3" label="Hora de la bitacora" type="text" fullWidth variant="outlined" value={horaBitacora} onChange={(e) => setHoraBitacora(e.target.value)}
+                    />
+                    <TextField margin="dense" id="4" label="¿Qué ocurrio?" type="text" multiline rows={3} fullWidth variant="outlined" value={contenidoBitacora} onChange={(e) => setContenidoBitacora(e.target.value)}
+                    />              
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}><span>Cancel</span></Button>
+                    <Button onClick={handleDateClick}><span>Enviar bitacora</span></Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

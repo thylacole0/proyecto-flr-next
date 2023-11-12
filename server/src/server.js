@@ -60,7 +60,20 @@ app.post('/bitacora_res', async (req, res) => {
     } catch (err) {
       console.error(err.message);
     }
-  });
+});
+
+app.post('/reserva', async (req, res) => {
+    const { fecha_reserva, hora_reserva,estado_reserva, rut_vis, rut_res } = req.body;
+    try {
+      const result = await pool.query(
+        'INSERT INTO reserva (fecha_reserva, hora_reserva,estado_reserva, rut_vis, rut_res) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [fecha_reserva, hora_reserva,estado_reserva, rut_vis, rut_res]
+      );
+      res.json(result.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+})
 
 // CRUD VISITANTES
 
