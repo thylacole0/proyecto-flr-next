@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import DownloadIcon from '@mui/icons-material/Download'
 import SaveIcon from '@mui/icons-material/Save';
 import { useSearchParams } from 'next/navigation'
+import axios from 'axios';
 
 const UploadArchivos = () => {
     let rut_residente = ''
@@ -19,9 +20,11 @@ const UploadArchivos = () => {
     const searchParams = useSearchParams();
     if (searchParams.get('rut_res') !== null) {
         rut_residente = searchParams.get('rut_res');
+        console.log('',rut_residente)
     }
     const [residente, setResidente] = useState([]);
     const [rut_res, setRut] = useState('');
+    const [id_portafolio, setIdPortafolio] = useState('');
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [containerHeight, setContainerHeight] = useState(400);
@@ -45,10 +48,31 @@ const UploadArchivos = () => {
         const numRows = Math.ceil(numCards / 3); // Assuming 3 cards per row
         const height = numRows * 250; // Assuming each row is 250px tall
         setContainerHeight(Math.min(height, 400)); // Set a minimum height of 400
-    }, [files]);
+        axios.get(`http://localhost:8080/files/${rut_residente}`)
+            .then(response => {
+                // La respuesta fue exitosa
+                console.log('response', response.data)
+                console.log('response', response.data[0].id_portafolio)
+                setFiles(response.data);
+            })
+            .catch(error => {
+                // Hubo un error al obtener los archivos
+                console.error("Error al obtener archivos", error);
+        }   );
+    }, []);
 
-    const handleDelete = (fileToDelete) => {
-        setFiles(prevFiles => prevFiles.filter(file => file !== fileToDelete));
+    const handleDelete = (file) => {
+        console.log('file', file)
+        axios.delete(`http://localhost:8080/files/${file}`)
+            .then(response => {
+                // La respuesta fue exitosa
+                // Puedes actualizar el estado de los archivos aquí para reflejar que el archivo ha sido borrado
+                setFiles(files.filter(f => f.id_portafolio !== file));
+            })
+            .catch(error => {
+                // Hubo un error al borrar el archivo
+                console.error("Error al borrar archivo", error);
+            });
     };
 
     const VisuallyHiddenInput = styled('input')({
@@ -66,29 +90,31 @@ const UploadArchivos = () => {
 
     const handleUpload = async () => {
         const formData = new FormData();
-        files.forEach((file, index) => {
-            formData.append(`file${index}`, file);
+        files.forEach((file) => {
+            formData.append('file', file);
         });
         formData.append('nom_documento', fileName);
-        formData.append('Residente_rut_res', rut_res);
-        formData.append('Residente_Fundacion_id_fundacion', 1); // Asegúrate de obtener el valor correcto para id_fundacion
+        formData.append('rut_res', rut_residente);
+        console.log('rut_res', rut_residente);
+        axios.post(`http://localhost:8080/upload`, formData,  {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            // La respuesta fue exitosa
+            const newFiles = response.data;
 
-        const response = await fetch(`/upload/${rut_res}`, {
-            method: 'POST',
-            body: formData,
-        });
-
-        if (response.ok) {
-            const newFiles = await response.json();
-      
             // Agrega los nuevos archivos subidos a la lista
             setFiles([...files, ...newFiles]);
-      
+
             // Limpia el formulario
             setFileName("");
-          } else {
-            console.error("Error al subir archivos");
-          }
+        })
+        .catch(error => {
+            // Hubo un error al subir los archivos
+            console.error("Error al subir archivos", error);
+        });
     };
 
     return (
@@ -111,7 +137,7 @@ const UploadArchivos = () => {
                 <div className="flex flex-wrap overflow-y-auto max-h-[90%] min-h-[90%] bg-white shadow-md rounded-b-md">
                     {files.map((file) => (
                         <Card key={file.id} className="w-1/4 h-1/4 mt-1 mr-2 ml-2 mb-1 bg-zinc-300">
-                            {file.type.startsWith("image/") && (
+                            {file && file.type && file.type.startsWith("image/") && (
                                 <CardActionArea onClick={() => setSelectedFile(file)}>
                                     <CardMedia component="img" height="140" image={URL.createObjectURL(file)} alt={file.name} />
                                 </CardActionArea>
@@ -127,7 +153,7 @@ const UploadArchivos = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <IconButton aria-label="delete" onClick={() => handleDelete(file)}>
+                                <IconButton aria-label="delete" onClick={() => handleDelete(file.id_portafolio)}>
                                     <DeleteIcon />
                                 </IconButton>
                                 <IconButton aria-label="download" onClick={() => handleDownload(file)}>

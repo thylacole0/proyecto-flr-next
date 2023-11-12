@@ -3,7 +3,7 @@ const cors = require("cors");
 const multer = require('multer');
 const authRouter = require("./routes/auth.js");
 const pool = require("./database/db.js");
-
+const path = require('path');
 const app = express()
 const PORT = 8080;
 
@@ -364,17 +364,47 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
     }
 });
 
-app.post('/upload/:rut_res', upload.array('file', 3), async (req, res) => {
+app.post('/upload', upload.array('file', 3), async (req, res) => {
     try {
-        const { originalname, path } = req.file;
-        const { rut_res, id_fundacion } = req.body;
-
+        const { originalname, path } = req.files[0];
+        const { rut_res} = req.body;
+        console.log(rut_res)
         const newDocument = await pool.query(
-            'INSERT INTO portafolio_clinico (nom_documento, fecha_creacion, archivo, Residente_rut_res, Residente_Fundacion_id_fundacion) VALUES ($1, $2, $3, $4, $5)',
-            [originalname, new Date(), path, rut_res, id_fundacion]
+            'INSERT INTO portafolio (nom_documento, fecha_creacion, archivo, rut_res) VALUES ($1, $2, $3, $4) RETURNING *',
+            [originalname, new Date(), path, rut_res]
         );
 
         res.json(newDocument.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/files/:rut_res', async (req, res) => {
+    try {
+        const { rut_res } = req.params;
+        const allDocuments = await pool.query('SELECT * FROM portafolio WHERE rut_res = $1', [rut_res]);
+
+        res.json(allDocuments.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
+app.delete('/files/:id_portafolio', async (req, res) => {
+    try {
+        const { id_portafolio } = req.params;
+        const deleteDocument = await pool.query('DELETE FROM portafolio WHERE id_portafolio = $1', [id_portafolio]);
+
+        if (deleteDocument.rowCount === 0) {
+            // No se encontró ningún archivo con el ID proporcionado
+            res.status(404).send('File not found');
+        } else {
+            // El archivo se borró correctamente
+            res.status(200).send('File deleted');
+        }
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
