@@ -364,7 +364,7 @@ app.get('/allresidentes/:rut_res', async (req, res) => {
     }
 });
 
-app.post('/upload', upload.array('file', 3), async (req, res) => {
+app.post('/upload', upload.array('file', 1), async (req, res) => {
     try {
         const { originalname, path } = req.files[0];
         const { rut_res} = req.body;

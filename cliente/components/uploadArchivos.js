@@ -13,6 +13,12 @@ import DownloadIcon from '@mui/icons-material/Download'
 import SaveIcon from '@mui/icons-material/Save';
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { set } from "react-hook-form";
 
 const UploadArchivos = () => {
     let rut_residente = ''
@@ -30,11 +36,27 @@ const UploadArchivos = () => {
     const [containerHeight, setContainerHeight] = useState(400);
     const [fileName, setFileName] = useState("");
 
+    const [open, setOpen] = useState(false);
+    const handleOpenDialog = () => setOpen(true);
+    const handleCloseDialog = () => {
+        setOpen(false)
+        setFileName("");
+        setFileUpload([]);
+    }
+    const reload = () => window.location.reload();
+    const [fileupload, setFileUpload] = useState([]);
+
     const handleFileUpload = (event) => {
         const fileList = Array.from(event.target.files);
         setFiles([...files, ...fileList]);
     };
 
+    const handleFileChange = (event) => {
+        console.log('event', event.target.files[0])
+        setFileName(event.target.files[0].name);
+        setFileUpload(event.target.files[0])
+    }
+    
     const handleDownload = (file) => {
         const downloadUrl = `/ruta_servidor/${file.name}`;
 
@@ -75,27 +97,11 @@ const UploadArchivos = () => {
             });
     };
 
-    const VisuallyHiddenInput = styled('input')({
-        clip: 'rect(0 0 0 0)',
-        clipPath: 'inset(50%)',
-        height: 1,
-        overflow: 'hidden',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        whiteSpace: 'nowrap',
-        width: 1,
-    });
-
-
     const handleUpload = async () => {
         const formData = new FormData();
-        files.forEach((file) => {
-            formData.append('file', file);
-        });
+        formData.append('file', fileupload);
         formData.append('nom_documento', fileName);
         formData.append('rut_res', rut_residente);
-        console.log('rut_res', rut_residente);
         axios.post(`http://localhost:8080/upload`, formData,  {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -116,40 +122,63 @@ const UploadArchivos = () => {
             console.error("Error al subir archivos", error);
         });
     };
-
+    
     return (
         <div className="relative rounded mt-5 w-5/6 h-5/6 m-auto max-h-[90%]">
                 <div className="relative rounded-t-md shadow-md z-10 bg-gray-200 flex justify-between items-center p-4 w-full">
-                    <h2>Files</h2>
+                    <h1>Archivos del residente</h1>
                     <div>
-                        <input type="file" multiple onChange={handleFileUpload} className="hidden" id="file-upload" />
                         <label htmlFor="file-upload">
-                            <Button component="label" variant="contained" className="m-2" startIcon={<CloudUploadIcon />}>
-                                Upload file
-                                <VisuallyHiddenInput type="file" onChange={handleFileUpload} className="hidden" id="file-upload" />
+                            <Button onClick={handleOpenDialog} component="label" variant="contained" className="m-2" startIcon={<CloudUploadIcon />}>
+                                Subir Archivo
                             </Button>
+                            <Dialog open={open} onClose={handleCloseDialog} id={`id${residente.rut_res}`}>
+                                <DialogTitle>Elija su Archivo a subir</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Permitido JPG, PNG, PDF.
+                                    </DialogContentText>
+                                    {selectedFile && <img src={selectedFile} alt="Selected" style={{ width: '100%', height: 'auto' }} />}
+                                    <Button onClick={handleOpenDialog} component="label" variant="contained" className="m-2" startIcon={<CloudUploadIcon />}>
+                                        Elija su Archivo
+                                        <input type="file" hidden onChange={handleFileChange} />
+                                    </Button>
+                                    <div className="flex items-center border-solid border-2 border-gray-1000 rounded-lg p-4 bg-[#f9f9f9]">
+                                        <div className="file-icon">
+                                            {/* <img src="/path/to/file-icon.png" alt="File Icon" /> */}
+                                        </div>
+                                        <div className="file-info">
+                                            <h2 className="font-sans italic">Nombre del archivo: {fileName}</h2>
+                                            <p className="font-sans italic">Tamaña archivo: {fileupload.size} bytes</p>
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDialog} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "><span>Cancelar</span></Button>
+                                    <Button variant="contained" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " onClick={(e) => {handleUpload(); handleCloseDialog()}} endIcon={<SaveIcon />}>
+                                        Guardar
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </label>
-                            <Button variant="contained" onClick={handleUpload} endIcon={<SaveIcon />}>
-                                Guardar
-                            </Button>
                     </div>
                 </div>
                 <div className="flex flex-wrap overflow-y-auto max-h-[90%] min-h-[90%] bg-white shadow-md rounded-b-md">
                     {files.map((file) => (
-                        <Card key={file.id} className="w-1/4 h-1/4 mt-1 mr-2 ml-2 mb-1 bg-zinc-300">
+                        <Card key={file.id_portafolio} className="w-1/4 h-1/4 mt-3 mr-2 ml-2 mb-1 bg-zinc-300">
                             {file && file.type && file.type.startsWith("image/") && (
                                 <CardActionArea onClick={() => setSelectedFile(file)}>
-                                    <CardMedia component="img" height="140" image={URL.createObjectURL(file)} alt={file.name} />
+                                    <CardMedia component="img" height="140" image={file.archivo} alt={file.name} />
                                 </CardActionArea>
                             )}
                             {(file.type === "application/pdf") && (
                                 <CardActionArea onClick={() => setSelectedFile(file)}>
-                                    <CardMedia component="img" height="140" image="../public/Logo_blanco.png" alt={file.name} />
+                                    <CardMedia component="img" height="140" image={file.archivo} alt={file.name} />
                                 </CardActionArea>
                             )}
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {file.name}
+                                    {file.nom_documento}
                                 </Typography>
                             </CardContent>
                             <CardActions>
@@ -164,11 +193,11 @@ const UploadArchivos = () => {
                     ))}
                 </div>
                 <Modal open={selectedFile !== null} onClose={() => setSelectedFile(null)}>
-                <Box sx={{ width: '60vw', height: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    {selectedFile && selectedFile.type.startsWith("image/") && (
-                        <img src={URL.createObjectURL(selectedFile)} alt={selectedFile.name} style={{ maxWidth: '100%', maxHeight: '100%' }} />
-                    )}
-                </Box>
+                    <Box sx={{ width: '60vw', height: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {selectedFile && selectedFile.type.startsWith("image/") && (
+                            <img src={URL.createObjectURL(selectedFile)} alt={selectedFile.name} style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                        )}
+                    </Box>
                 </Modal>
         </div>
     );
