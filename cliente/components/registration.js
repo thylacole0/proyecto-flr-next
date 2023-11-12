@@ -5,6 +5,9 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
+import GuardiaForm from './fomularios/formularioGuardia.js';
+import NurseForm from './fomularios/formularioEnfermero.js';
+import VisitForm from './fomularios/formularioVisitante.js';
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import Alert from '@mui/material/Alert';
@@ -153,6 +156,17 @@ const RegisterPage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
+                        
+                        <div>
+
+                            {
+                                formData.tipo_user === 'Enfermero' ? <NurseForm /> :
+                                formData.tipo_user === 'Visitante' ? <VisitForm /> :
+                                formData.tipo_user === 'Guardia' ? <GuardiaForm /> :
+                                null
+                            }
+                        </div>
+
                     </div>
 
                     <Button type="submit" fullWidth className="w-full mb-4 text-[18px] mt-6 rounded-full bg-violet-900 text-white hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2">
