@@ -116,11 +116,11 @@ const CalendarioRes = () => {
     }
 
     return (
-        <div className='relative w-[90%] h-[70%] min-w-[70%] m-auto p-1 flex rounded-xl bg-slate-600'>
-            <div className='w-[90%] p-5'>
-                <div className='relative w-full h-full flex justify-between flex-wrap flex-col'>
+        <div className='relative rounded-lg w-5/6 h-5/6 m-auto flex bg-white'>
+            <div className='relative rounded-lg w-full max-h-[95%] flex bg-white overflow-auto'>
+                <div className='w-full p-10 rounded-lg'>
                     <FullCalendar
-                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}    
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         initialView="timeGridWeek"
                         headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay' }}
                         weekends={true}
@@ -128,12 +128,14 @@ const CalendarioRes = () => {
                         selectable={true}
                         selectMirror={true}
                         dayMaxEvents={true}
+                        expandRows={true}
                         dateClick={handleOpenDialog}
-                        slotDuration={'01:00:00'}
-                        slotLabelInterval={'01:00:00'}
+
+                        slotMinTime="06:00:00"
+                        slotMaxTime="20:00:00"
                     />
                 </div>
-            </div>
+            </div>    
             <Dialog open={open} onClose={handleCloseDialog} id='1'>
                         <DialogTitle>Editar información del residente</DialogTitle>
                         <DialogContent>
@@ -154,61 +156,7 @@ const CalendarioRes = () => {
 
                         </DialogActions>
                     </Dialog>
-            <div className='w-[40%] relative flex  flex-col min-h-full p-5'>
-                <div className='flex w-full h-[50px] flex-wrap gap-[10px] items-center justify-between '>
-                    <h1 className='font-normal text-4xl text-white'>Miercoles</h1>
-                    <h1 className='font-normal text-base text-gray-400'>20 de Noviembre, 2023</h1>
-                </div>
-                <div className='events w-full h-full overflow-y-auto overflow-x-hidden flex flex-col p-1'>
-                    <div className='relative w-[95%] flex-col min-h-[70px] flex justify-center hover:bg-slate-200'>
-                        <div className='titulo flex items-center'>
-                            <i className='fas fa-circle text-white text-[0.5rem]'></i>
-                            <h3 className='font-normal text-base text-white ml-5'>Bitacora</h3>
-                        </div>
-                        <div className='font-normal text-sm ml-4'>10:00 am</div>
-                    </div>
-                </div>
-                {/* <div>
-                    <div className={`bg-white absolute bottom-[100px] w-[90%] overflow-hidden rounded-md transition-all duration-500 ease-in-out ${isActive ? 'max-h-300' : 'max-h-0'}`}>
-                        <div className="add-event-header w-full h-12 flex items-center justify-between p-5 border-b">
-                            <div className="title text-xl">Agregar dato a bitacora</div>
-                            <i className="fas fa-times close hover:text-red-600 cursor-pointer text-xl font-medium" onClick={toggleActive}></i>
-                        </div>
-                        <div className="add-event-body w-full h-full flex flex-col gap-1 p-5">
-                            <div className="add-event-input w-full h-full flex items-center justify-between gap-3">
-                                <input
-                                    type="text"
-                                    placeholder="¿Qué ocurrio?"
-                                    className='event-name w-full h-full outline-none border-b-2 pb-2 text-base font-normal focus:border-gray-500 placeholder:text-gray-300  focus:placeholder:text-gray-500' />
-                            </div>
-                            <div className="add-event-input w-full h-full flex items-center justify-between gap-3">
-                                <input
-                                    type="text"
-                                    placeholder="Hora de inicio"
-                                    value={eventTimeFrom}
-                                    onChange={e => setEventTimeFrom(e.target.value)}
-                                    className='add-event-input w-full h-full outline-none border-b-2 pb-2 text-base font-normal focus:border-gray-500 placeholder:text-gray-300  focus:placeholder:text-gray-500'
-                                />
-                            </div>
-                            <div className="add-event-input w-full h-full flex items-center justify-between gap-3">
-                                <input
-                                    type="text"
-                                    placeholder="Hora de termino"
-                                    value={eventTimeTo}
-                                    onChange={e => setEventTimeTo(e.target.value)}
-                                    className='add-event-input w-full h-full outline-none border-b-2 pb-2 text-base font-normal focus:border-gray-500 placeholder:text-gray-300 focus:placeholder:text-gray-500'
-                                />
-                            </div>
-                        </div>
-                        <div className="add-event-footer block items-center justify-center p-4">
-                            <button onClick={handleDateClick} className="add-event-btn h-10 text-base text-white border outline-none rounded cursor-pointer bg-blue-400 p-2 hover:bg-transparent hover:text-blue-400 font-medium">Agregar a bitacora</button>
-                        </div>
-                    </div>
-                    <div className='flex justify-center items-center'>
-                        <i className='fas fa-plus-circle text-white text-4xl cursor-pointer' onClick={toggleActive}></i>
-                    </div>
-                </div> */}
-            </div>
+
         </div>
     );
 };

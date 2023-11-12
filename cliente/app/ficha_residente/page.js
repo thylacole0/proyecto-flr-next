@@ -6,11 +6,8 @@ import React, { useEffect, useState } from 'react';
 import CalendarioRes from '@/components/bitacoraRes.js';
 import styles from '../ficha_residente/fichares.module.css';
 
-const rut_res = [];
 
 const FichaPage = () => {
-
-  console.log(rut_res)
 
   return (
     <> 
@@ -20,10 +17,10 @@ const FichaPage = () => {
           <FormFicha/>
         </div>
         <div className={styles.Adjuntos}>
-          <UploadArchivos rut_res = {rut_res}/>
+          <UploadArchivos />
         </div>
         <div className={styles.Calendar}>
-          <CalendarioRes rut_res = {rut_res}/>
+          <CalendarioRes/>
         </div>
       </section>
     </>

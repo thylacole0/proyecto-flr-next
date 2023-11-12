@@ -77,6 +77,14 @@ CREATE TABLE enfermero(
     especialidad_enfer VARCHAR(20) NOT NULL
 )
 
+CREATE TABLE bitacora (
+    id_bit SERIAL PRIMARY KEY,
+    fecha_bit DATE NOT NULL,
+    hora_bit TIME NOT NULL,
+    contenido_bit TEXT,
+    rut_res VARCHAR REFERENCES residente(rut_res)
+);
+
 
 -- INSERTAR VALORES DE PRUEBA
 

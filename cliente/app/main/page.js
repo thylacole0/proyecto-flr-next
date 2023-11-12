@@ -1,12 +1,11 @@
 'use client'
 import Link from "next/link";
-import Calendario from "@/components/bitacoraRes";
-
+// import CalendarReservas from "../../components/calendarReserva";
 
 function Page() {
     return (
         <div>
-        <Calendario />
+        hola
         </div>
     );
 }

@@ -92,7 +92,7 @@ const UploadArchivos = () => {
     };
 
     return (
-        <div className="container rounded mt-5 w-4/5 h-4/5 m-auto max-h-[90%]">
+        <div className="relative rounded mt-5 w-5/6 h-5/6 m-auto max-h-[90%]">
                 <div className="relative rounded-t-md shadow-md z-10 bg-gray-200 flex justify-between items-center p-4 w-full">
                     <h2>Files</h2>
                     <div>

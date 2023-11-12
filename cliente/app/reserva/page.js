@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import CalendarReservas from '../../components/calendarReserva';
 
 export default function HomePage() {
   return (
     <div>
+        <CalendarReservas/>
     </div>
   );
 }
