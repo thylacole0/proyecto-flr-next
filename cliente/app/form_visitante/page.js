@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import Navbar from '../../components/navbar';
-import styles from '../residentes/residentes.module.css';
+import axios from 'axios';
+import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
 // import pool from "../../util/db";
 
 
@@ -17,7 +17,7 @@ const VisitForm = () => {
     const [errorCelular, setErrorCelular] = useState('');
     const [direccionVisit, setDireccionVisit] = useState('');
     const [rutVinculado, setRutVinculado] = useState('');
-    // const [fotoVisit, setFotoVisit] = useState('');      
+    const [residentes, setResidentes] = useState([]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -41,6 +41,26 @@ const VisitForm = () => {
             console.log(response);
             window.location = "/home_test";
 
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleChange = (event) => {
+        setRutVinculado(event.target.value);
+    };
+
+    const getAllResidentes = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/allresidentes`);
+            const jsonDatos = await response.data;
+            const residentes = jsonDatos.map(residente => ({
+                rut: residente.rut_res,
+                nombres: residente.nombres_res,
+                apellidos: residente.apes_res
+            }));
+            console.log(residentes);
+            setResidentes(residentes);
         } catch (error) {
             console.log(error);
         }
@@ -72,6 +92,10 @@ const VisitForm = () => {
         const valor = e.target.value;
         setCorreoVisit(valor);
     };
+
+    useEffect(() => {
+        getAllResidentes();
+    }, []);
 
     return (
         <>
@@ -114,14 +138,24 @@ const VisitForm = () => {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="rutVinculado" className="block text-gray-700 font-bold mb-2">Rut Familiar:</label>
-                            <input type="text" id="rutVinculado" name="rutVinculado" value={rutVinculado} onChange={(e) => setRutVinculado(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <label htmlFor="rutVinculado" className="block text-gray-700 font-bold mb-2">Rut Familiar:</label>
+                            <Box sx={{ minWidth: 120 }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Familiar Asociado</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={rutVinculado}
+                                        label="Residente"
+                                        onChange={handleChange}
+                                    >
+                                        {residentes.map((residente, index) => (
+                                            <MenuItem key={index} value={residente.rut}>{residente.nombres} {residente.apellidos}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>                        
                         </div>
-
-                        {/* <div className="mb-4">
-                                <label htmlFor="fotoVisit" className="block text-gray-700 font-bold mb-2">Foto</label>
-                                <input type="file" id="fotoVisit" name="fotoVisit" accept="image/*"  onChange={(e) => setFotoVisit(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                            </div> */}
 
                         {errorCelular && <p className="text-red-500 text-sm">{errorCelular}</p>}
                         <div className="flex items-center justify-between">

@@ -35,6 +35,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+app.use('/static', express.static(path.join(__dirname, 'uploads')))
+
 // API para las bitacoras
 
 app.get('/bitacora_res/:rut_res', async (req, res) => {
@@ -104,9 +107,10 @@ app.put('/actualizarficharesidente/:rut_res', async (req, res) => {
     try {
         console.log(req.body)
         const { rut_res } = req.params;
-        const { enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias  } = req.body;
+        const { enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos  } = req.body;
         const updateResidente = await pool.query("UPDATE residente SET enfermedad_cronica_res = $1, desc_enfermedad_res = $2, discapacidad_res = $3, desc_discapacidad_res = $4, alergias_res = $5, desc_alergias_res = $6, medicamentos_res = $7 WHERE rut_res = $8",
-        [enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias , rut_res]);
+        [enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos, rut_res]);
+        console.log(updateResidente.rowCount);
         res.json('Updateado con exitoooooooo');
     } catch (error){
         console.error(error.message);
@@ -210,6 +214,27 @@ app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
+// app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
+//     try {
+//         // Creando el body del request
+//         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard } = req.body;
+//         console.log(req.file)
+//         console.log(req.body)
+//         // Obtén la ruta de la imagen subida desde req.file.path
+//         const rutaImagen = req.file.path;
+//         console.log('nombresGuard:', nombresGuard);
+//         console.log('contratoGuardia:', contratoGuard);
+//         // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
+//         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+//         [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen]);
+//         // Retornando el nuevo guardia
+//         res.json(newGuardia.rows[0]);
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).send('Server error');
+//     }
+// });
 
 // Obtener todos los guardias
 app.get('/allguardias', async (req, res) => {
@@ -332,19 +357,22 @@ app.delete('/allenfermeros/:rut_enfer', async (req, res) => {
 // CRUD RESIDENTES
 
 // Registrar ficha residente
-app.post('/form_residente', async (req, res) => {
+app.post('/form_residente', upload.single('fotoRes'), async (req, res) => {
     try {
         // creando el body del request
         const { rut, nombres, apellidos, fechaNacimiento, genero, nacionalidadRes, direccion, estadoCivil, 
             fechaIngreso, sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad, 
-            discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias  } = req.body;
+            discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos  
+        } = req.body;
+
+        const rutaImagen = req.file.path;
 
         const newResidente = await pool.query ('INSERT INTO residente(rut_res, nombres_res, apes_res, genero_res, nacion_res, direccion_res,' + 
         ' estadocivil_res, fecha_nac_res, fecha_ingreso_res, sis_prevision_res, tipo_sangre_res, enfermedad_cronica_res, desc_enfermedad_res,' + 
-        ' discapacidad_res, desc_discapacidad_res, alergias_res, desc_alergias_res, medicamentos_res, id_fundacion)'+ 
-        ' VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12,$13,$14,$15,$16,$17,$18,$19) RETURNING *',
+        ' discapacidad_res, desc_discapacidad_res, alergias_res, desc_alergias_res, medicamentos_res, foto_res, id_fundacion)'+ 
+        ' VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20) RETURNING *',
         [rut, nombres, apellidos, genero, nacionalidadRes, direccion, estadoCivil, fechaNacimiento, fechaIngreso,
-         sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos, 1]);
+         sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos, rutaImagen, 1]);
         // retornando el nuevo residente
         res.json(newResidente.rows[0]);
 
