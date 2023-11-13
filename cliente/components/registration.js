@@ -14,6 +14,7 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import AlertTitle from '@mui/material/AlertTitle';
 import { redirect } from "next/navigation";
+import { set } from "react-hook-form";
 
 const StyledTextField = styled(TextField)({
     marginBottom: "1rem",
@@ -40,6 +41,7 @@ const RegisterPage = () => {
 
     const [formErrors, setFormErrors] = useState({});
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [creacionUsuario, setCreacionUsuario] = useState('');
 
     const [formData, setFormData] = useState({
         username: '',
@@ -57,11 +59,9 @@ const RegisterPage = () => {
         }));
     };
     const guardiaFormRef = useRef();
-    const submitRegistration = async (event) => {
-        event.preventDefault();
-        
-        const formData1 = guardiaFormRef.current.getFormData();
+    const nurseFormRef = useRef();
 
+    async function submitNewUser() {
         const errors = {};
         if (!formData.username) {
             errors.username = 'El nombre de usuario es requerido';
@@ -85,20 +85,42 @@ const RegisterPage = () => {
                 const { username, password, tipo_user, estado_user } = formData;
                 const body = { username, password, tipo_user, estado_user };
                 const response = await axios.post(`http://localhost:8080/auth/register`, body)
-                console.log('respuesta 1', response)
+                setCreacionUsuario(response.data.user.user_id)
+
+                if (formData.tipo_user === 'Enfermero') {
+                    submitNewNurse(response.data.user.user_id)
+                } else if (formData.tipo_user === 'Guardia') {
+                    submitNewGuardia(response.data.user.user_id)
+                } else if (formData.tipo_user === 'Visitante') {
+
+                }
             }
             catch (error) {
                 console.error(error);
             }
         }
+    }
 
+    async function submitNewNurse(usuarioId) {
+        const formDataNurse = nurseFormRef.current.getFormData();
+        try {
+            const { rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse } = formDataNurse;
+            const body = { rutNurse, usuarioId, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse };
+            const response = await axios.post("http://localhost:8080/form_nurse", body);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function submitNewGuardia(usuarioId) {
+
+        const formData1 = guardiaFormRef.current.getFormData();
+        formData1.usuarioId = usuarioId;
         try {
             const formData = { ...guardiaFormRef.current.getFormData(), ...formData1}
-            console.log('formdata', formData)
         
             // Crear una instancia de FormData
             const body = new FormData();
-        
             // Agregar los datos al formulario
             for (const key in formData) {
                 if (key === 'fotoGuard') {
@@ -108,18 +130,20 @@ const RegisterPage = () => {
                     body.append(key, formData[key]);
                 }
             }
-        
             const response1 = await axios.post("http://localhost:8080/form_guardia", body, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log('respuesta 2', response1)
             
         } catch (error) {
             console.error(error);
         }
+    }
 
+    const submitRegistration = async (event) => {
+        event.preventDefault();
+        submitNewUser();
     };
 
     return (
@@ -185,7 +209,7 @@ const RegisterPage = () => {
                             ))}
                         </TextField>
                         {
-                            formData.tipo_user === 'Enfermero' ? <NurseForm /> :
+                            formData.tipo_user === 'Enfermero' ? <NurseForm ref={nurseFormRef}/> :
                             formData.tipo_user === 'Visitante' ? <VisitForm /> :
                             formData.tipo_user === 'Guardia' ? <GuardiaForm ref={guardiaFormRef}/> :
                             null

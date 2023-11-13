@@ -41,6 +41,8 @@ try {
 
     const token = jwtGenerator(newUser.rows[0].user_id);
 
+    res.status(200).json({ token, user: newUser.rows[0] });
+
 } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');

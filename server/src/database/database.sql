@@ -4,7 +4,7 @@ create extension if not exists "uuid-ossp";
 
 -- CREATE TABLE USERS
 CREATE TABLE users(
-    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id VARCHAR(255) PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     estado_user BOOLEAN NOT NULL,
@@ -13,6 +13,7 @@ CREATE TABLE users(
 -- CREATE TABLE VISITANTE
 CREATE TABLE visitante(
     rut VARCHAR(50) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(user_id),
     nombres_vis VARCHAR(200) NOT NULL,
     apes_vis VARCHAR(200) NOT NULL,
     email_vis VARCHAR(200) NOT NULL,
@@ -53,6 +54,7 @@ CREATE TABLE residente(
 -- CREATE TABLE GUARDIA
 CREATE TABLE guardia(
     rut_guardia VARCHAR(12) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(user_id),
     nombres_guardia VARCHAR(200) NOT NULL,
     apes_guardia VARCHAR(200) NOT NULL,
     correo_guardia VARCHAR(200) NOT NULL,
@@ -60,11 +62,13 @@ CREATE TABLE guardia(
     celaux_guardia INTEGER NOT NULL,
     tipo_contrato_guardia VARCHAR(20) NOT NULL,
     fecha_nac_guardia DATE NOT NULL,
-    fecha_contrato_guardia DATE NOT NULL
+    fecha_contrato_guardia DATE NOT NULL,
+    foto_guardia VARCHAR(200) not null
 );
 -- CREATE TABLE ENFERMERO
 CREATE TABLE enfermero(
     rut_enfer VARCHAR(12) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(user_id),
     nombres_enfer VARCHAR(200) NOT NULL,
     apes_enfer VARCHAR(200) NOT NULL,
     correo_enfer VARCHAR(200) NOT NULL,
@@ -74,7 +78,7 @@ CREATE TABLE enfermero(
     fecha_nac_enfer DATE NOT NULL,
     fecha_contrato_enfer DATE NOT NULL,
     turno_enfer VARCHAR(20) NOT NULL,
-    especialidad_enfer VARCHAR(20) NOT NULL
+    especialidad_enfer VARCHAR(20) NOT null
 )
 
 CREATE TABLE bitacora (
