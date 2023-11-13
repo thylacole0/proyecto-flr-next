@@ -16,6 +16,7 @@ import { useSearchParams } from 'next/navigation'
 import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
 
 
 const FormFicha = () => {
@@ -42,6 +43,7 @@ const FormFicha = () => {
     const [alergias, setAlergias] = useState('true');
     const [descAlergias, setDescAlergias] = useState('');
     const [medicamentos, setMedicamentos] = useState('');
+    const [fotoRes, setFotoRes] = useState('');
 
 
     let fechaNac = moment(fechaNacimiento).utc().format('DD-MM-YYYY')
@@ -83,13 +85,14 @@ const FormFicha = () => {
             setGenero(jsonDatos[0].genero_res);
             setSisPrevision(jsonDatos[0].sis_prevision_res);
             setTipoSangre(jsonDatos[0].tipo_sangre_res);
-            jsonDatos[0].enfermedad_cronica_res == true ? setEnfermedadCronica('Si') : setEnfermedadCronica('No');
+            jsonDatos[0].enfermedad_cronica_res == true ? setEnfermedadCronica('true') : setEnfermedadCronica('false');
             setDescEnfermedad(jsonDatos[0].desc_enfermedad_res);
-            jsonDatos[0].discapacidad_re == true ? setDiscapacidad('Si') : setDiscapacidad('No');
+            jsonDatos[0].discapacidad_res == true ? setDiscapacidad('true') : setDiscapacidad('false');
             setDescDiscapacidad(jsonDatos[0].desc_discapacidad_res);
-            jsonDatos[0].alergias_res == true ? setAlergias('Si') : setAlergias('No');
+            jsonDatos[0].alergias_res == true ? setAlergias('true') : setAlergias('false');
             setDescAlergias(jsonDatos[0].desc_alergias_res);
             setMedicamentos(jsonDatos[0].medicamentos_res);
+            setFotoRes(jsonDatos[0].foto_res);
         } catch (error) {
             console.log(error);
         }
@@ -97,10 +100,21 @@ const FormFicha = () => {
 
     const modificarDatosResidente = async (e) => {
         e.preventDefault();
+        let body = { rut_res, enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos };
+        if (!body.enfermedadCronica) {
+            body.descEnfermedad = '';
+        }
+        if (!body.discapacidad) {
+            body.descDiscapacidad = '';
+        }
+        if (!body.alergias) {
+            body.descAlergias = '';
+        }
         try {
-            const body = { rut_res, enfermedadCronica, descEnfermedad, discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias };
             const response = await axios.put(`http://localhost:8080/actualizarficharesidente/${rut_res}`, body);
-
+            if (response.data === 'Updateado con exitoooooooo') {
+                // Actualiza el estado del componente aquí
+            }
         } catch (error) {
             console.error(error);
         }
@@ -117,6 +131,12 @@ const FormFicha = () => {
             <div className="container flex pt-20 justify-center items-center">
                 <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-5/6">
                     <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ficha Residente</h2>
+                    <Avatar
+                        alt="fotoRes"
+                        src={`http://localhost:8080/static/${fotoRes.replace(/\\/g, '/').replace('src/uploads/', '')}`}
+                        sx={{ width: 150, height: 150 }}
+                        className='mx-auto block mb-5'
+                    />
                     <TextField margin="dense" id="1" label="RUT" type="text" fullWidth variant="outlined" value={rut_res} onChange={(e) => setRut(e.target.value)} disabled={true}
                     />
                     <TextField margin="dense" id="2" label="Nombres" type="text" fullWidth variant="outlined" value={nombres} onChange={(e) => setNombres(e.target.value)} disabled={true}
@@ -138,9 +158,9 @@ const FormFicha = () => {
                     </TextField>
                     <FormControl>
                         <FormLabel className="mt-5" margin="dense" id="demo-row-radio-buttons-group-label">¿Tiene enfermedad Cronica?</FormLabel>
-                        <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={enfermedadCronica} onChange={(e) => setEnfermedadCronica(e.target.value)}>
-                            <FormControlLabel value="Si" control={<Radio />} label="Si" />
-                            <FormControlLabel value="No" control={<Radio />} label="No" />
+                        <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={enfermedadCronica.toString()} onChange={(e) => setEnfermedadCronica(e.target.value === "true")}>
+                            <FormControlLabel value="true"  control={<Radio />} label="Si" />
+                            <FormControlLabel value="false" control={<Radio />} label="No" />
                         </RadioGroup>
                     </FormControl>
                     <TextField
@@ -155,9 +175,9 @@ const FormFicha = () => {
                     />
                     <FormControl>
                         <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Tiene alguna discapacidad?</FormLabel>
-                        <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={discapacidad} onChange={(e) => setDiscapacidad(e.target.value)}>
-                            <FormControlLabel value="Si" control={<Radio />} label="Si" />
-                            <FormControlLabel value="No" control={<Radio />} label="No" />
+                        <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={discapacidad.toString()} onChange={(e) => setDiscapacidad(e.target.value === "true")}>
+                            <FormControlLabel value="true" control={<Radio />} label="Si" />
+                            <FormControlLabel value="false" control={<Radio />} label="No" />
                         </RadioGroup>
                     </FormControl>
                     <TextField
@@ -172,9 +192,9 @@ const FormFicha = () => {
                     />
                     <FormControl>
                         <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Es alergico a algo?</FormLabel>
-                        <RadioGroup margin="dense" row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={alergias} onChange={(e) => setAlergias(e.target.value)}>
-                            <FormControlLabel value="Si" control={<Radio />} label="Si" />
-                            <FormControlLabel value="No" control={<Radio />} label="No" />
+                        <RadioGroup margin="dense" row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={alergias.toString()} onChange={(e) => setAlergias(e.target.value === "true")}>
+                            <FormControlLabel value="true" control={<Radio />} label="Si" />
+                            <FormControlLabel value="false" control={<Radio />} label="No" />
                         </RadioGroup>
                     </FormControl>
                     <TextField

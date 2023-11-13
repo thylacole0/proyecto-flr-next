@@ -25,32 +25,66 @@ const ResidenteForm = () => {
     const [descEnfermedad, setDescEnfermedad] = useState('');
     const [discapacidad, setDiscapacidad] = useState('');
     const [descDiscapacidad, setDescDiscapacidad] = useState('');
-    const [medicamentos, setMedicamentos] = useState('');
     const [alergias, setAlergias] = useState('');
     const [descAlergias, setDescAlergias] = useState('');
-    // const [foto, setFoto] = useState('');
+    const [medicamentos, setMedicamentos] = useState('');
+    const [fotoRes, setFotoRes] = useState('');
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Handle form submission here
-        let estadoCivil = estCivil.value;
-        let tipoSangreRes = tipoSangre.value;
-        let nacionalidadRes = nacionalidad.value;
         try {
-            const body = {
-                rut, nombres, apellidos, fechaNacimiento, genero, nacionalidadRes, direccion, estadoCivil,
-                fechaIngreso, sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad,
-                discapacidad, descDiscapacidad, medicamentos, alergias, descAlergias
-            };
-            console.log(body)
-            const response = axios.post("http://localhost:8080/form_residente", body);
+            let estadoCivil = estCivil.value;
+            let tipoSangreRes = tipoSangre.value;
+            let nacionalidadRes = nacionalidad.value;
+            const formData = new FormData();
+            formData.append('rut', rut);
+            formData.append('nombres', nombres);
+            formData.append('apellidos', apellidos);
+            formData.append('fechaNacimiento', fechaNacimiento);
+            formData.append('genero', genero);
+            formData.append('nacionalidadRes', nacionalidadRes);
+            formData.append('direccion', direccion);
+            formData.append('estadoCivil', estadoCivil);
+            formData.append('fechaIngreso', fechaIngreso);
+            formData.append('sisPrevision', sisPrevision);
+            formData.append('tipoSangreRes', tipoSangreRes);
+            formData.append('enfermedadCronica', enfermedadCronica);
+            formData.append('descEnfermedad', descEnfermedad);
+            formData.append('discapacidad', discapacidad);
+            formData.append('descDiscapacidad', descDiscapacidad);
+            formData.append('alergias', alergias);
+            formData.append('descAlergias', descAlergias);
+            formData.append('medicamentos', medicamentos);
+            formData.append('fotoRes', fotoRes);
+    
+            const response = await axios.post("http://localhost:8080/form_residente", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             console.log(response);
-            window.location = "/home_test";
-
+            // window.location = "/home_test";
+            
         } catch (error) {
             console.log(error);
         }
+
+        // try {
+        //     const body = {
+        //         rut, nombres, apellidos, fechaNacimiento, genero, nacionalidadRes, direccion, estadoCivil,
+        //         fechaIngreso, sisPrevision, tipoSangreRes, enfermedadCronica, descEnfermedad,
+        //         discapacidad, descDiscapacidad, alergias, descAlergias, medicamentos
+        //     };
+        //     console.log(body)
+        //     const response = axios.post("http://localhost:8080/form_residente", body);
+        //     console.log(response);
+        //     window.location = "/home_test";
+
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
 
     const customStyles = {
@@ -232,10 +266,10 @@ const ResidenteForm = () => {
                             <textarea id="medicamentos" name="medicamentos" value={medicamentos} onChange={(e) => setMedicamentos(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         </div>
 
-                        {/* <div className="mb-4">
-                                <label htmlFor="foto" className="block text-gray-700 font-bold mb-2">Foto</label>
-                                <input type="file" id="foto" name="foto" accept="image/*"  onChange={(e) => setFoto(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                            </div> */}
+                        <div className="mb-4">
+                            <label htmlFor="fotoRes" className="block text-gray-700 font-bold mb-2">Foto</label>
+                            <input type="file" id="fotoRes" name="fotoRes" accept="image/*" onChange={(e) => setFotoRes(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                        </div>
 
                         <div className="flex items-center justify-between">
                             <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />

@@ -48,6 +48,7 @@ CREATE TABLE residente(
     alergias_res BOOLEAN NOT NULL,
     desc_alergias_res VARCHAR(200),
     medicamentos_res VARCHAR(200),
+    foto_res VARCHAR(300),
     id_fundacion integer references fundacion(id_fundacion)
 );
 -- CREATE TABLE GUARDIA
@@ -82,6 +83,14 @@ CREATE TABLE bitacora (
     fecha_bit DATE NOT NULL,
     hora_bit TIME NOT NULL,
     contenido_bit TEXT,
+    rut_res VARCHAR REFERENCES residente(rut_res)
+);
+
+CREATE TABLE portafolio (
+    id_portafolio SERIAL PRIMARY KEY,
+    nom_documento VARCHAR(100) NOT NULL,
+    fecha_creacion DATE NOT NULL,
+    archivo VARCHAR(300) TEXT,
     rut_res VARCHAR REFERENCES residente(rut_res)
 );
 
