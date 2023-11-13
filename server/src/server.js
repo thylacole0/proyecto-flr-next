@@ -219,16 +219,12 @@ app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
 // app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
 //     try {
 //         // Creando el body del request
-//         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard } = req.body;
-//         console.log(req.file)
-//         console.log(req.body)
+//         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard, usuarioId } = req.body;
 //         // Obtén la ruta de la imagen subida desde req.file.path
 //         const rutaImagen = req.file.path;
-//         console.log('nombresGuard:', nombresGuard);
-//         console.log('contratoGuardia:', contratoGuard);
 //         // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
-//         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-//         [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen]);
+//         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
+//         [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen, usuarioId]);
 //         // Retornando el nuevo guardia
 //         res.json(newGuardia.rows[0]);
 //     } catch (error) {
@@ -289,14 +285,15 @@ app.delete('/allguardias/:rut_guardia', async (req, res) => {
 // CRUD ENFERMEROS
 
 // Registrar ficha enfermero
-app.post('/form_nurse', async (req, res) => {
+app.post('/form_nurse', upload.single('fotoNurse'), async (req, res) => {
     try {
     // creando el body del request
     const { rutNurse, usuarioId, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse } = req.body;
     //insertando los datos en la tabla enfermero con estos datos: 
     console.log(req.body)
-    const newEnfermero = await pool.query('INSERT INTO enfermero (rut_enfer, user_id, nombres_enfer, apes_enfer, correo_enfer, fecha_nac_enfer, cel_enfer, celaux_enfer, fecha_contrato_enfer, tipo_contrato_enfer, turno_enfer, especialidad_enfer) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12) RETURNING *',
-    [rutNurse, usuarioId, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse]);
+    const rutaImagen = req.file.path;
+    const newEnfermero = await pool.query('INSERT INTO enfermero (rut_enfer, nombres_enfer, apes_enfer, correo_enfer, fecha_nac_enfer, cel_enfer, celaux_enfer, fecha_contrato_enfer, tipo_contrato_enfer, turno_enfer, especialidad_enfer, foto_enfermero, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12,$13) RETURNING *',
+    [rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse, rutaImagen, usuarioId]);
     // retornando el nuevo enfermero
     res.json(newEnfermero.rows[0]);
     } catch (error) {
@@ -304,6 +301,24 @@ app.post('/form_nurse', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
+// app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
+//     try {
+//         // Creando el body del request
+//         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard, usuarioId } = req.body;
+//         // Obtén la ruta de la imagen subida desde req.file.path
+//         const rutaImagen = req.file.path;
+//         // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
+//         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
+//         [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen, usuarioId]);
+//         // Retornando el nuevo guardia
+//         res.json(newGuardia.rows[0]);
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).send('Server error');
+//     }
+// });
+
 
 // Obtener todos los enfermeros
 app.get('/allenfermeros', async (req, res) => {

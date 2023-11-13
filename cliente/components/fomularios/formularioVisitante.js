@@ -122,11 +122,11 @@ const VisitForm = forwardRef((props, ref) => {
                     <div className="mb-4">
                     <label htmlFor="rutVinculado" className="block text-gray-700 font-bold mb-2">Rut Familiar:</label>
                         <Box sx={{ minWidth: 120 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Familiar Asociado</InputLabel>
+                            <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }} fullWidth>
+                                <InputLabel id="demo-simple-select-filled-label">Familiar Asociado</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
+                                    labelId="demo-simple-select-filled-label"
+                                    id="demo-simple-select-filled"
                                     value={rutVinculado}
                                     label="Residente"
                                     onChange={handleChange}
