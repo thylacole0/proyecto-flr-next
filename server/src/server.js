@@ -132,10 +132,11 @@ app.delete('/allguardias/:rut_guardia', async (req, res) => {
 app.post('/form_visitante', async (req, res) => {
     try {
         // creando el body del request
-        const { rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado } = req.body;
+        const { rutVisit, usuarioId, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado } = req.body;
+        console.log(req.body)
         // insertando los datos en la tabla visitante
-        const newVisitante = await pool.query('INSERT INTO visitante (rut, nombres_vis, apes_vis, email_vis, telefono_vis, direccion_vis, rut_residente) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-        [rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado]);
+        const newVisitante = await pool.query('INSERT INTO visitante (rut_vis, user_id, nombres_vis, apes_vis, email_vis, telefono_vis, direccion_vis, rut_res) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+        [rutVisit, usuarioId, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado]);
         // retornando el nuevo visitante
         res.json(newVisitante.rows[0]);
     } catch (error) {

@@ -60,6 +60,7 @@ const RegisterPage = () => {
     };
     const guardiaFormRef = useRef();
     const nurseFormRef = useRef();
+    const visitFormRef = useRef();
 
     async function submitNewUser() {
         const errors = {};
@@ -85,6 +86,7 @@ const RegisterPage = () => {
                 const { username, password, tipo_user, estado_user } = formData;
                 const body = { username, password, tipo_user, estado_user };
                 const response = await axios.post(`http://localhost:8080/auth/register`, body)
+
                 setCreacionUsuario(response.data.user.user_id)
 
                 if (formData.tipo_user === 'Enfermero') {
@@ -92,12 +94,26 @@ const RegisterPage = () => {
                 } else if (formData.tipo_user === 'Guardia') {
                     submitNewGuardia(response.data.user.user_id)
                 } else if (formData.tipo_user === 'Visitante') {
-
+                    submitNewVisitante(response.data.user.user_id)
                 }
+
+                window.location.href = "/home_test";
             }
             catch (error) {
                 console.error(error);
             }
+        }
+    }
+
+    async function submitNewVisitante(usuarioId) {
+        const formDataVisit = visitFormRef.current.getFormData();
+        console.log(formDataVisit)
+        try {
+            const { rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, celauxVisit, direccionVisit, rutVinculado } = formDataVisit;
+            const body = { rutVisit, usuarioId, nombresVisit, apellidosVisit, correoVisit, celVisit, celauxVisit, direccionVisit, rutVinculado };
+            const response = await axios.post("http://localhost:8080/form_visitante", body);
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -210,7 +226,7 @@ const RegisterPage = () => {
                         </TextField>
                         {
                             formData.tipo_user === 'Enfermero' ? <NurseForm ref={nurseFormRef}/> :
-                            formData.tipo_user === 'Visitante' ? <VisitForm /> :
+                            formData.tipo_user === 'Visitante' ? <VisitForm ref={visitFormRef}/> :
                             formData.tipo_user === 'Guardia' ? <GuardiaForm ref={guardiaFormRef}/> :
                             null
                         }

@@ -1,12 +1,14 @@
 "use client";
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import React, { useEffect, useImperativeHandle, useState, forwardRef } from 'react';
 import 'tailwindcss/tailwind.css';
+import Navbar from '../../components/navbar';
+import axios from 'axios';
+import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
 // import pool from "../../util/db";
 
 
-const VisitForm = () => {
+const VisitForm = forwardRef((props, ref) => {
     const [rutVisit, setRutVisit] = useState('');
     const [nombresVisit, setNombresVisit] = useState('');
     const [apellidosVisit, setApellidosVisit] = useState('');
@@ -15,30 +17,34 @@ const VisitForm = () => {
     const [errorCelular, setErrorCelular] = useState('');
     const [direccionVisit, setDireccionVisit] = useState('');
     const [rutVinculado, setRutVinculado] = useState('');
-    // const [fotoVisit, setFotoVisit] = useState('');      
+    const [residentes, setResidentes] = useState([]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        // Handle form submission here
-        if (celVisit.length === 9) {
-            // El número de celular es válido, puedes continuar con el envío del formulario
-            setErrorCelular('');
-            // Aquí puedes realizar otras acciones como enviar los datos al servidor
-        } else {
-            // El número de celular no es válido, muestra un mensaje de error
-            setErrorCelular('El número de celular debe tener 9 dígitos');
-        }
-        // utilizar backend para insertar datos en la tabla visitante
+    useImperativeHandle(ref, () => ({
+        getFormData: () => ({
+            rutVisit,
+            nombresVisit,
+            apellidosVisit,
+            correoVisit,
+            celVisit,
+            direccionVisit,
+            rutVinculado,
+        }),
+    }));
+
+    const handleChange = (event) => {
+        setRutVinculado(event.target.value);
+    };
+
+    const getAllResidentes = async () => {
         try {
-            const body = { rutVisit, nombresVisit, apellidosVisit, correoVisit, celVisit, direccionVisit, rutVinculado };
-            const response = await fetch("http://localhost:8080/form_visitante", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
-            });
-            console.log(response);
-            window.location = "/home_test";
-
+            const response = await axios.get(`http://localhost:8080/allresidentes`);
+            const jsonDatos = await response.data;
+            const residentes = jsonDatos.map(residente => ({
+                rut: residente.rut_res,
+                nombres: residente.nombres_res,
+                apellidos: residente.apes_res
+            }));
+            setResidentes(residentes);
         } catch (error) {
             console.log(error);
         }
@@ -71,64 +77,70 @@ const VisitForm = () => {
         setCorreoVisit(valor);
     };
 
+    useEffect(() => {
+        getAllResidentes();
+    }, []);
+
     return (
         <>
-            <section>
-                <div className="container flex mt-20 justify-center items-center">
-                    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Visita</h2>
-                        <div className="mb-4">
-                            <label htmlFor="rutVisit" className="block text-gray-700 font-bold mb-2">RUT:</label>
-                            <input type="text" id="rutVisit" name="rutVisit" value={rutVisit} onChange={(e) => setRutVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <div className="container flex justify-center items-center">
+                <div className="bg-white px-8 pt-6 pb-8 mb-4">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Visita</h2>
+                    <div className="mb-4">
+                        <label htmlFor="rutVisit" className="block text-gray-700 font-bold mb-2">RUT:</label>
+                        <input type="text" id="rutVisit" name="rutVisit" value={rutVisit} onChange={(e) => setRutVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="nombresVisit" className="block text-gray-700 font-bold mb-2">Nombres:</label>
+                        <input type="text" id="nombresVisit" name="nombresVisit" value={nombresVisit} onChange={(e) => setNombresVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="apellidosVisit" className="block text-gray-700 font-bold mb-2">Apellidos:</label>
+                        <input type="text" id="apellidosVisit" name="apellidosVisit" value={apellidosVisit} onChange={(e) => setApellidosVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="correoVisit" className="block text-gray-700 font-bold mb-2">Correo Electrónico:</label>
+                        <input type="email" id="correoVisit" name="correoVisit" value={correoVisit} onChange={handleChangeCorreo} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="celVisit" className="block text-gray-700 font-bold mb-2">Celular:</label>
+                        <div className="flex">
+                            <span className="text-gray-700 mr-2">+56</span>
+                            <input type="number" id="celVisit" name="celVisit" value={celVisit} onChange={handleChangeCelular} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         </div>
+                    </div>
 
-                        <div className="mb-4">
-                            <label htmlFor="nombresVisit" className="block text-gray-700 font-bold mb-2">Nombres:</label>
-                            <input type="text" id="nombresVisit" name="nombresVisit" value={nombresVisit} onChange={(e) => setNombresVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
+                    <div className="mb-4">
+                        <label htmlFor="direccionVisit" className="block text-gray-700 font-bold mb-2">Direccion:</label>
+                        <input type="text" id="direccionVisit" name="direccionVisit" value={direccionVisit} onChange={(e) => setDireccionVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
 
-                        <div className="mb-4">
-                            <label htmlFor="apellidosVisit" className="block text-gray-700 font-bold mb-2">Apellidos:</label>
-                            <input type="text" id="apellidosVisit" name="apellidosVisit" value={apellidosVisit} onChange={(e) => setApellidosVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-
-                        <div className="mb-4">
-                            <label htmlFor="correoVisit" className="block text-gray-700 font-bold mb-2">Correo Electrónico:</label>
-                            <input type="email" id="correoVisit" name="correoVisit" value={correoVisit} onChange={handleChangeCorreo} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-
-                        <div className="mb-4">
-                            <label htmlFor="celVisit" className="block text-gray-700 font-bold mb-2">Celular:</label>
-                            <div className="flex">
-                                <span className="text-gray-700 mr-2">+56</span>
-                                <input type="number" id="celVisit" name="celVisit" value={celVisit} onChange={handleChangeCelular} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                            </div>
-                        </div>
-
-                        <div className="mb-4">
-                            <label htmlFor="direccionVisit" className="block text-gray-700 font-bold mb-2">Direccion:</label>
-                            <input type="text" id="direccionVisit" name="direccionVisit" value={direccionVisit} onChange={(e) => setDireccionVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-
-                        <div className="mb-4">
-                            <label htmlFor="rutVinculado" className="block text-gray-700 font-bold mb-2">Rut Familiar:</label>
-                            <input type="text" id="rutVinculado" name="rutVinculado" value={rutVinculado} onChange={(e) => setRutVinculado(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-
-                        {/* <div className="mb-4">
-                                <label htmlFor="fotoVisit" className="block text-gray-700 font-bold mb-2">Foto</label>
-                                <input type="file" id="fotoVisit" name="fotoVisit" accept="image/*"  onChange={(e) => setFotoVisit(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                            </div> */}
-
-                        {errorCelular && <p className="text-red-500 text-sm">{errorCelular}</p>}
-                        <div className="flex items-center justify-between">
-                            <input type="submit" value="Enviar" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
-                        </div>
-
-                    </form>
+                    <div className="mb-4">
+                    <label htmlFor="rutVinculado" className="block text-gray-700 font-bold mb-2">Rut Familiar:</label>
+                        <Box sx={{ minWidth: 120 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Familiar Asociado</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={rutVinculado}
+                                    label="Residente"
+                                    onChange={handleChange}
+                                >
+                                    {residentes.map((residente, index) => (
+                                        <MenuItem key={index} value={residente.rut}>{residente.nombres} {residente.apellidos}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>                        
+                    </div>
                 </div>
-            </section>
+            </div>
         </>
     );
-};
+});
 export default VisitForm;

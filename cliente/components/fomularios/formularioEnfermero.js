@@ -40,42 +40,6 @@ const NurseForm = forwardRef((props, ref) => {
         }),
     }));
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        // Handle form submission here
-        if (celNurse.length === 9) {
-            // El número de celular es válido, puedes continuar con el envío del formulario
-            setErrorCelular('');
-            // Aquí puedes realizar otras acciones como enviar los datos al servidor
-        } else {
-            // El número de celular no es válido, muestra un mensaje de error
-            setErrorCelular('El número de celular debe tener 9 dígitos');
-        }
-        if (celauxNurse.length === 9) {
-            // El número de celular es válido, puedes continuar con el envío del formulario
-            setErrorCelular('');
-            // Aquí puedes realizar otras acciones como enviar los datos al servidor
-        } else {
-            // El número de celular no es válido, muestra un mensaje de error
-            setErrorCelular('El número de celular debe tener 9 dígitos');
-        }
-
-        // utilizar backend para insertar datos en la tabla enfermero
-        try {
-            let contratoNurseValue = contratoNurse.value;
-            let turnoNurseValue = turnoNurse.value;
-            const body = { rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurseValue, turnoNurseValue, especialidadNurse };
-            console.log(body)
-            const response = axios.post("http://localhost:8080/form_nurse", body);
-            console.log(response);
-            window.location = "/home_test";
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const customStyles = {
         control: (provided) => ({
             ...provided,
