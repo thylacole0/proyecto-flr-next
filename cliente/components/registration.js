@@ -97,7 +97,7 @@ const RegisterPage = () => {
                     submitNewVisitante(response.data.user.user_id)
                 }
 
-                window.location.href = "/home_test";
+                // window.location.href = "/home_test";
             }
             catch (error) {
                 console.error(error);
@@ -117,14 +117,43 @@ const RegisterPage = () => {
         }
     }
 
+    // async function submitNewNurse(usuarioId) {
+    //     const formDataNurse = nurseFormRef.current.getFormData();
+    //     try {
+    //         const { rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse } = formDataNurse;
+    //         const body = { rutNurse, usuarioId, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse };
+    //         const response = await axios.post("http://localhost:8080/form_nurse", body);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
     async function submitNewNurse(usuarioId) {
-        const formDataNurse = nurseFormRef.current.getFormData();
+
+        const formData2 = nurseFormRef.current.getFormData();
+        formData2.usuarioId = usuarioId;
         try {
-            const { rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse } = formDataNurse;
-            const body = { rutNurse, usuarioId, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse };
-            const response = await axios.post("http://localhost:8080/form_nurse", body);
+            const formData = { ...nurseFormRef.current.getFormData(), ...formData2}
+        
+            // Crear una instancia de FormData
+            const body = new FormData();
+            // Agregar los datos al formulario
+            for (const key in formData) {
+                if (key === 'fotoNurse') {
+                    // Suponiendo que 'fotoGuard' es un objeto File o Blob
+                    body.append(key, formData[key], formData[key].name);
+                } else {
+                    body.append(key, formData[key]);
+                }
+            }
+            const response1 = await axios.post("http://localhost:8080/form_nurse", body, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 

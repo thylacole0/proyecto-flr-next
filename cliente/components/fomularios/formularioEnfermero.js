@@ -21,7 +21,7 @@ const NurseForm = forwardRef((props, ref) => {
     const [contratoNurse, setContratoNurse] = useState('');
     const [turnoNurse, setTurnoNurse] = useState('');
     const [especialidadNurse, setEspecialidadNurse] = useState('');
-    // const [fotoNurse, setFotoNurse] = useState('');
+    const [fotoNurse, setFotoNurse] = useState('');
 
     useImperativeHandle(ref, () => ({
         getFormData: () => ({
@@ -36,7 +36,7 @@ const NurseForm = forwardRef((props, ref) => {
             contratoNurse: contratoNurse.value,
             turnoNurse: turnoNurse.value,
             especialidadNurse,
-            // fotoNurse,
+            fotoNurse,
         }),
     }));
 
@@ -164,10 +164,10 @@ const NurseForm = forwardRef((props, ref) => {
                         <textarea id="especialidadNurse" name="especialidadNurse" value={especialidadNurse} onChange={(e) => setEspecialidadNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
 
-                    {/* <div className="mb-4">
-                            <label htmlFor="fotoGuard" className="block text-gray-700 font-bold mb-2">Foto</label>
-                            <input type="file" id="fotoGuard" name="fotoGuard" accept="image/*"  onChange={(e) => setFotoGuard(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                        </div> */}
+                    <div className="mb-4">
+                        <label htmlFor="fotoNurse" className="block text-gray-700 font-bold mb-2">Foto</label>
+                        <input type="file" id="fotoNurse" name="fotoNurse" accept="image/*" onChange={(e) => setFotoNurse(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                    </div>
                 </div>
             </div>
         </>
