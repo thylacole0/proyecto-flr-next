@@ -16,6 +16,19 @@ app.use("/auth", authRouter)
 
 app.use("/main", require("./routes/main.js"))
 
+app.get('/datosvisitante/:username' , async (req, res) => {
+    const { username } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM visitante WHERE user_id = (SELECT user_id FROM users WHERE username = $1)',
+        [ username ]);
+        console.log(result.rows[0])
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+})
+
 
 // SET UP MULTER FOR FILE UPLOAD
 
@@ -65,8 +78,19 @@ app.post('/bitacora_res', async (req, res) => {
     }
 });
 
+app.get('/reservation/:rut_res', async (req, res) => {
+    try {
+        const { rut_res } = req.params;
+        const allReservas = await pool.query('SELECT * FROM reserva WHERE rut_res = $1', [rut_res]);
+        res.json(allReservas.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+})
+
 app.post('/reserva', async (req, res) => {
-    const { fecha_reserva, hora_reserva,estado_reserva, rut_vis, rut_res } = req.body;
+    const { fecha_reserva, hora_reserva, estado_reserva, rut_vis, rut_res } = req.body;
     try {
       const result = await pool.query(
         'INSERT INTO reserva (fecha_reserva, hora_reserva,estado_reserva, rut_vis, rut_res) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -98,6 +122,19 @@ app.put('/allresidentes/:rut_res', async (req, res) => {
         const updateResidente = await pool.query("UPDATE residente SET nombres_res = $1, apes_res = $2, direccion_res = $3, estadocivil_res = $4, fecha_nac_res = $5, medicamentos_res = $6 WHERE rut_res = $7",
         [nombres, apellidos, direccion, estadoCivil, fechaNacimiento, medicamentos, rut_res]);
         res.json('Updateado con exitoooooooo');
+    } catch (error){
+        console.error(error.message);
+    }
+})
+
+app.put('/updatereserva/:id_reserva', async (req, res) => {
+    try {
+        console.log(req.body)
+        const { id_reserva } = req.params;
+        const { estado_reserva, motivoRes } = req.body;
+        const updateReserva = await pool.query("UPDATE reserva SET estado_reserva = $1, motivo = $2 WHERE id_reserva = $3",
+        [estado_reserva, motivoRes, id_reserva]);
+        res.json('Reserva actualizada con éxito');
     } catch (error){
         console.error(error.message);
     }

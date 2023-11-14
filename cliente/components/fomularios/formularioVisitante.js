@@ -9,6 +9,7 @@ import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 
 const VisitForm = forwardRef((props, ref) => {
+    
     const [rutVisit, setRutVisit] = useState('');
     const [nombresVisit, setNombresVisit] = useState('');
     const [apellidosVisit, setApellidosVisit] = useState('');
