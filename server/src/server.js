@@ -1,12 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require('multer');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const authRouter = require("./routes/auth.js");
 const pool = require("./database/db.js");
 const path = require('path');
 const app = express()
 const PORT = 8080;
-
+const Enfermero = require('./models/Enfermero');
+const Guardia = require('./models/Guardia');
+const Visitante = require('./models/Visitante');
 app.use(express.json())
 app.use(cors())
 
@@ -63,6 +67,12 @@ app.get('/bitacora_res/:rut_res', async (req, res) => {
         console.error(error.message);
         res.status(500).send('Server error');
     }
+});
+
+const transporter = nodemailer.createTransport({
+    host: 'localhost', // El host de MailHog
+    port: 1025, // El puerto de SMTP de MailHog
+    ignoreTLS: true, // Ignora TLS en un entorno de desarrollo
 });
 
 app.post('/bitacora_res', async (req, res) => {
@@ -253,22 +263,6 @@ app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
     }
 });
 
-// app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
-//     try {
-//         // Creando el body del request
-//         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard, usuarioId } = req.body;
-//         // Obtén la ruta de la imagen subida desde req.file.path
-//         const rutaImagen = req.file.path;
-//         // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
-//         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-//         [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen, usuarioId]);
-//         // Retornando el nuevo guardia
-//         res.json(newGuardia.rows[0]);
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send('Server error');
-//     }
-// });
 
 // Obtener todos los guardias
 app.get('/allguardias', async (req, res) => {
@@ -338,24 +332,6 @@ app.post('/form_nurse', upload.single('fotoNurse'), async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-
-// app.post('/form_guardia', upload.single('fotoGuard'), async (req, res) => {
-//     try {
-//         // Creando el body del request
-//         const { rutGuard, nombresGuard, apellidosGuard, correoGuard, fechaNacimientoGuard, celGuardia, celauxGuardia, fechaContratoGuard, contratoGuard, usuarioId } = req.body;
-//         // Obtén la ruta de la imagen subida desde req.file.path
-//         const rutaImagen = req.file.path;
-//         // Insertando los datos en la tabla guardia, incluyendo la ruta de la imagen
-//         const newGuardia = await pool.query('INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, fecha_nac_guardia, fecha_contrato_guardia, tipo_contrato_guardia, foto_guardia, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-//         [rutGuard, nombresGuard, apellidosGuard, correoGuard, celGuardia, celauxGuardia, fechaNacimientoGuard, fechaContratoGuard, contratoGuard, rutaImagen, usuarioId]);
-//         // Retornando el nuevo guardia
-//         res.json(newGuardia.rows[0]);
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send('Server error');
-//     }
-// });
-
 
 // Obtener todos los enfermeros
 app.get('/allenfermeros', async (req, res) => {
@@ -504,6 +480,62 @@ app.delete('/files/:id_portafolio', async (req, res) => {
         console.error(error.message);
         res.status(500).send('Server error');
     }
+});
+
+app.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
+  
+    // Buscar en todas las tablas relevantes
+    const enfermero = await Enfermero.findOne({
+        where: {
+          correo_enfer: email,
+        },
+    });
+      
+    const guardia = await Guardia.findOne({
+        where: {
+          correo_guardia: email,
+        },
+    });
+      
+    const visitante = await Visitante.findOne({
+        where: {
+          email_vis: email,
+        },
+    });
+  
+    // Si no se encontró el correo electrónico en ninguna tabla
+    if (!enfermero && !guardia && !visitante) {
+      return res.status(404).json({ error: 'Correo electrónico no encontrado.' });
+    }
+
+    // Generar token
+    const token = crypto.randomBytes(20).toString('hex');
+
+    // Configurar transporte de correo
+    // const transporter = nodemailer.createTransport({
+    //     service: 'Gmail',
+    //     auth: {
+    //     user: 'felipecagon1234@gmail.com',
+    //     pass: 'Ignacio10@',
+    //     },
+    // });
+
+    console.log('xd', email)
+    // Configurar opciones de correo
+    const mailOptions = {
+        to: email,
+        from: 'felipecagon1234@gmail.com',
+        subject: 'Restablecimiento de contraseña',
+        text: `Por favor, para restablecer tu contraseña haz clic en el siguiente enlace, o pégalo en tu navegador para completar el proceso:\n\nhttp://${req.headers.host}/cambiar_contrasenia/${token}\n\nSi no solicitaste esto, por favor ignora este correo y tu contraseña permanecerá sin cambios.\n`,
+    };
+
+    // Enviar correo
+    transporter.sendMail(mailOptions, (err) => {
+        if (err) return res.status(500).json({ error: 'Error al enviar el correo.' });
+        res.status(200).json({ message: 'Correo enviado.' });
+    });
+  
 });
 
 
