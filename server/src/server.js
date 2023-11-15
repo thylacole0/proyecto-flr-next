@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require('multer');
+const fs = require('fs');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const authRouter = require("./routes/auth.js");
@@ -536,6 +537,30 @@ app.post('/forgot-password', async (req, res) => {
         res.status(200).json({ message: 'Correo enviado.' });
     });
   
+});
+
+app.get('/download/:filetype/:id_portafolio', async(req, res) => {
+    const id_portafolio = req.params.id_portafolio;
+
+    try {
+        const result = await pool.query('SELECT archivo FROM portafolio WHERE id_portafolio = $1', [id_portafolio]);
+        archivo = result.rows[0].archivo;
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+
+    let nombre_archivo = archivo.replace('src\\','');
+    const filepath = path.join(__dirname, nombre_archivo);
+
+    fs.access(filepath, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.error('File does not exist');
+            res.status(404).send('File not found');
+        } else {
+            res.download(filepath); // Set disposition and send it.
+        }
+    });
 });
 
 

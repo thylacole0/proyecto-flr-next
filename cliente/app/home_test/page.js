@@ -5,35 +5,31 @@ import Link from 'next/link';
 import 'tailwindcss/tailwind.css';
 import Navbar from '../../components/navbar';
 import { useSession } from 'next-auth/react';
-import {
-  Box,
-  Container,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Typography
-} from '@mui/material';
+import { Box, Container, Grid, Card, CardMedia, CardContent, Typography} from '@mui/material';
+import BotonesHomeEnfer from '../../components/botonesHomeEnfermero.js';
+import styles from '../home_test/home_test.module.css'
+
+
 
 const HomeTest = () => {
 
   const { data: session, status } = useSession();
+  console.log('session', session);
+  const tipo_user = session?.tipo_user; // Aquí obtenemos el tipo_user
+
+  console.log('tipo_user', tipo_user);
 
   return (
     <div>
       <Navbar />
-      <Box >
-        <Container maxWidth="lg">
-          <Box sx={{ py: 8 }}>
-            <Typography variant="h2" align="center" sx={{ mb: 4 }}>
-              Bienvenido a Fundacion Las Rosas
-            </Typography>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={12} lg={12}>
-                <Card sx={{ height: '700px' }}>
+      <section className={styles.layout}>
+        <div className={styles.Titulo + " w-100"}>
+          <h1 className="text-center text-6xl font-serif mt-5 w-90">Bienvenido a Fundacion Las Rosas</h1>
+        </div>
+        <div className={styles.Info + "flex justify-center"}>
+                <Card className="shadow rounded w-[65%] ml-20">
                   <CardMedia
                     component="img"
-                    sx={{ height: 550 }}
                     image="https://solcorchile.com/wp-content/uploads/2020/09/fundacion-las-rosas-solcor-2.jpg"
                     alt="random image"
                   />
@@ -49,50 +45,45 @@ const HomeTest = () => {
                     </Typography>
                   </CardContent>
                 </Card>
-              </Grid>
-              <Grid item xs={12} md={12} lg={12}>
-                <Card sx={{ height: '700px' }}>
-                  <CardMedia
-                    component="img"
-                    sx={{ height: 550 }}
-                    image="https://assets.diarioconcepcion.cl/2017/06/Fundaci%C3%B3n-Las-Rosas-e1498600503811.jpg"
-                    alt="random image"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Programas de Apoyo a los Ancianos
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      En la Fundación Las Rosas, nos enorgullece ofrecer una amplia gama de programas diseñados para brindar apoyo y alegría a nuestros residentes. Nuestros programas incluyen atención de enfermería de alta calidad, actividades recreativas adaptadas a las necesidades individuales, y una dieta equilibrada que promueve la salud y el bienestar.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={12} lg={12}>
-                <Card sx={{ height: '700px' }}>
-                  <CardMedia
-                    component="img"
-                    sx={{ height: 550 }}
-                    image="https://www.clave9.cl/wp-content/uploads/2018/01/fundacion-las-rosas.jpg"
-                    alt="random image"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Colabora con Nosotros
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      La Fundación Las Rosas no podría hacer lo que hacemos sin la ayuda de personas como tú. Tienes la oportunidad de marcar la diferencia en la vida de nuestros ancianos. Puedes colaborar con nosotros a través de donaciones generosas, dedicando tu tiempo como voluntario, o incluso organizando eventos de recaudación de fondos para apoyar nuestra causa.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Box>
-        </Container>
-      </Box>
+        </div>
+        <div className={styles.Boton + "w-9/10"}>
+          {tipo_user === 'Administrador' && <BotonesHomeEnfer className="shadow rounded-md h-auto m-5 mr-5" />}
+        </div>
+      </section>
+      
     </div>
   )
 }
 
 export default HomeTest;
+
+// "use client";
+// import React from 'react';
+// import { useRouter } from 'next/router';
+// import Link from 'next/link';
+// import 'tailwindcss/tailwind.css';
+// import Navbar from '../../components/navbar';
+// import { useSession } from 'next-auth/react';
+// import { Box, Container, Grid, Card, CardMedia, CardContent, Typography} from '@mui/material';
+// import BotonesHomeEnfer from '../../components/botonesHomeEnfermero.js';
+
+// const HomeTest = () => {
+
+//   const { data: session, status } = useSession();
+//   console.log('session', session);
+//   const tipo_user = session?.tipo_user; // Aquí obtenemos el tipo_user
+
+//   console.log('tipo_user', tipo_user);
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <Box >
+//         {tipo_user === 'Administrador' && <BotonesHomeEnfer />}
+//       </Box>
+//     </div>
+//   )
+// }
+
+// export default HomeTest;
 

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import defaultImage from '../public/pdf.png';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -19,6 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { set } from "react-hook-form";
+import { saveAs } from 'file-saver';
 
 const UploadArchivos = () => {
     let rut_residente = ''
@@ -31,6 +33,7 @@ const UploadArchivos = () => {
     const [residente, setResidente] = useState([]);
     const [rut_res, setRut] = useState('');
     const [id_portafolio, setIdPortafolio] = useState('');
+    const [archivo, setArchivo] = useState('');
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [containerHeight, setContainerHeight] = useState(400);
@@ -56,12 +59,37 @@ const UploadArchivos = () => {
         setFileName(event.target.files[0].name);
         setFileUpload(event.target.files[0])
     }
-    
-    const handleDownload = (file) => {
-        const downloadUrl = `/ruta_servidor/${file.name}`;
 
-        // Abre una nueva ventana o pestaña para descargar el archivo
-        window.open(downloadUrl, '_blank');
+
+
+    const handleDownload = async (file) => {
+        let downloadUrl;
+        console.log('file', file)
+        // Comprueba la extensión del archivo
+        const extension = file.nom_documento.split('.').pop().toLowerCase();
+    
+        // Determina el tipo de archivo basándose en la extensión
+        let filetype;
+        if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+            filetype = 'images';
+        } else if (extension === 'pdf') {
+            filetype = 'documents';
+        } else {
+            console.error('Unsupported file type');
+            return;
+        }
+    
+        // Construye la URL de descarga
+        downloadUrl = `http://localhost:8080/download/${filetype}/${file.id_portafolio}`;
+    
+        try {
+            const response = await axios.get(downloadUrl, { responseType: 'blob' });
+            
+            // Utiliza FileSaver para guardar el Blob
+            saveAs(new Blob([response.data]), file.nom_documento);
+        } catch (error) {
+            console.error('Network error', error);
+        }   
     };
 
     useEffect(() => {
@@ -165,15 +193,15 @@ const UploadArchivos = () => {
                 </div>
                 <div className="flex flex-wrap overflow-y-auto max-h-[90%] min-h-[90%] bg-white shadow-md rounded-b-md">
                     {files.map((file) => (
-                        <Card key={file.id_portafolio} className="w-1/4 h-1/4 mt-3 mr-2 ml-2 mb-1 bg-zinc-300">
+                        <Card key={file.id_portafolio} sx={{ height: '700px' }} className="w-1/4 h-1/4 mt-3 mr-2 ml-2 mb-1 bg-zinc-300">
                             {file && file.type && file.type.startsWith("image/") && (
                                 <CardActionArea onClick={() => setSelectedFile(file)}>
-                                    <CardMedia component="img" height="140" image={file.archivo} alt={file.name} />
+                                    <CardMedia component="img" style={{maxWidth: '100%', maxHeight: '100%'}} image={`http://localhost:8080/static/${file.archivo.replace(/\\/g, '/').replace('src/uploads/', '')}`} alt={file.name} />
                                 </CardActionArea>
                             )}
                             {(file.type === "application/pdf") && (
                                 <CardActionArea onClick={() => setSelectedFile(file)}>
-                                    <CardMedia component="img" height="140" image={file.archivo} alt={file.name} />
+                                    <CardMedia component="img" style={{maxWidth: '100%', maxHeight: '100%'}}  image='http://localhost:8080/static/other/pdf.png' alt='Default Name' />
                                 </CardActionArea>
                             )}
                             <CardContent>
