@@ -27,7 +27,7 @@ const CalendarReservas = () => {
     const [selectedHour, setSelectedHour] = useState(null);
     const [open, setOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
-    const [startEnd , setStartEnd] = useState(null);
+    const [startEnd, setStartEnd] = useState(null);
     const [fechaReserva, setFechaReserva] = useState(null);
     const [horaReserva, setHoraReserva] = useState(null);
     const [visitanteInfo, setVisitanteInfo] = useState(null);
@@ -52,7 +52,7 @@ const CalendarReservas = () => {
 
     async function obtReservas(rut_res) {
         try {
-            const response = await axios.get('http://localhost:8080/reservation/'+rut_res);
+            const response = await axios.get('http://localhost:8080/reservation/' + rut_res);
             const jsonReservas = await response.data;
             console.log(jsonReservas);
             jsonReservas.map((reserva) => {
@@ -79,12 +79,12 @@ const CalendarReservas = () => {
                         motivo: reserva.motivo,
                         hora: reserva.hora_reserva,
                     }
-                    
+
                 };
                 setEvents(events => [...events, reservas]);
             })
 
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -92,18 +92,18 @@ const CalendarReservas = () => {
 
     async function obtDatosVisitante(sesionUser) {
 
-        try{
+        try {
             if (sesionUser) {
                 console.log(sesionUser)
                 const response = await axios.get(`http://localhost:8080/datosvisitante/${sesionUser}`);
                 const jsonDatos = await response.data;
-                console.log(jsonDatos); 
+                console.log(jsonDatos);
                 setVisitanteInfo(jsonDatos);
                 return jsonDatos
             }
-          } catch (error) {
+        } catch (error) {
             console.log(error);
-          }
+        }
     }
 
     function renderEventContent(eventInfo) {
@@ -128,7 +128,7 @@ const CalendarReservas = () => {
                 fecha_reserva: fechaReserva, // la fecha del clic
                 hora_reserva: horaReserva, // la hora del evento
                 estado_reserva: 'Pendiente', // el nombre del evento
-                rut_res: visitanteInfo.rut_res , // el rut del visitante
+                rut_res: visitanteInfo.rut_res, // el rut del visitante
                 rut_vis: visitanteInfo.rut_vis, // el rut del residente
             };
 
@@ -139,24 +139,24 @@ const CalendarReservas = () => {
                 },
                 body: JSON.stringify(body),
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Agregar el evento a la lista de eventos en el estado del componente
-                const newEvent = {
-                    title: 'Pendiente',
-                    start: startEnd,
-                    end: startEnd
-                };
-                
-                console.log(newEvent)
-                // Agregar el evento a la lista de eventos en el estado del componente
-                setEvents(events => [...events, newEvent]);
-                handleCloseDialog();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Agregar el evento a la lista de eventos en el estado del componente
+                    const newEvent = {
+                        title: 'Pendiente',
+                        start: startEnd,
+                        end: startEnd
+                    };
+
+                    console.log(newEvent)
+                    // Agregar el evento a la lista de eventos en el estado del componente
+                    setEvents(events => [...events, newEvent]);
+                    handleCloseDialog();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
     }
 
@@ -165,92 +165,90 @@ const CalendarReservas = () => {
             // La sesión está disponible
             obtDatosVisitante(session.user).then(resp => {
                 obtReservas(resp.rut_res);
-            })   ;
+            });
         }
-      }, [status])
+    }, [status])
 
-return (
-    <div className='relative rounded-lg w-5/6 h-5/6 m-auto flex  mt-8'>
-        <div className='relative rounded-lg w-full max-h-[95%] flex bg-white'>
-        <div className='w-full p-10 rounded-lg bg-blue-300'>
-            <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'timeGridWeek,timeGridDay'
-            }}
-            initialView='timeGridWeek'
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            weekends={true}
-            expandRows={true}
-            dateClick={info => {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0); // set today's date to start of the day
-                const threeDaysFromNow = new Date(today);
-                threeDaysFromNow.setDate(today.getDate() + 3); // set the date to three days from now
-            
-                if (info.date >= threeDaysFromNow) {
-                    handleOpenDialog(info);
-                } else {
-                    setOpenErrorDialog(true);
-                }
-            }}
-            events={events}
-            eventContent={renderEventContent}
-            slotDuration={'01:00:00'}
-            slotLabelInterval={'01:00:00'}
-            selectMinDistance={1}
-            slotMinTime="10:00:00"
-            slotMaxTime="14:00:00"
-            locale={esLocale}
-            slotLabelFormat={{
-                hour: 'numeric',
-                minute: '2-digit',
-                omitZeroMinute: false,
-                meridiem: 'short'
-              }}
-            allDaySlot={false}
-            />
-            <Dialog open={openErrorDialog} onClose={() => setOpenErrorDialog(false)}>
-                <DialogTitle>Error</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        No puedes reservar para el día actual ni los dos días siguientes.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenErrorDialog(false)} color="primary">
-                        Aceptar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={open} onClose={handleCloseDialog} id='1'>
-                <DialogTitle>Confirmación de reserva</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                       ¿Desea confirmar la fecha y hora seleccionada?
-                    </DialogContentText>
+    return (
+        <div className='flex justify-center w-full h-full'>
+            <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
+                <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Reserva de visitas</h1>
+                <div className='border-2 border-black rounded-md'>
+                    <FullCalendar
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        headerToolbar={{
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'timeGridWeek,timeGridDay'
+                        }}
+                        initialView='timeGridWeek'
+                        editable={true}
+                        selectMirror={true}
+                        dayMaxEvents={true}
+                        weekends={true}
+                        expandRows={true}
+                        dateClick={info => {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            const threeDaysFromNow = new Date(today);
+                            threeDaysFromNow.setDate(today.getDate() + 2);
 
-                    <TextField margin="dense" id="2" label="Fecha de reserva" type="text" fullWidth variant="outlined" value={fechaReserva} onChange={(e) => setFechaReserva(e.target.value)}
+                            if (info.date >= threeDaysFromNow) {
+                                handleOpenDialog(info);
+                            } else {
+                                setOpenErrorDialog(true);
+                            }
+                        }}
+                        events={events}
+                        eventContent={renderEventContent}
+                        slotDuration={'01:00:00'}
+                        slotLabelInterval={'01:00:00'}
+                        selectMinDistance={1}
+                        slotMinTime="10:00:00"
+                        slotMaxTime="14:00:00"
+                        locale={esLocale}
+                        slotLabelFormat={{
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            omitZeroMinute: false,
+                            meridiem: 'short'
+                        }}
+                        allDaySlot={false}
                     />
-                    <TextField margin="dense" id="3" label="Hora de reserva" type="text" fullWidth variant="outlined" value={horaReserva} onChange={(e) => setHoraReserva(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}><span>Cancelar</span></Button>
-                    <Button onClick={handleDateClick}><span>Confirmar</span></Button>
-                </DialogActions>
-            </Dialog>
+                    <Dialog open={openErrorDialog} onClose={() => setOpenErrorDialog(false)}>
+                        <DialogTitle>Error</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                No puedes reservar para el día actual ni los dos días siguientes.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setOpenErrorDialog(false)} color="primary">
+                                Aceptar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={open} onClose={handleCloseDialog} id='1'>
+                        <DialogTitle>Confirmación de reserva</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                ¿Desea confirmar la fecha y hora seleccionada?
+                            </DialogContentText>
+
+                            <TextField margin="dense" id="2" label="Fecha de reserva" type="text" fullWidth variant="outlined" value={fechaReserva} onChange={(e) => setFechaReserva(e.target.value)}
+                            />
+                            <TextField margin="dense" id="3" label="Hora de reserva" type="text" fullWidth variant="outlined" value={horaReserva} onChange={(e) => setHoraReserva(e.target.value)}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseDialog}><span>Cancelar</span></Button>
+                            <Button onClick={handleDateClick}><span>Confirmar</span></Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
-
-
-  );
+    );
 };
 
 export default CalendarReservas;

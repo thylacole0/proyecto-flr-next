@@ -15,13 +15,20 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Nunito } from 'next/font/google';
+
+
+const nunito = Nunito({
+    subsets: ['latin-ext'],
+    weight: '700'
+})
 
 
 
 // const pages = ['Guardia', 'Enfermero', 'Residente', 'Visitante'];
-const pages = [{name: 'Guardia', url: '/form_guardia'}, {name: 'Enfermero', url: '/form_nurse'}, {name: 'Residente', url: '/form_residente'}, {name: 'Visitante', url: '/form_visitante'}]
-const tablitas = [{name: 'Guardia', url: '/guardias'}, {name: 'Enfermero', url: '/enfermeros'}, {name: 'Residente', url: '/residentes'}, {name: 'Visitante', url: '/visitantes'}]
-const deslogueo = [{name: 'Logout', url: '/login'} ]
+const pages = [{ name: 'Guardia', url: '/form_guardia' }, { name: 'Enfermero', url: '/form_nurse' }, { name: 'Residente', url: '/form_residente' }, { name: 'Visitante', url: '/form_visitante' }]
+const tablitas = [{ name: 'Guardia', url: '/guardias' }, { name: 'Enfermero', url: '/enfermeros' }, { name: 'Residente', url: '/residentes' }, { name: 'Visitante', url: '/visitantes' }]
+const deslogueo = [{ name: 'Cerrar sesión', url: '/login' }]
 const formularios = ['Formularios']
 const tablas = ['Tablas']
 const register = ['Registrar usuario']
@@ -73,37 +80,72 @@ const Navbar = () => {
 
     useEffect((
 
-    ) => {}, []);
+    ) => { }, []);
 
-    
+
     return (
         <>
-            <nav className="bg-color_navbar">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="bg-color_navbar flex items-center justify-center mb-10">
+                <div className="max-w-8xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center">
+                        <div className="flex items-center flex-gr hover:bg-gray-700 transition-colors duration-200">
                             <div className="flex-shrink-0">
                                 <a href="/home_test" className="text-white">
                                     <img src="/Logo_horizontal.png" alt="logo_fundacion" width="150" height="150" />
                                 </a>
                             </div>
                         </div>
-
                         <div className="hidden md:block">
-
                             <div className="ml-4 flex items-center space-x-4">
+                                {session && session.tipo_user === 'Visitante' && (
+                                    <>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button className='rounded-lg p-2'>
+                                                <a href="/reserva" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Reservar visita</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button className='rounded-lg p-2'>
+                                                <a href="/reserva" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Ver bitacora</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                    </>
+                                    // add hover with tailwind
+                                )}
                                 {session && session.tipo_user === 'Administrador' && (
 
                                     // add hover with tailwind
-                                    <Box sx={{ flexGrow: 0 }} >
-                                        <Button className=' hover:bg-color_navbar_hover rounded-lg p-2'>
-                                            <a href="/register" className='text-white'>Registrar usuario</a>
+                                    <Box sx={{ flexGrow: 0 }} className="group">
+                                        <Button className='rounded-lg p-2'>
+                                            <a href="/register" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                <span className="block px-1 pt-1 pb-2">
+                                                    <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                    <span className={`${nunito.className} block text-xs pb-1`}>{register}</span>
+                                                </span>
+                                            </a>
                                         </Button>
                                     </Box>
                                 )}
                                 {session && session.tipo_user === 'Administrador' && (
-                                    <Box sx={{ flexGrow: 0 }}>
-                                        <Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> <span>{tablas}</span> </Button>
+                                    <Box sx={{ flexGrow: 0 }} className="group">
+                                        <Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                            <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                <span className="block px-1 pt-1 pb-2">
+                                                    <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                    <span className={`${nunito.className} block text-xs pb-1`}>{tablas}</span>
+                                                </span>
+                                            </span>
+                                        </Button>
                                         <Menu
                                             sx={{ mt: '45px' }}
                                             id="menu-appbar"
@@ -123,7 +165,7 @@ const Navbar = () => {
                                             {tablitas.map((tablitas, i) => (
                                                 <MenuItem key={i} onClick={handleCloseTablas}>
                                                     <Link legacyBehavior href={tablitas.url}>
-                                                        <a className=" hover:bg-white hover:text-black rounded-lg p-2">{tablitas.name}</a>
+                                                        <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{tablitas.name}</a>
                                                     </Link>
                                                 </MenuItem>
                                             ))}
@@ -131,8 +173,15 @@ const Navbar = () => {
                                     </Box>
                                 )}
                                 {session && session.tipo_user === 'Administrador' && (
-                                    <Box sx={{ flexGrow: 0 }}>
-                                        <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'><span>{formularios} </span> </Button>
+                                    <Box sx={{ flexGrow: 0 }} className="group">
+                                        <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                            <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                <span className="block px-1 pt-1 pb-2">
+                                                    <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                    <span className={`${nunito.className} block text-xs pb-1`}>{formularios}</span>
+                                                </span>
+                                            </span>
+                                        </Button>
                                         <Menu
                                             sx={{ mt: '45px' }}
                                             id="menu-appbar"
@@ -152,15 +201,22 @@ const Navbar = () => {
                                             {pages.map((pages, i) => (
                                                 <MenuItem key={i} onClick={handleCloseUserMenu}>
                                                     <Link legacyBehavior href={pages.url}>
-                                                        <a className=" hover:bg-white hover:text-black rounded-lg p-2">{pages.name}</a>
+                                                        <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{pages.name}</a>
                                                     </Link>
                                                 </MenuItem>
                                             ))}
                                         </Menu>
                                     </Box>
                                 )}
-                                <Box sx={{ flexGrow: 0 }}>
-                                    <Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className=' hover:bg-color_navbar_hover rounded-lg p-2'> <span>{session?.user}</span> </Button>
+                                <Box sx={{ flexGrow: 0 }} className="group">
+                                    <Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                        <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                            <span className="block px-1 pt-1 pb-2">
+                                                <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                <span className={`${nunito.className} block text-xs pb-1`}>{session?.user}</span>
+                                            </span>
+                                        </span>
+                                    </Button>
                                     <Menu
                                         sx={{ mt: '45px' }}
                                         id="menu-appbar"
@@ -179,7 +235,7 @@ const Navbar = () => {
                                     >
                                         {deslogueo.map((deslogueo, i) => (
                                             <MenuItem key={i} onClick={handleCloseLogout}>
-                                                <a className=" hover:bg-white hover:text-black rounded-lg p-2" onClick={() => signOut()}>
+                                                <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500" onClick={() => signOut()}>
                                                     {deslogueo.name}
                                                 </a>
                                             </MenuItem>
@@ -190,8 +246,7 @@ const Navbar = () => {
                             </div>
                         </div>
                         <div className="md:hidden flex items-center">
-                            <button className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none
-                        focus:ring-inset focus:ring-white" onClick={toggleNavbar}>
+                            <button className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-inset focus:ring-white" onClick={toggleNavbar}>
                                 {isClick ? (
                                     <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="{2}" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -201,9 +256,9 @@ const Navbar = () => {
                                 )}
                             </button>
                         </div>
-
                     </div>
                 </div>
+
                 <div>
                     {isClick && (
                         <div className="md:hidden">

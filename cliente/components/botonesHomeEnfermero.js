@@ -90,10 +90,6 @@ const BotonesHomeEnfer =() => {
     const searchParams = useSearchParams()
     const router = useRouter()
 
-    console.log('pathname', pathname);
-    console.log('searchParams', searchParams);
-    console.log('router', router);
-
     const handleButtonClick = () => {
         const newUrlParams = new URLSearchParams(searchParams.toString())
         console.log('newUrlParams', newUrlParams);

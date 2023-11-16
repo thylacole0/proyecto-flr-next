@@ -78,7 +78,7 @@ const TablaResidentesEnfermero = () => {
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <button onClick={handleOnClick(tableMeta.rowData[0])}>Clickaqui</button>
+              <button onClick={handleOnClick(tableMeta.rowData[0])} className='border-2'>Clickaqui</button>
             );
         }
       }

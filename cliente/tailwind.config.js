@@ -14,6 +14,9 @@ module.exports = {
       transitionDuration: {
         '0.5': '0.5s',
       },
+      fontFamily: {
+        body: ['Nunito']
+      }
     },
   },
   plugins: [],

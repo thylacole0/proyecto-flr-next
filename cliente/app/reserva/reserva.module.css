@@ -1,13 +1,21 @@
 .layout {
-    width: 1920px;
-    height: 1080px;
-  
-    display: grid;
-    grid:
-      "Calendar Clima" 2fr
-      / 1.3fr 0.7fr;
-    gap: 8px;
-  }
-  
-  .Calendar { grid-area: Calendar; }
-  .Clima { grid-area: Clima; }
+  width: 98.5vw;
+  height: 100vh;
+
+  display: grid;
+  grid:
+    "Calendar Clima" 1fr
+    / 5fr 2fr;
+
+  align-items: start;
+  justify-content: center;
+}
+
+.Calendar { 
+  grid-area: Calendar;
+  justify-self: start;
+}
+
+.Clima { 
+  grid-area: Clima;
+}
