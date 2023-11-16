@@ -79,7 +79,8 @@ CREATE TABLE enfermero(
     fecha_nac_enfer DATE NOT NULL,
     fecha_contrato_enfer DATE NOT NULL,
     turno_enfer VARCHAR(20) NOT NULL,
-    especialidad_enfer VARCHAR(20) NOT null
+    especialidad_enfer VARCHAR(20) NOT NULL,
+    foto_enfermero VARCHAR(300)
 )
 
 CREATE TABLE bitacora (
