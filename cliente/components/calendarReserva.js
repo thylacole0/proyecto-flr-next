@@ -38,9 +38,6 @@ const CalendarReservas = () => {
 
 
     const handleOpenDialog = (info) => {
-        console.log(info.dateStr)
-        setSelectedDate(info.dateStr);
-        setStartEnd(info.dateStr);
 
         let fecha_res = info.dateStr.split('T')[0];
         let hora_res = info.dateStr.split('T')[1].split('-')[0];
@@ -54,7 +51,6 @@ const CalendarReservas = () => {
         try {
             const response = await axios.get('http://localhost:8080/reservation/' + rut_res);
             const jsonReservas = await response.data;
-            console.log(jsonReservas);
             jsonReservas.map((reserva) => {
                 let color;
                 switch (reserva.estado_reserva) {
@@ -100,10 +96,8 @@ const CalendarReservas = () => {
 
         try {
             if (sesionUser) {
-                console.log(sesionUser)
                 const response = await axios.get(`http://localhost:8080/datosvisitante/${sesionUser}`);
                 const jsonDatos = await response.data;
-                console.log(jsonDatos);
                 setVisitanteInfo(jsonDatos);
                 return jsonDatos
             }
@@ -147,15 +141,12 @@ const CalendarReservas = () => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Success:', data);
                     // Agregar el evento a la lista de eventos en el estado del componente
                     const newEvent = {
                         title: 'Pendiente',
                         start: startEnd,
                         end: startEnd
                     };
-
-                    console.log(newEvent)
                     // Agregar el evento a la lista de eventos en el estado del componente
                     setEvents(events => [...events, newEvent]);
                     handleCloseDialog();

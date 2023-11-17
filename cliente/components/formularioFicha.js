@@ -17,6 +17,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
+import { useSession } from 'next-auth/react';
 
 
 const FormFicha = () => {
@@ -44,6 +45,7 @@ const FormFicha = () => {
     const [descAlergias, setDescAlergias] = useState('');
     const [medicamentos, setMedicamentos] = useState('');
     const [fotoRes, setFotoRes] = useState('');
+    const { data: session, status } = useSession();
 
 
     let fechaNac = moment(fechaNacimiento).utc().format('DD-MM-YYYY')
@@ -149,7 +151,7 @@ const FormFicha = () => {
                     />
                     <TextField margin="dense" id="6" label="Sistema de prevision" type="text" fullWidth variant="outlined" value={sisPrevision} onChange={(e) => setSisPrevision(e.target.value)} disabled={true}
                     />
-                    <TextField fullWidth margin="dense" id="outlined-select-currency" select label="Tipo de Sangre" value={tipoSangre} onChange={(e) => setTipoSangre(e.target.value)}>
+                    <TextField fullWidth margin="dense" id="outlined-select-currency" select label="Tipo de Sangre" value={tipoSangre} onChange={(e) => setTipoSangre(e.target.value)} disabled={session?.tipo_user === 'Visitante' ? true : false}>
                         {sangre.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
@@ -159,8 +161,8 @@ const FormFicha = () => {
                     <FormControl>
                         <FormLabel className="mt-5" margin="dense" id="demo-row-radio-buttons-group-label">¿Tiene enfermedad Cronica?</FormLabel>
                         <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={enfermedadCronica.toString()} onChange={(e) => setEnfermedadCronica(e.target.value === "true")}>
-                            <FormControlLabel value="true"  control={<Radio />} label="Si" />
-                            <FormControlLabel value="false" control={<Radio />} label="No" />
+                            <FormControlLabel value="true" control={<Radio />} label="Si" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
+                            <FormControlLabel value="false" control={<Radio />} label="No" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
                         </RadioGroup>
                     </FormControl>
                     <TextField
@@ -172,12 +174,13 @@ const FormFicha = () => {
                         rows={4}
                         value={descEnfermedad}
                         onChange={(e) => setDescEnfermedad(e.target.value)}
+                        disabled={session?.tipo_user === 'Visitante' ? true : false}
                     />
                     <FormControl>
                         <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Tiene alguna discapacidad?</FormLabel>
                         <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={discapacidad.toString()} onChange={(e) => setDiscapacidad(e.target.value === "true")}>
-                            <FormControlLabel value="true" control={<Radio />} label="Si" />
-                            <FormControlLabel value="false" control={<Radio />} label="No" />
+                            <FormControlLabel value="true" control={<Radio />} label="Si" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
+                            <FormControlLabel value="false" control={<Radio />} label="No" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
                         </RadioGroup>
                     </FormControl>
                     <TextField
@@ -189,12 +192,13 @@ const FormFicha = () => {
                         rows={4}
                         value={descDiscapacidad}
                         onChange={(e) => setDescDiscapacidad(e.target.value)}
+                        disabled={session?.tipo_user === 'Visitante' ? true : false}
                     />
                     <FormControl>
                         <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Es alergico a algo?</FormLabel>
                         <RadioGroup margin="dense" row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={alergias.toString()} onChange={(e) => setAlergias(e.target.value === "true")}>
-                            <FormControlLabel value="true" control={<Radio />} label="Si" />
-                            <FormControlLabel value="false" control={<Radio />} label="No" />
+                            <FormControlLabel value="true" control={<Radio />} label="Si" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
+                            <FormControlLabel value="false" control={<Radio />} label="No" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
                         </RadioGroup>
                     </FormControl>
                     <TextField
@@ -206,6 +210,7 @@ const FormFicha = () => {
                         rows={4}
                         value={descAlergias}
                         onChange={(e) => setDescAlergias(e.target.value)}
+                        disabled={session?.tipo_user === 'Visitante' ? true : false}
                     />
                     <FormControl>
                         <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">Medicamentos</FormLabel>
@@ -220,12 +225,15 @@ const FormFicha = () => {
                         rows={4}
                         value={medicamentos}
                         onChange={(e) => setMedicamentos(e.target.value)}
+                        disabled={session?.tipo_user === 'Visitante' ? true : false}
                     />
 
                     <div className="flex items-center justify-between mt-5">
-                        <Button variant="contained" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " onClick={(e) => { modificarDatosResidente(e); reload() }} endIcon={<SaveIcon />}>
-                            Guardar
-                        </Button>
+                        {session?.tipo_user == 'Enfermero' && (
+                            <Button variant="contained" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " onClick={(e) => { modificarDatosResidente(e); reload() }} endIcon={<SaveIcon />}>
+                                Guardar
+                            </Button>
+                        )}
                     </div>
 
                 </form>

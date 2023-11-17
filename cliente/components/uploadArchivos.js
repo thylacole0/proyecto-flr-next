@@ -21,6 +21,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { set } from "react-hook-form";
 import { saveAs } from 'file-saver';
+import { useSession } from "next-auth/react";
 
 const UploadArchivos = () => {
     let rut_residente = ''
@@ -38,6 +39,7 @@ const UploadArchivos = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [containerHeight, setContainerHeight] = useState(400);
     const [fileName, setFileName] = useState("");
+    const {data: session, status} = useSession();
 
     const [open, setOpen] = useState(false);
     const handleOpenDialog = () => setOpen(true);
@@ -59,8 +61,6 @@ const UploadArchivos = () => {
         setFileName(event.target.files[0].name);
         setFileUpload(event.target.files[0])
     }
-
-
 
     const handleDownload = async (file) => {
         let downloadUrl;
@@ -153,13 +153,15 @@ const UploadArchivos = () => {
     
     return (
         <div className="relative rounded mt-5 w-5/6 h-5/6 m-auto max-h-[90%]">
-                <div className="relative rounded-t-md shadow-md z-10 bg-gray-200 flex justify-between items-center p-4 w-full">
-                    <h1>Archivos del residente</h1>
+                <div className="relative rounded-t-md shadow-md z-10 bg-color_navbar flex justify-between items-center p-6 w-full">
+                    <h1 className="text-white font-bold text-xl">Archivos del residente</h1>
                     <div>
                         <label htmlFor="file-upload">
-                            <Button onClick={handleOpenDialog} component="label" variant="contained" className="m-2" startIcon={<CloudUploadIcon />}>
-                                Subir Archivo
-                            </Button>
+                            {session?.tipo_user !== 'Visitante' && (
+                                <Button onClick={handleOpenDialog} component="label" variant="contained" className="m-2 bg-gray-600 font-semibold hover:bg-gray-800" startIcon={<CloudUploadIcon />}>
+                                    Subir Archivo
+                                </Button>
+                            )}
                             <Dialog open={open} onClose={handleCloseDialog} id={`id${residente.rut_res}`}>
                                 <DialogTitle>Elija su Archivo a subir</DialogTitle>
                                 <DialogContent>
@@ -191,28 +193,38 @@ const UploadArchivos = () => {
                         </label>
                     </div>
                 </div>
-                <div className="flex flex-wrap overflow-y-auto max-h-[90%] min-h-[90%] bg-white shadow-md rounded-b-md">
+                <div className="flex flex-wrap overflow-y-auto max-h-[90%] min-h-[90%] bg-white shadow-md rounded-b-md ">
                     {files.map((file) => (
-                        <Card key={file.id_portafolio} sx={{ height: '700px' }} className="w-1/4 h-1/4 mt-3 mr-2 ml-2 mb-1 bg-zinc-300">
+                        <Card key={file.id_portafolio} sx={{ height: '700px' }} className="min-w-[10%] max-w-[15%] h-1/4 m-4 bg-zinc-300 border-black hover:scale-105">
                             {file && file.type && file.type.startsWith("image/") && (
-                                <CardActionArea onClick={() => setSelectedFile(file)}>
+                                <CardActionArea onClick={() => handleDownload(file) } className="bg-white pt-4 flex flex-col">
                                     <CardMedia component="img" style={{maxWidth: '100%', maxHeight: '100%'}} image={`http://localhost:8080/static/${file.archivo.replace(/\\/g, '/').replace('src/uploads/', '')}`} alt={file.name} />
+                                    <div className="w-3/4">
+                                        <Typography gutterBottom variant="h5" component="div" className="text-xs break-words font-bold my-5">
+                                            {file.nom_documento}
+                                        </Typography>
+                                    </div>
                                 </CardActionArea>
                             )}
-                            {(file.type === "application/pdf") && (
-                                <CardActionArea onClick={() => setSelectedFile(file)}>
-                                    <CardMedia component="img" style={{maxWidth: '100%', maxHeight: '100%'}}  image='http://localhost:8080/static/other/pdf.png' alt='Default Name' />
+                            {file && file.archivo && file.archivo.endsWith(".pdf") && (
+                                <CardActionArea onClick={() => handleDownload(file)} className="bg-white pt-4 flex flex-col">
+                                    <CardMedia component="img" style={{ maxWidth: '30%', maxHeight: '30%' }} image='http://localhost:8080/static/other/pdf.png' alt='Default Name' />
+                                    <div className="w-3/4">
+                                        <Typography gutterBottom variant="h5" component="div" className="text-xs break-words font-bold my-5">
+                                            {file.nom_documento}
+                                        </Typography>
+                                    </div>
                                 </CardActionArea>
                             )}
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {file.nom_documento}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <IconButton aria-label="delete" onClick={() => handleDelete(file.id_portafolio)}>
-                                    <DeleteIcon />
-                                </IconButton>
+                            {/* <CardContent className="bg-white">
+
+                            </CardContent> */}
+                            <CardActions className="flex justify-center">
+                                {session?.tipo_user !== 'Visitante' && (
+                                    <IconButton aria-label="delete" onClick={() => handleDelete(file.id_portafolio)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                )}
                                 <IconButton aria-label="download" onClick={() => handleDownload(file)}>
                                     <DownloadIcon />
                                 </IconButton>
@@ -220,13 +232,13 @@ const UploadArchivos = () => {
                         </Card>
                     ))}
                 </div>
-                <Modal open={selectedFile !== null} onClose={() => setSelectedFile(null)}>
+                {/* <Modal open={selectedFile !== null} onClose={() => setSelectedFile(null)}>
                     <Box sx={{ width: '60vw', height: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         {selectedFile && selectedFile.type.startsWith("image/") && (
                             <img src={URL.createObjectURL(selectedFile)} alt={selectedFile.name} style={{ maxWidth: '100%', maxHeight: '100%' }} />
                         )}
                     </Box>
-                </Modal>
+                </Modal> */}
         </div>
     );
 };

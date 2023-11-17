@@ -5,7 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from '@fullcalendar/timegrid';
-
+import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -36,6 +36,8 @@ const CalendarioRes = () => {
     const [contenidoBitacora, setContenidoBitacora] = useState('');
     const [startEnd , setStartEnd] = useState(null);
     const bitColors = ['#D2386C', '#6a6969', '#4A494D', '#750075', '#2f11d2', '#a01f71', '#0d9c12', '#8d1027', '#6fa504']
+    const { data: session, status } = useSession();
+    console.log('Sesion en bitacora_residente', session)
 
     const handleOpenDialog = (info) => {
         setSelectedDate(info.dateStr);
@@ -68,7 +70,6 @@ const CalendarioRes = () => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
                 // Agregar el evento a la lista de eventos en el estado del componente
                 const newEvent = {
                     title: data.contenido_bit,
@@ -76,8 +77,6 @@ const CalendarioRes = () => {
                     end: startEnd
                 };
                 
-                console.log(newEvent)
-                debugger
                 // Agregar el evento a la lista de eventos en el estado del componente
                 setEvents(events => [...events, newEvent]);
                 setContenidoBitacora('')
@@ -131,11 +130,10 @@ const CalendarioRes = () => {
                     headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay' }}
                     weekends={true}
                     events={events}
-                    selectable={true}
                     selectMirror={true}
                     dayMaxEvents={true}
                     expandRows={true}
-                    dateClick={handleOpenDialog}
+                    dateClick={session?.tipo_user =='Visitante'? false : handleOpenDialog}
                     slotDuration={'01:00:00'}
                     slotLabelInterval={'01:00:00'}
                     slotMinTime="06:00:00"

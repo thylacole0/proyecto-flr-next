@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Nunito } from 'next/font/google';
+import axios from 'axios';
 
 
 const nunito = Nunito({
@@ -33,10 +34,26 @@ const formularios = ['Formularios']
 const tablas = ['Tablas']
 const register = ['Registrar usuario']
 
-
 const Navbar = () => {
 
     const { data: session, status } = useSession();
+    const [visitanteInfo, setVisitanteInfo] = useState([]);
+
+    async function obtDatosVisitante(sesionUser) {
+
+        try {
+            if (sesionUser) {
+                console.log(sesionUser)
+                const response = await axios.get(`http://localhost:8080/datosvisitante/${sesionUser}`);
+                const jsonDatos = await response.data;
+                console.log(jsonDatos);
+                setVisitanteInfo(jsonDatos);
+                return jsonDatos
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const [isClick, setIsClick] = useState(false);
 
@@ -77,11 +94,12 @@ const Navbar = () => {
         setAnchorElTablas(null);
     };
 
-
-    useEffect((
-
-    ) => { }, []);
-
+    useEffect(() => {
+        if (status === 'authenticated') {
+            // La sesión está disponible
+            obtDatosVisitante(session.user)
+        }
+    }, [session]);
 
     return (
         <>
@@ -111,7 +129,7 @@ const Navbar = () => {
                                         </Box>
                                         <Box sx={{ flexGrow: 0 }} className="group">
                                             <Button className='rounded-lg p-2'>
-                                                <a href="/reserva" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                <a href={`/ficha_residente?rut_res=${visitanteInfo.rut_res}`} className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
                                                     <span className="block px-1 pt-1 pb-2">
                                                         <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
                                                         <span className={`${nunito.className} block text-xs pb-1`}>Ver bitacora</span>

@@ -69,24 +69,11 @@ export default function ActionAreaCard() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
-                                * Se debera reservar con al menos 2 dias de anticipación.
+                                * Se debera reservar con al menos 2 dias de anticipación. <br/>
+                                Esto es para que los guardias puedan revisar la solicitud y aceptarla o rechazarla.
                             </Typography >
                         </AccordionDetails>
                     </Accordion>                    
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel2a-content"
-                            id="panel2a-header"
-                        >
-                            <Typography className='font-bold'>Restricciones</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>
-                                * Se debera reservar con al menos 2 dias de anticipación.
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
                 </div>
                 {/* <Typography gutterBottom variant="h5" component="div">
             Agendamiento de visita
