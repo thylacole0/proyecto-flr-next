@@ -151,6 +151,19 @@ app.put('/updatereserva/:id_reserva', async (req, res) => {
     }
 })
 
+app.put('/assistreserva/:id_reserva', async (req, res) => {
+    try {
+        console.log(req.body)
+        const { id_reserva } = req.params;
+        const { estado_reserva} = req.body;
+        const updateReserva = await pool.query("UPDATE reserva SET estado_reserva = $1 WHERE id_reserva = $2",
+        [estado_reserva, id_reserva]);
+        res.json('Reserva actualizada con éxito');
+    } catch (error){
+        console.error(error.message);
+    }
+})
+
 app.put('/actualizarficharesidente/:rut_res', async (req, res) => {
     try {
         console.log(req.body)

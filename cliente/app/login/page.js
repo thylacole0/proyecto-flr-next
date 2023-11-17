@@ -16,7 +16,7 @@ const Login = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { data: session, status} = useSession()
+    const { data: session, status } = useSession()
     const router = useRouter();
     const [error, setError] = useState(null);
 
@@ -46,10 +46,10 @@ const Login = () => {
 
     useEffect(() => {
         if (status === "authenticated") {
-          router.push('/home_test')
+            router.push('/home_test')
         }
-      }, [status])
-    
+    }, [status])
+
     return (
         <>
             <div className="text-white h-[100vh] flex justify-center items-center bg-cover">
@@ -111,19 +111,19 @@ const Login = () => {
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
-  
+
     if (session) {
-      return {
-        redirect: {
-          destination: '/home_test',
-          permanent: false,
-        },
-      }
+        return {
+            redirect: {
+                destination: '/home_test',
+                permanent: false,
+            },
+        }
     }
-  
+
     return {
-      props: {},
+        props: {},
     }
-  }
+}
 
 export default Login;

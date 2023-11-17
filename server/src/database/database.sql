@@ -104,6 +104,7 @@ CREATE TABLE reserva (
     id_reserva SERIAL PRIMARY KEY,
     fecha_reserva DATE NOT NULL,
     hora_reserva TIME NOT NULL,
+    motivo VARCHAR(255),
     estado_reserva VARCHAR(255) NOT NULL,
     rut_vis VARCHAR(12) REFERENCES visitante(rut_vis),
     rut_res VARCHAR(12) REFERENCES residente(rut_res)

@@ -209,16 +209,6 @@ const Navbar = () => {
                                     <>
                                         <Box sx={{ flexGrow: 0 }} className="group">
                                             <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
-                                                <a href="/guardiareservas" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
-                                                    <span className="block px-1 pt-1 pb-2">
-                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
-                                                        <span className={`${nunito.className} block text-xs pb-1`}>Solicitudes de reserva</span>
-                                                    </span>
-                                                </a>
-                                            </Button>
-                                        </Box>
-                                        <Box sx={{ flexGrow: 0 }} className="group">
-                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
                                                 <a href="/home_test" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
                                                     <span className="block px-1 pt-1 pb-2">
                                                         <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
@@ -227,9 +217,30 @@ const Navbar = () => {
                                                 </a>
                                             </Button>
                                         </Box>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <a href="/guardiareservas" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Solicitudes de reserva</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <a href="/reservasAprobadas" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Asistencia visitas</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
                                     </>
                                 )}
-                                
+
                                 <Box sx={{ flexGrow: 0 }} className="group">
                                     <Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
                                         <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">

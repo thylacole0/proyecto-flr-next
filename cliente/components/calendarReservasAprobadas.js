@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import WhereToVoteRoundedIcon from '@mui/icons-material/WhereToVoteRounded';
 import ResidenteSelect from './selectResidente';
 import InfoGuardia from './acordionInfoGuardia';
 
@@ -22,13 +21,11 @@ import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import { getSession } from 'next-auth/react';
 import moment from 'moment';
 
 import './reserva.module.css'
 
-const CalendarGuardia = () => {
+const CalendarReservasAprobadas = () => {
 
     const [residentes, setResidentes] = useState([]);
     const [events, setEvents] = useState([]);
@@ -60,34 +57,28 @@ const CalendarGuardia = () => {
         }
     };
 
-    const handleConfirmReserva = async () => {
+    const handleConfirmAsistencia = async () => {
 
         if (newStatus === 'Rechazado' && !motivo) {
             setErrorMotivo(true);
             return;
         }
-
         setLoading(true);
         const id_reserva = selectedEvent.id;
         const estado_reserva = newStatus;
         const motivoRes = newStatus === 'Rechazado' ? motivo : null;
-        const body = { estado_reserva, motivoRes, id_reserva }
+        const body = { estado_reserva, id_reserva }
         try {
-            await axios.put(`http://localhost:8080/updatereserva/${id_reserva}`, body);
+            await axios.put(`http://localhost:8080/assistreserva/${id_reserva}`, body);
             const updatedEvents = events.map(event => {
                 let color;
                 switch (estado_reserva) {
-                    case 'Pendiente':
-                        color = '#ffa500';
+                    case 'Asistio':
+                        color = '#0000c6';
                         break;
-                    case 'Aceptado':
-                        color = '#185403';
+                    case 'No asistio':
+                        color = '#850000';
                         break;
-                    case 'Rechazado':
-                        color = '#b50e00';
-                        break;
-                    default:
-                        color = '#00669f'; // color por defecto
                 }
                 if (event.id == id_reserva) {
                     return { ...event, title: estado_reserva, color: color };
@@ -120,20 +111,13 @@ const CalendarGuardia = () => {
             const jsonReservas = await response.data;
             console.log(jsonReservas);
             setEvents([]);
-            jsonReservas.map((reserva) => {
+            let reservasAceptadas = jsonReservas.filter(reserva => reserva.estado_reserva == 'Aceptado')
+            reservasAceptadas.map((reserva) => {
                 let color;
                 switch (reserva.estado_reserva) {
-                    case 'Pendiente':
-                        color = '#ffa500';
-                        break;
                     case 'Aceptado':
                         color = '#185403';
                         break;
-                    case 'Rechazado':
-                        color = '#b50e00';
-                        break;
-                    default:
-                        color = '#00669f'; // color por defecto
                 }
 
                 const reservas = {
@@ -181,7 +165,7 @@ const CalendarGuardia = () => {
                 <section className='col-span-4 row-span-3'>
                     <div className='flex justify-center'>
                         <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
-                            <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Panel de reservas</h1>
+                            <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Asistencia de visitas</h1>
                             <div className='border-t-2 border-black '>
                                 <FullCalendar
                                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -233,25 +217,14 @@ const CalendarGuardia = () => {
                                                 label="Estado"
                                                 onChange={(e) => setNewStatus(e.target.value)}
                                             >
-                                                <MenuItem value="Aceptado">Aceptado</MenuItem>
-                                                <MenuItem value="Rechazado">Rechazado</MenuItem>
+                                                <MenuItem value="Asistio">Asistio</MenuItem>
+                                                <MenuItem value="No asistio">No asistio</MenuItem>
                                             </Select>
-                                            {
-                                                newStatus === 'Rechazado' &&
-                                                <TextField
-                                                    helperText={errorMotivo ? 'Este campo es obligatorio.' : ''}
-                                                    error={errorMotivo} className='mt-5'
-                                                    id="outlined-multiline-flexible"
-                                                    label="Motivo"
-                                                    multiline maxRows={4}
-                                                    value={motivo}
-                                                    onChange={(e) => { setMotivo(e.target.value); setErrorMotivo(false) }} />
-                                            }
                                         </FormControl>
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={handleCloseDialog}><span>Cancelar</span></Button>
-                                        <Button onClick={handleConfirmReserva} disabled={loading}>
+                                        <Button onClick={handleConfirmAsistencia} disabled={loading}>
                                             {loading ? <CircularProgress size={24} /> : <span>Confirmar</span>}
                                         </Button>
                                     </DialogActions>
@@ -264,11 +237,10 @@ const CalendarGuardia = () => {
                     <ResidenteSelect residentes={residentes} rutVinculado={rutVinculado} handleChange={handleChange} />
                 </section>
                 <section className='row-span-2 col-span-2'>
-                    <InfoGuardia />
                 </section>
             </div>
         </>
     );
 };
 
-export default CalendarGuardia;
+export default CalendarReservasAprobadas;
