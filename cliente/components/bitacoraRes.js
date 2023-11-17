@@ -5,7 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from '@fullcalendar/timegrid';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+
 import axios from 'axios';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,7 +25,6 @@ const CalendarioRes = () => {
     const searchParams = useSearchParams();
     if (searchParams.get('rut_res') !== null) {
         rut_residente = searchParams.get('rut_res');
-        console.log(rut_residente)
     }
 
     const [events, setEvents] = useState([]);
@@ -122,36 +121,35 @@ const CalendarioRes = () => {
     }
 
     return (
-        <div className='relative rounded-lg w-5/6 h-5/6 m-auto flex bg-white'>
-            <div className='relative rounded-lg w-full max-h-[95%] flex bg-white overflow-auto'>
-                <div className='w-full p-10 rounded-lg'>
-                <h1 className='text-3xl mb-4 flex justify-center'>Bitacora</h1>
-                    <FullCalendar
-                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                        initialView="timeGridWeek"
-                        headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay' }}
-                        weekends={true}
-                        events={events}
-                        selectable={true}
-                        selectMirror={true}
-                        dayMaxEvents={true}
-                        expandRows={true}
-                        dateClick={handleOpenDialog}
-                        slotDuration={'01:00:00'}
-                        slotLabelInterval={'01:00:00'}
-                        slotMinTime="06:00:00"
-                        slotMaxTime="20:00:00"
-                        locale={esLocale}
-                        slotLabelFormat={{
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            omitZeroMinute: false,
-                            meridiem: 'short'
-                          }}
-                        allDaySlot={false}
-                    />
-                </div>
-            </div>    
+        <div className='flex justify-center w-full h-full'>
+            <div className='w-full max-w-[85%] p-6 rounded-lg bg-white'>
+                <h1 className='text-3xl mb-2 flex justify-center'>Bitacora</h1>
+                <p className='pb-4'>Para ingresar información en la bitacora, presione la hora en la que quiere ingresar lo que ocurrio. Al guardar, se guardara la información y se mostrara en este calendario.</p>
+                <FullCalendar
+                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                    initialView="timeGridWeek"
+                    headerToolbar={{ left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay' }}
+                    weekends={true}
+                    events={events}
+                    selectable={true}
+                    selectMirror={true}
+                    dayMaxEvents={true}
+                    expandRows={true}
+                    dateClick={handleOpenDialog}
+                    slotDuration={'01:00:00'}
+                    slotLabelInterval={'01:00:00'}
+                    slotMinTime="06:00:00"
+                    slotMaxTime="20:00:00"
+                    locale={esLocale}
+                    slotLabelFormat={{
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: 'short'
+                    }}
+                    allDaySlot={false}
+                />
+            </div>
             <Dialog open={open} onClose={handleCloseDialog} id='1'>
                 <DialogTitle>Editar información del residente</DialogTitle>
                 <DialogContent>
@@ -163,7 +161,7 @@ const CalendarioRes = () => {
                     <TextField margin="dense" id="3" label="Hora de la bitacora" type="text" fullWidth variant="outlined" value={horaBitacora} onChange={(e) => setHoraBitacora(e.target.value)}
                     />
                     <TextField margin="dense" id="4" label="¿Qué ocurrio?" type="text" multiline rows={3} fullWidth variant="outlined" value={contenidoBitacora} onChange={(e) => setContenidoBitacora(e.target.value)}
-                    />              
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog}><span>Cancel</span></Button>

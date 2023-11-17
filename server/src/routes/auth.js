@@ -12,6 +12,7 @@ const authorized = require('../middleware/authorization.js');
 const router = Router();
 
 router.post('/register', async (req, res) => {
+    console.log(req.body);
 try {
     const { username, password, estado_user, tipo_user } = req.body;
 

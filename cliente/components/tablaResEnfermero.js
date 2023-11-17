@@ -5,6 +5,7 @@ import GoToFicha from './botonToRes.js';
 import axios from 'axios';
 import MUIDataTable from 'mui-datatables';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import Button from '@mui/material/Button';
 
 const TablaResidentesEnfermero = () => {
 
@@ -78,7 +79,7 @@ const TablaResidentesEnfermero = () => {
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <button onClick={handleOnClick(tableMeta.rowData[0])} className='border-2'>Clickaqui</button>
+              <Button variant="outlined" onClick={handleOnClick(tableMeta.rowData[0])}>Ver ficha</Button>
             );
         }
       }

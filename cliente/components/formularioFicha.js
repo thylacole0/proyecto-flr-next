@@ -128,7 +128,7 @@ const FormFicha = () => {
 
     return (
         <>
-            <div className="container flex pt-20 justify-center items-center">
+            <div className="container flex justify-center items-center">
                 <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-5/6">
                     <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ficha Residente</h2>
                     <Avatar

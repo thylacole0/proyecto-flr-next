@@ -61,7 +61,7 @@ const WeatherForecast = () => {
                             <img className="w-36" src={`http://openweathermap.org/img/w/${climaHoy[0].weather[0].icon}.png`} alt="" />
                         </div> */}
                         <div className='absolute bottom-5 left-5 flex flex-col items-start'>
-                            <span>Temperatura actual</span>
+                            <span>Temperatura mañana</span>
                             <h1 className='font-bold text-5xl'>{Math.round(climaHoy[0].main.temp)}°C</h1>
                         </div>
                     </div>

@@ -173,7 +173,7 @@ const CalendarReservas = () => {
         <div className='flex justify-center w-full h-full'>
             <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
                 <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Reserva de visitas</h1>
-                <div className='border-2 border-black rounded-md'>
+                <div className='border-t-2 border-black '>
                     <FullCalendar
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         headerToolbar={{

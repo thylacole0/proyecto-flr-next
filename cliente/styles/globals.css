@@ -6,3 +6,9 @@
     font-family: 'Nunito';
     src: url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap') format('truetype');
   }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}

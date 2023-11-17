@@ -1,26 +1,31 @@
-import React from 'react';
-import { authOptions } from '../api/auth/[...nextauth]/route.js';
+'use client'
+
+import React, { useEffect } from 'react';
 import RegisterPage from '../../components/registration.js';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import Navbar from '@/components/navbar.js';
 
+const RegistrationPage = () => {
+    const { data: session, status } = useSession();
 
-const RegistrationPage = async () => {
-
-    const session = await getServerSession(authOptions);
-    console.log(session)
-
-    if (session?.tipo_user === 'Administrador') {
-        console.log('Tienes acceso a esta página')
-    } else {
-        console.log('No tienes permisos para acceder a esta pagina')
-        redirect('/home_test')
-    }
+    useEffect(() => {
+        if (status === "authenticated") {
+            if (session.tipo_user !== 'Administrador') {
+                console.log('No tienes permisos para acceder a esta pagina')
+                redirect('/home_test')
+            } else {
+                console.log('Tienes acceso a esta página')
+            }
+        }
+    }, [session, status]);
 
     return (
+        <>
+        <Navbar />
         <div>
             <RegisterPage  />
         </div>
+        </>
     );
 };
 

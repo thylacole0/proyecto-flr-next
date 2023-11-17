@@ -87,9 +87,8 @@ const GuardiaForm = forwardRef((props, ref) => {
 
     return (
         <> 
-            <div className="container flex justify-center items-center overflow-auto">
-                <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Formulario de Ingreso de Guardia</h2>
+                <div className="pt-6 ">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ingrese la información del guardia</h2>
                     <div className="mb-4">
                         <label htmlFor="rutGuard" className="block text-gray-700 font-bold mb-2">RUT:</label>
                         <input type="text" id="rutGuard" name="rutGuard" value={rutGuard} onChange={(e) => setRutGuard(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
@@ -136,7 +135,6 @@ const GuardiaForm = forwardRef((props, ref) => {
                         <label htmlFor="fotoGuard" className="block text-gray-700 font-bold mb-2">Foto</label>
                         <input type="file" id="fotoGuard" name="fotoGuard" accept="image/*" onChange={(e) => setFotoGuard(e.target.files[0])} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                     </div>
-                </div>
                 </div>
         </>
     );

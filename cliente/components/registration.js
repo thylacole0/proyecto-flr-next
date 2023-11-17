@@ -16,6 +16,13 @@ import AlertTitle from '@mui/material/AlertTitle';
 import { redirect } from "next/navigation";
 import { set } from "react-hook-form";
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
 const StyledTextField = styled(TextField)({
     marginBottom: "1rem",
 });
@@ -42,6 +49,12 @@ const RegisterPage = () => {
     const [formErrors, setFormErrors] = useState({});
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [creacionUsuario, setCreacionUsuario] = useState('');
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+        location.reload();
+    };
 
     const [formData, setFormData] = useState({
         username: '',
@@ -58,6 +71,7 @@ const RegisterPage = () => {
             [name]: value,
         }));
     };
+    
     const guardiaFormRef = useRef();
     const nurseFormRef = useRef();
     const visitFormRef = useRef();
@@ -97,7 +111,7 @@ const RegisterPage = () => {
                     submitNewVisitante(response.data.user.user_id)
                 }
 
-                // window.location.href = "/home_test";
+                setOpen(true);
             }
             catch (error) {
                 console.error(error);
@@ -117,24 +131,13 @@ const RegisterPage = () => {
         }
     }
 
-    // async function submitNewNurse(usuarioId) {
-    //     const formDataNurse = nurseFormRef.current.getFormData();
-    //     try {
-    //         const { rutNurse, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse } = formDataNurse;
-    //         const body = { rutNurse, usuarioId, nombresNurse, apellidosNurse, correoNurse, fechaNacimientoNurse, celNurse, celauxNurse, fechaContratoNurse, contratoNurse, turnoNurse, especialidadNurse };
-    //         const response = await axios.post("http://localhost:8080/form_nurse", body);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
     async function submitNewNurse(usuarioId) {
 
         const formData2 = nurseFormRef.current.getFormData();
         formData2.usuarioId = usuarioId;
         try {
-            const formData = { ...nurseFormRef.current.getFormData(), ...formData2}
-        
+            const formData = { ...nurseFormRef.current.getFormData(), ...formData2 }
+
             // Crear una instancia de FormData
             const body = new FormData();
             // Agregar los datos al formulario
@@ -151,7 +154,7 @@ const RegisterPage = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -162,8 +165,8 @@ const RegisterPage = () => {
         const formData1 = guardiaFormRef.current.getFormData();
         formData1.usuarioId = usuarioId;
         try {
-            const formData = { ...guardiaFormRef.current.getFormData(), ...formData1}
-        
+            const formData = { ...guardiaFormRef.current.getFormData(), ...formData1 }
+
             // Crear una instancia de FormData
             const body = new FormData();
             // Agregar los datos al formulario
@@ -180,7 +183,7 @@ const RegisterPage = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -192,83 +195,103 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <div className="bg-white p-11 rounded shadow-md">
-                <h1 className="text-2xl font-bold mb-2 text-center">Registrar nuevo usuario</h1>
-                <form onSubmit={submitRegistration}>
-                    <div className="relative my-4">
-
-                        <StyledTextField
-                            className="w-full"
-                            label="Nombre de usuario"
-                            variant="outlined"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            error={!!formErrors.username}
-                            helperText={formErrors.username}
-                        />
-                    </div>
-                    <div className="relative my-2">
-                        <StyledTextField
-                            className="w-full"
-                            label="Contraseña"
-                            variant="outlined"
-                            name="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            error={!!formErrors.password}
-                            helperText={formErrors.password}
-                        />
-                    </div>
-                    <div className="relative my-4">
-                        <StyledTextField
-                            className="w-full"
-                            label="Confirmar contraseña"
-                            variant="outlined"
-                            name="confirmPassword"
-                            type="password"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            error={!!formErrors.confirmPassword}
-                            helperText={formErrors.confirmPassword}
-                        />
-                    </div>
-                    <div className="relative my-4">
-                        <TextField
-                            className="w-full"
-                            id="filled-select-currency"
-                            select
-                            label="Tipo de usuario"
-                            defaultValue=""
-                            helperText="Selecciona el tipo de usuario"
-                            onChange={handleInputChange}
-                            error={!!formErrors.tipo_user}
-                            name="tipo_user"
-                        >
-                            {tipo_usuario.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        {
-                            formData.tipo_user === 'Enfermero' ? <NurseForm ref={nurseFormRef}/> :
-                            formData.tipo_user === 'Visitante' ? <VisitForm ref={visitFormRef}/> :
-                            formData.tipo_user === 'Guardia' ? <GuardiaForm ref={guardiaFormRef}/> :
-                            null
-                        }
-
-                    </div>
-                    <Button type="submit" fullWidth className="w-full mb-4 text-[18px] mt-6 rounded-full bg-violet-900 text-white hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2">
-                        <span>Registrar usuario</span>
+        <>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Usuario creado"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        El usuario se ha creado correctamente.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary" autoFocus>
+                        OK
                     </Button>
+                </DialogActions>
+            </Dialog>
+            <div className="flex justify-center items-center">
+                <div className="bg-white p-11 rounded shadow-md w-[700px]">
+                    <h1 className="text-2xl font-bold mb-2 text-center">Registrar nuevo usuario</h1>
+                    <form onSubmit={submitRegistration}>
+                        <div className="relative my-4">
 
-                    <a href="/home_test" className="flex justify-end">Volver al inicio</a>
-                </form>
+                            <StyledTextField
+                                className="w-full"
+                                label="Nombre de usuario"
+                                variant="outlined"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleInputChange}
+                                error={!!formErrors.username}
+                                helperText={formErrors.username}
+                            />
+                        </div>
+                        <div className="relative my-2">
+                            <StyledTextField
+                                className="w-full"
+                                label="Contraseña"
+                                variant="outlined"
+                                name="password"
+                                type="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                error={!!formErrors.password}
+                                helperText={formErrors.password}
+                            />
+                        </div>
+                        <div className="relative my-4">
+                            <StyledTextField
+                                className="w-full"
+                                label="Confirmar contraseña"
+                                variant="outlined"
+                                name="confirmPassword"
+                                type="password"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                                error={!!formErrors.confirmPassword}
+                                helperText={formErrors.confirmPassword}
+                            />
+                        </div>
+                        <div className="relative my-4">
+                            <TextField
+                                className="w-full"
+                                id="filled-select-currency"
+                                select
+                                label="Tipo de usuario"
+                                defaultValue=""
+                                helperText="Selecciona el tipo de usuario"
+                                onChange={handleInputChange}
+                                error={!!formErrors.tipo_user}
+                                name="tipo_user"
+                            >
+                                {tipo_usuario.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            {
+                                formData.tipo_user === 'Enfermero' ? <NurseForm ref={nurseFormRef} /> :
+                                    formData.tipo_user === 'Visitante' ? <VisitForm ref={visitFormRef} /> :
+                                        formData.tipo_user === 'Guardia' ? <GuardiaForm ref={guardiaFormRef} /> :
+                                            null
+                            }
+
+                        </div>
+                        <Button type="submit" fullWidth className="w-full mb-4 text-[18px] mt-6 rounded-full bg-violet-900 text-white hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2">
+                            <span>Registrar usuario</span>
+                        </Button>
+
+                        <a href="/home_test" className="flex justify-end">Volver al inicio</a>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

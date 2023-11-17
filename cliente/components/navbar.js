@@ -123,91 +123,136 @@ const Navbar = () => {
                                     // add hover with tailwind
                                 )}
                                 {session && session.tipo_user === 'Administrador' && (
-
-                                    // add hover with tailwind
-                                    <Box sx={{ flexGrow: 0 }} className="group">
-                                        <Button className='rounded-lg p-2'>
-                                            <a href="/register" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
-                                                <span className="block px-1 pt-1 pb-2">
-                                                    <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
-                                                    <span className={`${nunito.className} block text-xs pb-1`}>{register}</span>
+                                    <>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button className='rounded-lg p-2'>
+                                                <a href="/register" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>{register}</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>{tablas}</span>
+                                                    </span>
                                                 </span>
-                                            </a>
-                                        </Button>
-                                    </Box>
-                                )}
-                                {session && session.tipo_user === 'Administrador' && (
-                                    <Box sx={{ flexGrow: 0 }} className="group">
-                                        <Button key={tablas} onClick={handleOpenTablas} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
-                                            <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
-                                                <span className="block px-1 pt-1 pb-2">
-                                                    <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
-                                                    <span className={`${nunito.className} block text-xs pb-1`}>{tablas}</span>
+                                            </Button>
+                                            <Menu
+                                                sx={{ mt: '45px' }}
+                                                id="menu-appbar"
+                                                anchorEl={anchorElTablas}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={Boolean(anchorElTablas)}
+                                                onClose={handleCloseTablas}
+                                            >
+                                                {tablitas.map((tablitas, i) => (
+                                                    <MenuItem key={i} onClick={handleCloseTablas}>
+                                                        <Link legacyBehavior href={tablitas.url}>
+                                                            <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{tablitas.name}</a>
+                                                        </Link>
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        </Box>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>{formularios}</span>
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </Button>
-                                        <Menu
-                                            sx={{ mt: '45px' }}
-                                            id="menu-appbar"
-                                            anchorEl={anchorElTablas}
-                                            anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            open={Boolean(anchorElTablas)}
-                                            onClose={handleCloseTablas}
-                                        >
-                                            {tablitas.map((tablitas, i) => (
-                                                <MenuItem key={i} onClick={handleCloseTablas}>
-                                                    <Link legacyBehavior href={tablitas.url}>
-                                                        <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{tablitas.name}</a>
-                                                    </Link>
-                                                </MenuItem>
-                                            ))}
-                                        </Menu>
-                                    </Box>
+                                            </Button>
+                                            <Menu
+                                                sx={{ mt: '45px' }}
+                                                id="menu-appbar"
+                                                anchorEl={anchorElUser}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={Boolean(anchorElUser)}
+                                                onClose={handleCloseUserMenu}
+                                            >
+                                                {pages.map((pages, i) => (
+                                                    <MenuItem key={i} onClick={handleCloseUserMenu}>
+                                                        <Link legacyBehavior href={pages.url}>
+                                                            <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{pages.name}</a>
+                                                        </Link>
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        </Box>
+                                    </>
                                 )}
-                                {session && session.tipo_user === 'Administrador' && (
-                                    <Box sx={{ flexGrow: 0 }} className="group">
-                                        <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
-                                            <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
-                                                <span className="block px-1 pt-1 pb-2">
-                                                    <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
-                                                    <span className={`${nunito.className} block text-xs pb-1`}>{formularios}</span>
-                                                </span>
-                                            </span>
-                                        </Button>
-                                        <Menu
-                                            sx={{ mt: '45px' }}
-                                            id="menu-appbar"
-                                            anchorEl={anchorElUser}
-                                            anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            open={Boolean(anchorElUser)}
-                                            onClose={handleCloseUserMenu}
-                                        >
-                                            {pages.map((pages, i) => (
-                                                <MenuItem key={i} onClick={handleCloseUserMenu}>
-                                                    <Link legacyBehavior href={pages.url}>
-                                                        <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{pages.name}</a>
-                                                    </Link>
-                                                </MenuItem>
-                                            ))}
-                                        </Menu>
-                                    </Box>
+                                {session && session.tipo_user === 'Enfermero' && (
+                                    <>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <a href="/tablaResEnfer" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Fichas de residentes</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <a href="/tablaResEnfer" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Calendario de visitas</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                    </>
                                 )}
+                                {session && session.tipo_user === 'Guardia' && (
+                                    <>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <a href="/guardiareservas" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Solicitudes de reserva</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                        <Box sx={{ flexGrow: 0 }} className="group">
+                                            <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
+                                                <a href="/home_test" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                    <span className="block px-1 pt-1 pb-2">
+                                                        <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Inicio</span>
+                                                    </span>
+                                                </a>
+                                            </Button>
+                                        </Box>
+                                    </>
+                                )}
+                                
                                 <Box sx={{ flexGrow: 0 }} className="group">
                                     <Button key={session?.user} onClick={handleOpenLogout} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
                                         <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
