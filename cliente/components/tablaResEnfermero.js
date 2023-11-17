@@ -2,6 +2,8 @@
 import React, { useEffect, useState} from 'react';
 import styles from './tablaRes.module.css';
 import GoToFicha from './botonToRes.js';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 import MUIDataTable from 'mui-datatables';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
@@ -79,7 +81,12 @@ const TablaResidentesEnfermero = () => {
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <Button variant="outlined" onClick={handleOnClick(tableMeta.rowData[0])}>Ver ficha</Button>
+              <div className="flex justify-center">
+                <IconButton aria-label="ficha" onClick={handleOnClick(tableMeta.rowData[0])} className="text-black" >
+                  <AssignmentIndIcon />
+                </IconButton>
+              </div>
+              
             );
         }
       }

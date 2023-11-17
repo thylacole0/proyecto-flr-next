@@ -47,7 +47,7 @@ const HomeTest = () => {
                 </Card>
         </div>
         <div className={styles.Boton + "w-9/10"}>
-          {tipo_user === 'Administrador' && <BotonesHomeEnfer className="shadow rounded-md h-auto m-5 mr-5" />}
+          {tipo_user === 'Enfermero' && <BotonesHomeEnfer className="shadow rounded-md h-auto m-5 mr-5" />}
         </div>
       </section>
       

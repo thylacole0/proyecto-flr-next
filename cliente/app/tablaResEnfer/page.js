@@ -1,14 +1,19 @@
+"use client";
 import TablaResidentesEnfermero from '../../components/tablaResEnfermero.js';
 import styles from '../residentes/residentes.module.css';
+import Navbar from '../../components/navbar';
 
 
 const ResidentesToEnfermero = () => {
     return (
-        <> 
-        <section>
-            <TablaResidentesEnfermero />
-        </section>
-        </>
+        <div>
+            <Navbar />
+            <section>
+                <TablaResidentesEnfermero />
+            </section>
+        </div>
+        
+        
     )
 };
 

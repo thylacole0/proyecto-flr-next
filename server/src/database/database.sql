@@ -10,17 +10,6 @@ CREATE TABLE users(
     estado_user BOOLEAN NOT NULL,
     tipo_user VARCHAR(255) NOT NULL,
 );
--- CREATE TABLE VISITANTE
-CREATE TABLE visitante(
-    rut VARCHAR(50) NOT NULL PRIMARY KEY,
-    user_id VARCHAR(255) REFERENCES users(user_id),
-    nombres_vis VARCHAR(200) NOT NULL,
-    apes_vis VARCHAR(200) NOT NULL,
-    email_vis VARCHAR(200) NOT NULL,
-    telefono_vis NUMERIC(9) NOT NULL,
-    direccion_vis VARCHAR(200) NOT NULL,
-    rut_residente VARCHAR(12) NOT NULL
-);
 
 -- CREATE TABLE FUNDACION
 CREATE TABLE fundacion(
@@ -29,9 +18,21 @@ CREATE TABLE fundacion(
     primary key (id_fundacion)
 );
 
+-- CREATE TABLE VISITANTE
+CREATE TABLE visitante(
+    rut VARCHAR(13) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(user_id),
+    nombres_vis VARCHAR(200) NOT NULL,
+    apes_vis VARCHAR(200) NOT NULL,
+    email_vis VARCHAR(200) NOT NULL,
+    telefono_vis NUMERIC(9) NOT NULL,
+    direccion_vis VARCHAR(200) NOT NULL,
+    rut_residente VARCHAR(13) NOT NULL
+);
+
 -- CREATE TABLE RESIDENTE
 CREATE TABLE residente(
-    rut_res VARCHAR(12) NOT NULL PRIMARY KEY,
+    rut_res VARCHAR(13) NOT NULL PRIMARY KEY,
     nombres_res VARCHAR(200) NOT NULL,
     apes_res VARCHAR(200) NOT NULL,
     genero_res VARCHAR(10) NOT NULL,
@@ -54,7 +55,7 @@ CREATE TABLE residente(
 );
 -- CREATE TABLE GUARDIA
 CREATE TABLE guardia(
-    rut_guardia VARCHAR(12) NOT NULL PRIMARY KEY,
+    rut_guardia VARCHAR(13) NOT NULL PRIMARY KEY,
     user_id VARCHAR(255) REFERENCES users(user_id),
     nombres_guardia VARCHAR(200) NOT NULL,
     apes_guardia VARCHAR(200) NOT NULL,
@@ -64,11 +65,11 @@ CREATE TABLE guardia(
     tipo_contrato_guardia VARCHAR(20) NOT NULL,
     fecha_nac_guardia DATE NOT NULL,
     fecha_contrato_guardia DATE NOT NULL,
-    foto_guardia VARCHAR(200) not null
+    foto_guardia VARCHAR(300) 
 );
 -- CREATE TABLE ENFERMERO
 CREATE TABLE enfermero(
-    rut_enfer VARCHAR(12) NOT NULL PRIMARY KEY,
+    rut_enfer VARCHAR(13) NOT NULL PRIMARY KEY,
     user_id VARCHAR(255) REFERENCES users(user_id),
     nombres_enfer VARCHAR(200) NOT NULL,
     apes_enfer VARCHAR(200) NOT NULL,
@@ -113,57 +114,42 @@ CREATE TABLE reserva (
 
 insert into fundacion(nombre_fundacion) values ('Fundacion Las Rosas');
 
-INSERT INTO guardia (rut_guardia, nombres_guardia, apes_guardia, correo_guardia, cel_guardia, celaux_guardia, tipo_contrato_guardia, fecha_nac_guardia, fecha_contrato_guardia)
-VALUES
-  ('12.345.343-4', 'Juan', 'Pérez', 'juan.perez@email.com', 123456789, 987654321, 'Completo', '1990-05-15', '2022-03-10'),
-  ('23.456.890-1', 'María', 'Gómez', 'maria.gomez@email.com', 987654321, 123456789, 'Part-Time', '1985-10-20', '2022-06-25'),
-  ('34.568.901-2', 'Carlos', 'López', 'carlos.lopez@email.com', 555555555, 111111111, 'Completo', '1995-02-18', '2022-09-30'),
-  ('45.678.901-3', 'Laura', 'Rodríguez', 'laura.rodriguez@email.com', 999888777, 222333444, 'Part-Time', '1988-07-04', '2022-11-05'),
-  ('56.789.012-4', 'Pedro', 'García', 'pedro.garcia@email.com', 123456789, 987654321, 'Completo', '1991-05-15', '2022-03-10'),
-  ('67.890.123-5', 'Sofía', 'Martínez', 'sofia.martinez@email.com', 987654321, 123456789, 'Part-Time', '1986-10-20', '2022-06-25'),
-  ('78.901.234-6', 'Jorge', 'López', 'jorge.lopez@email.com', 555555555, 111111111, 'Completo', '1994-02-18', '2022-09-30'),
-  ('89.012.345-7', 'Luis', 'Rodríguez', 'luis.rodriguez@email.com', 999888777, 222333444, 'Part-Time', '1987-07-04', '2022-11-05'),
-  ('90.123.456-8', 'Ana', 'Pérez', 'ana.perez@email.com', 123456789, 987654321, 'Completo', '1992-05-15', '2022-03-10'),
-  ('01.234.567-9', 'Carla', 'Gómez', 'carla.gomez@email.com', 987654321, 123456789, 'Part-Time', '1987-10-20', '2022-06-25');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('enfermero01', '12345678', true, 'Enfermero');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('enfermero02', '12345678', true, 'Enfermero');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('enfermero03', '12345678', true, 'Enfermero');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('enfermero04', '12345678', true, 'Enfermero');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('enfermero05', '12345678', true, 'Enfermero');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('guardia01', '12345678', true, 'Guardia');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('guardia02', '12345678', true, 'Guardia');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('guardia03', '12345678', true, 'Guardia');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('guardia04', '12345678', true, 'Guardia');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('guardia05', '12345678', true, 'Guardia');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('visitante01', '12345678', true, 'Visitante');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('visitante02', '12345678', true, 'Visitante');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('visitante03', '12345678', true, 'Visitante');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('visitante04', '12345678', true, 'Visitante');
+INSERT INTO users (username, password, estado_user, tipo_user) VALUES ('visitante05', '12345678', true, 'Visitante');
 
-INSERT INTO enfermero (rut_enfer, nombres_enfer, apes_enfer, correo_enfer, cel_enfer, celaux_enfer, tipo_contrato_enfer, fecha_nac_enfer, fecha_contrato_enfer, turno_enfer, especialidad_enfer)
-VALUES
-  ('12.345.678-0', 'Ana', 'López', 'ana.lopez@email.com', 123456789, 987654321, 'Completo', '1990-08-25', '2022-03-15', 'Mañana', 'General'),
-  ('23.456.789-1', 'Pedro', 'Martínez', 'pedro.martinez@email.com', 987654321, 123456789, 'Part-Time', '1988-11-15', '2022-05-20', 'Tarde', 'Pediatría'),
-  ('34.567.901-2', 'María', 'García', 'maria.garcia@email.com', 555555555, 111111111, 'Completo', '1995-06-10', '2022-09-30', 'Noche', 'Geriatría'),
-  ('45.678.901-2', 'Carlos', 'Rodríguez', 'carlos.rodriguez@email.com', 999888777, 222333444, 'Part-Time', '1985-03-30', '2022-10-10', 'Mañana', 'Cardiología'),
-  ('12.345.678-1', 'Luis', 'González', 'luis.gonzalez@email.com', 123456789, 987654321, 'Completo', '1992-05-15', '2022-03-15', 'Mañana', 'General'),
-  ('23.456.789-2', 'Marcela', 'Pérez', 'marcela.perez@email.com', 987654321, 123456789, 'Part-Time', '1989-11-15', '2022-05-20', 'Tarde', 'Pediatría'),
-  ('34.567.890-3', 'Jorge', 'García', 'jorge.garcia@email.com', 555555555, 111111111, 'Completo', '1993-06-10', '2022-09-30', 'Noche', 'Geriatría'),
-  ('45.678.901-4', 'Sofía', 'Rodríguez', 'sofia.rodriguez@email.com', 999888777, 222333444, 'Part-Time', '1987-03-30', '2022-10-10', 'Mañana', 'Cardiología'),
-  ('12.345.678-2', 'Diego', 'López', 'diego.lopez@email.com', 123456789, 987654321, 'Completo', '1991-05-15', '2022-03-15', 'Mañana', 'General'),
-  ('23.456.789-3', 'Carla', 'Martínez', 'carla.martinez@email.com', 987654321, 123456789, 'Part-Time', '1986-11-15', '2022-05-20', 'Tarde', 'Pediatría');
+INSERT INTO enfermero VALUES ('12.345.678.-1','f8d42d67-6e0c-441e-93c4-9ddb2c88c5cd','Juan Antonio','Pérez Mujica','juan.perez@example.com',555123456,555789012,'Completo','1990-05-15','2022-01-01','Noche','Cuidados Intensivos','src\uploads\images\enfermero_1.jpg');
+INSERT INTO enfermero VALUES ('15.678.912.-3','7be706e5-7f59-419f-b0ad-c239adaa954c','Pedro Luis','Martinez Ruiz','pedro.martinez@example.com',555123465,555789021,'Part-Time','1991-06-16','2022-01-02','Dia','Cuidados Paliativos','src\uploads\images\enfermero_2.jpg');
+INSERT INTO enfermero VALUES ('17.891.234.-5','5fb0fd68-0ef8-4286-a4ef-eb1478c33624','Carmen Rosa','Vargas Silva','carmen.vargas@example.com',555123466,555789022,'Completo','1992-07-17','2022-01-03','Noche','Cirugia','src\uploads\images\enfermero_3.jpg');
+INSERT INTO enfermero VALUES ('19.234.567.-7','f4b2a501-5028-41bc-9cc2-fb26d60cbd82','Ricardo Jose','Fernandez Castro','ricardo.fernandez@example.com',555123467,555789023,'Completo','1993-08-18','2022-01-04','Dia','Pediatría','src\uploads\images\enfermero_4.jpg');
+INSERT INTO enfermero VALUES ('21.345.678.-9','7bc8cc85-078c-4043-8093-ee252d1741ae','Luisa Maria','Gonzalez Perez','luisa.gonzalez@example.com',555123468,555789024,'Practicante','1994-09-19','2022-01-05','Tarde','Geriatría','src\uploads\images\enfermero_5.jpg');
 
-INSERT INTO visitante (rut, nombres_vis, apes_vis, email_vis, telefono_vis, direccion_vis, rut_residente)
-VALUES
-  ('12.345.789-0', 'María Rodríguez', 'López', 'maria@email.com', 909987654, 'Calle Principal 123, Ciudad Capital', 'residente001'),
-  ('98.654.321-2', 'Juan Pérez', 'González', 'juan@email.com', 912345678, 'Avenida Central 456, Ciudad Grande', 'residente002'),
-  ('33.222.111-4', 'Luisa Fernández', 'Martínez', 'luisa@email.com', 976597659, 'Calle Secundaria 789, Ciudad Pequeña', 'residente003'),
-  ('12.345.789-1', 'Pedro González', 'López', 'pedro@email.com', 909987654, 'Calle Principal 123, Ciudad Capital', 'residente001'),
-  ('98.654.321-3', 'Ana Sánchez', 'González', 'ana@email.com', 912345678, 'Avenida Central 456, Ciudad Grande', 'residente002'),
-  ('11.222.333-4', 'Carlos Gómez', 'Hernández', 'carlos@email.com', 976597659, 'Calle Secundaria 789, Ciudad Pequeña', 'residente003'),
-  ('99.888.777-6', 'Fernanda López', 'García', 'fernanda@email.com', 909987654, 'Calle Principal 123, Ciudad Capital', 'residente001'),
-  ('44.555.666-7', 'Jorge Martínez', 'Pérez', 'jorge@email.com', 912345678, 'Avenida Central 456, Ciudad Grande', 'residente002'),
-  ('33.444.555-6', 'Marta González', 'Sánchez', 'marta@email.com', 976597659, 'Calle Secundaria 789, Ciudad Pequeña', 'residente003'),
-  ('22.333.444-5', 'Pedro Sánchez', 'González', 'pedro@email.com', 909987654, 'Calle Principal 123, Ciudad Capital', 'residente001');
+INSERT INTO guardia VALUES ('23.456.789.-1', 'ed85618b-c8bb-47d8-84c5-0624c336929a', 'Juan Carlos', 'Lopez Garcia', 'juan.lopez@example.com', 555123469, 555789025, 'Completo', '1995-10-20', '2022-01-06', 'src\uploads\images\guardia_1.jpg');
+INSERT INTO guardia VALUES ('25.678.912.-3', 'e45a23c2-5065-4eef-ab1e-3eaffc6eab4f', 'Maria Teresa', 'Gomez Rodriguez', 'maria.gomez@example.com', 555123470, 555789026, 'Part-Time', '1996-11-21', '2022-01-07', 'src\uploads\images\guardia_2.jpg');
+INSERT INTO guardia VALUES ('27.891.234.-5', '0c6ea7ff-64ff-45b3-a739-d0dce45c4b4c', 'Carlos Enrique', 'Vargas Silva', 'carlos.vargas@example.com', 555123471, 555789027, 'Completo', '1997-12-22', '2022-01-08', 'src\uploads\images\guardia_3.jpg');
+INSERT INTO guardia VALUES ('29.123.456.-7', '8da82f47-d046-46f4-892a-4d61e503a2d7', 'Ana Patricia', 'Fernandez Castro', 'ana.fernandez@example.com', 555123472, 555789028, 'Part-Time', '1998-01-23', '2022-01-09', 'src\uploads\images\guardia_4.jpg');
+INSERT INTO guardia VALUES ('31.234.567.-9', '6525f857-0b71-449e-9a4b-d3b2e9452242', 'Luis Fernando', 'Gonzalez Perez', 'luis.gonzalez@example.com', 555123473, 555789029, 'Completo', '1999-02-24', '2022-01-10', 'src\uploads\images\guardia_5.jpg');
 
-INSERT INTO residente (rut_res, nombres_res, apes_res, genero_res, nacion_res, direccion_res, estadocivil_res, fecha_nac_res, fecha_ingreso_res, sis_prevision_res, tipo_sangre_res, enfermedad_cronica_res, desc_enfermedad_res, discapacidad_res, desc_discapacidad_res, alergias_res, desc_alergias_res, medicamentos_res, id_fundacion)
-VALUES
-  ('12.345.678-0', 'María', 'Rodríguez', 'Femenino', 'Chilena', 'Calle Principal 123, Ciudad Capital', 'Soltero', '1990-05-15', '2022-01-10', 'Fonasa', 'A+', false, NULL, false, NULL, false, NULL, 'Ibuprofeno', 1),
-  ('98.765.432-2', 'Juan', 'Pérez', 'Masculino', 'Chileno', 'Avenida Central 456, Ciudad Grande', 'Casado', '1985-08-22', '2022-01-10', 'Isapre', 'B-', true, 'Diabetes Tipo 2', false, NULL, true, 'Alergia al polen', 'Metformina', 1),
-  ('33.322.211-4', 'Luisa', 'Fernández', 'Femenino', 'Chilena', 'Calle Secundaria 789, Ciudad Pequeña', 'Soltero', '1995-03-10', '2022-01-10', 'Fonasa', 'O+', false, NULL, true, 'Silla de ruedas', true, 'Alergia al maní', 'Ninguno', 1),
-  ('12.345.678-1', 'Pedro', 'González', 'Masculino', 'Chileno', 'Calle Principal 123, Ciudad Capital', 'Casado', '1980-05-15', '2022-01-10', 'Fonasa', 'A+', false, NULL, false, NULL, false, NULL, 'Paracetamol', 1),
+INSERT INTO residente VALUES ('33.456.789.-1', 'Augusto Salvador', 'Ramirez Gonzalez', 'Masculino', 'Chile', 'Calle Falsa 123', 'Soltero', '1945-10-20', '2022-01-06', 'FONASA', 'O+', false, null, false, null, true, 'Polen', 'Paracetamol', 'src\uploads\images\residente_1.jpg', 1);
+INSERT INTO residente VALUES ('35.678.912.-3', 'Petronila Fernanda', 'Vicuña Menotti', 'Femenino', 'Chile', 'Calle Falsa 124', 'Casado', '1950-11-21', '2022-01-07', 'ISAPRE', 'A-', true, 'Diabetes', false, null, false, null, 'Insulina', 'src\uploads\images\residente_2.jpg', 1);
+INSERT INTO residente VALUES ('37.891.234.-5', 'Diego Armando', 'Maradona Rubio', 'Masculino', 'Chile', 'Calle Falsa 125', 'Viudo', '1955-12-22', '2022-01-08', 'FONASA', 'B+', false, null, true, 'Movilidad reducida', true, 'Clonazepam', 'Ibuprofeno', 'src\uploads\images\residente_3.jpg', 1);
+INSERT INTO residente VALUES ('39.123.456.-7', 'Violeta Del Carmen', 'Musri Leighton', 'Femenino', 'Chile', 'Calle Falsa 126', 'Separado', '1935-01-23', '2022-01-09', 'ISAPRE', 'AB-', true, 'Hipertensión', true, 'Visual', false, null, 'Losartan', 'src\uploads\images\residente_4.jpg', 1);
+INSERT INTO residente VALUES ('41.234.567.-9', 'Felipe Sebastan', 'Araos Peña', 'Masculino', 'Chile', 'Calle Falsa 127', 'Casado', '1930-02-24', '2022-01-10', 'FONASA', 'O-', false, null, false, null, true, 'Lactosa', 'Lactase', 'src\uploads\images\residente_5.jpg', 1);
 
-  -- SELECTS DE PRUEBA
-
-  SELECT * FROM guardia;
-  SELECT * FROM enfermero;
-  SELECT * FROM visitante;
-  SELECT * FROM residente;
-  SELECT * FROM fundacion;
-  SELECT * FROM users
+INSERT INTO visitante VALUES ('53.456.789.-1', '5cfe21da-1b51-4a09-8193-53b937ff9c5c', 'Roberto Alejandro', 'Perez Sanchez', 'roberto.perez@example.com', 555123479, 'Calle Falsa 133', '33.456.789.-1');
+INSERT INTO visitante VALUES ('55.678.912.-3', '7dc8da0d-4253-42ab-af4b-8d90ccf04c6a', 'Patricia Isabel', 'Gonzalez Morales', 'patricia.gonzalez@example.com', 555123480, 'Calle Falsa 134', '35.678.912.-3');
+INSERT INTO visitante VALUES ('57.891.234.-5', '06a4040e-1f21-4e73-88c8-11c97bd3cf5e', 'Enrique Manuel', 'Rodriguez Fernandez', 'enrique.rodriguez@example.com', 555123481, 'Calle Falsa 135', '37.891.234.-5');
+INSERT INTO visitante VALUES ('59.123.456.-7', '9db676d7-a7be-47e2-b870-1cd09f375a5a', 'Isabel Maria', 'Morales Gomez', 'isabel.morales@example.com', 555123482, 'Calle Falsa 136', '39.123.456.-7');
+INSERT INTO visitante VALUES ('61.234.567.-9', '79a98043-0bb7-4a7e-9163-778fec2e1c08', 'Manuel Antonio', 'Fernandez Perez', 'manuel.fernandez@example.com', 555123483, 'Calle Falsa 137', '41.234.567.-9');
