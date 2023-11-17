@@ -14,13 +14,19 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 const images = [
     {
         url: '/boton_reservas_guardia.png',
-        title: 'Calendario de Visitas',
+        title: 'Usuarios registrados',
         width: '100%',
         link: '/guardiareservas'
     },
     {
         url: '/confirmar_asistencia_buton.jpg',
-        title: 'Confirmar Asistencia',
+        title: 'Registrar usuarios',
+        width: '100%',
+        link: '/reservasAprobadas'
+    },
+    {
+        url: '/confirmar_asistencia_buton.jpg',
+        title: 'Ver reservas',
         width: '100%',
         link: '/reservasAprobadas'
     },
@@ -90,9 +96,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
     transition: theme.transitions.create('opacity'),
 }));
 
-
-const BotonesHomeGuardia = () => {
-
+const AdminPage = () => {
     const pathname = usePathname()
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -136,6 +140,6 @@ const BotonesHomeGuardia = () => {
             ))}
         </div>
     );
-};
+}
 
-export default BotonesHomeGuardia;
+export default AdminPage

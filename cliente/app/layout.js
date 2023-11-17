@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={styles.body}>
+      <body className='bg-gray-200'>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
