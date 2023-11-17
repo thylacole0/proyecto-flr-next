@@ -7,6 +7,7 @@ import Navbar from '../../components/navbar';
 import { useSession } from 'next-auth/react';
 import { Box, Container, Grid, Card, CardMedia, CardContent, Typography} from '@mui/material';
 import BotonesHomeEnfer from '../../components/botonesHomeEnfermero.js';
+import BotonesHomeGuardia from '../../components/botonesHomeGuardia.js';
 import styles from '../home_test/home_test.module.css'
 
 
@@ -48,6 +49,7 @@ const HomeTest = () => {
         </div>
         <div className={styles.Boton + "w-9/10"}>
           {tipo_user === 'Enfermero' && <BotonesHomeEnfer className="shadow rounded-md h-auto m-5 mr-5" />}
+          {tipo_user === 'Guardia' && <BotonesHomeGuardia className="shadow rounded-md h-50 m-5 mr-5" />}
         </div>
       </section>
       
