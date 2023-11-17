@@ -26,8 +26,8 @@ const nunito = Nunito({
 
 
 // const pages = ['Guardia', 'Enfermero', 'Residente', 'Visitante'];
-const pages = [{ name: 'Guardia', url: '/form_guardia' }, { name: 'Enfermero', url: '/form_nurse' }, { name: 'Residente', url: '/form_residente' }, { name: 'Visitante', url: '/form_visitante' }]
-const tablitas = [{ name: 'Guardia', url: '/guardias' }, { name: 'Enfermero', url: '/enfermeros' }, { name: 'Residente', url: '/residentes' }, { name: 'Visitante', url: '/visitantes' }]
+const pages = [{ name: 'Guardias', url: '/form_guardia' }, { name: 'Enfermeros', url: '/form_nurse' }, { name: 'Residentes', url: '/form_residente' }, { name: 'Visitantes', url: '/form_visitante' }]
+const tablitas = [{ name: 'Guardias', url: '/guardias' }, { name: 'Enfermeros', url: '/enfermeros' }, { name: 'Residentes', url: '/residentes' }, { name: 'Visitantes', url: '/visitantes' }]
 const deslogueo = [{ name: 'Cerrar sesión', url: '/login' }]
 const formularios = ['Formularios']
 const tablas = ['Tablas']
@@ -139,7 +139,7 @@ const Navbar = () => {
                                                 <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
                                                     <span className="block px-1 pt-1 pb-2">
                                                         <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
-                                                        <span className={`${nunito.className} block text-xs pb-1`}>{tablas}</span>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Usuarios</span>
                                                     </span>
                                                 </span>
                                             </Button>
@@ -168,39 +168,16 @@ const Navbar = () => {
                                                 ))}
                                             </Menu>
                                         </Box>
+
                                         <Box sx={{ flexGrow: 0 }} className="group">
                                             <Button key={formularios} onClick={handleOpenUserMenu} sx={{ my: 2, color: 'white', display: 'block' }} className='rounded-lg p-2'>
-                                                <span className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
+                                                <a href="/guardiareservas" className="flex items-end justify-center text-center mx-auto pt-2 w-full text-zinc-300 group-hover:text-white border-b-2 border-transparent group-hover:border-white">
                                                     <span className="block px-1 pt-1 pb-2">
                                                         <i className="far fa-home text-2xl pt-1 mb-1 block"></i>
-                                                        <span className={`${nunito.className} block text-xs pb-1`}>{formularios}</span>
+                                                        <span className={`${nunito.className} block text-xs pb-1`}>Todas las reservas</span>
                                                     </span>
-                                                </span>
+                                                </a>
                                             </Button>
-                                            <Menu
-                                                sx={{ mt: '45px' }}
-                                                id="menu-appbar"
-                                                anchorEl={anchorElUser}
-                                                anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'right',
-                                                }}
-                                                keepMounted
-                                                transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'right',
-                                                }}
-                                                open={Boolean(anchorElUser)}
-                                                onClose={handleCloseUserMenu}
-                                            >
-                                                {pages.map((pages, i) => (
-                                                    <MenuItem key={i} onClick={handleCloseUserMenu}>
-                                                        <Link legacyBehavior href={pages.url}>
-                                                            <a className="flex items-end justify-center text-center mx-auto p-1 w-full text-black group-hover:text-indigo-500 border-b-2 border-transparent group-hover:border-indigo-500">{pages.name}</a>
-                                                        </Link>
-                                                    </MenuItem>
-                                                ))}
-                                            </Menu>
                                         </Box>
                                     </>
                                 )}

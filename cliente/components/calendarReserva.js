@@ -219,7 +219,7 @@ const CalendarReservas = () => {
                         <DialogTitle>Error</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                No puedes reservar para el día actual ni los dos días siguientes.
+                                Debes hacer una reserva con 2 dias de anticipación.
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

@@ -86,8 +86,7 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
     return (
         <div className="items-center">
             <Stack direction="row" spacing={2}>
-                <Button onClick={handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
-                     <span>Editar</span>
+                <Button onClick={handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} className='rounded-3xl'>
                 </Button>
                 <Dialog open={open} onClose={handleCloseDialog} id={`id${residente.rut_res}`}>
                     <DialogTitle>Editar información del residente</DialogTitle>
@@ -119,9 +118,7 @@ const BotonesCrud = ({ handleDeleteRow, residente }) => {
                         <Button onClick={(e) => { modificarDatosResidente(e); handleCloseDialog(); reload()}}><span>Editar</span></Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={handleDeleteRow} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
-                    <span>Eliminar</span>
-                </Button>
+
             </Stack>
         </div>
     );

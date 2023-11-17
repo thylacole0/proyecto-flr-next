@@ -8,6 +8,9 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import e from 'cors';
 import { useSession, getSession } from 'next-auth/react'
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+
 
 const Login = () => {
 
@@ -15,7 +18,8 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const { data: session, status} = useSession()
     const router = useRouter();
-    
+    const [error, setError] = useState(null);
+
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -29,6 +33,7 @@ const Login = () => {
 
             if (res.error) {
                 console.log('credenciales incorrectas')
+                setError(true)
                 return;
             }
             router.push('/home_test');
@@ -62,7 +67,7 @@ const Login = () => {
                                         id="username"
                                         name="username"
                                         className="block w-72 py-2.3 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer"
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        onChange={(e) => (setUsername(e.target.value), setError(false))}
                                     />
                                 </div>
                                 <div className="container">
@@ -79,9 +84,12 @@ const Login = () => {
                                         id="password"
                                         name="password"
                                         className="block w-72 py-2.3 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer"
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => (setPassword(e.target.value), setError(false))}
                                     />
                                 </div>
+                                <Alert hidden={!error} variant="filled" severity="error" >
+                                    ¡Usuario o contraseña no validos!
+                                </Alert>
                                 <button
                                     className="w-full mb-4 text-[18px] mt-6 rounded-full bg-white text-blue-900 hover:bg-blue-900 hover:text-white py-2.3 transition-color duration-300 py-2 border-slate-100 border-2"
                                 >

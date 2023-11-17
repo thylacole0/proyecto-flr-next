@@ -5,20 +5,19 @@ import BotonesCrud from './botonesCrud.js';
 import BotonAdd from './botonAgregar';
 import axios from 'axios';
 import MUIDataTable from 'mui-datatables';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import IconButton from '@mui/material/IconButton';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
 const TablaResidentes = () => {
 
   const [residentes, setResidentes] = useState([]);
+  const router = useRouter();
+  const handleOnClick = (rut_res) => () => {
+    router.push(`/ficha_residente?rut_res=${rut_res}`);
+  }
   
-  const handleDeleteRow = (rut_res) => {
-    try {
-      const response = axios.delete(`http://localhost:8080/allresidentes/${rut_res}`);
-      setResidentes(residentes.filter((residente) => residente.rut_res !== rut_res))
 
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getResidentes = async () => {
 
@@ -83,7 +82,15 @@ const TablaResidentes = () => {
         customBodyRender: (value, tableMeta, updateValue) => {
           console.log(tableMeta.rowData[0])
           return (
-            <BotonesCrud handleDeleteRow={() => handleDeleteRow(tableMeta.rowData[0])} residente={tableMeta.rowData}/>
+            <>
+              <div className="flex justify-center">
+              <BotonesCrud residente={tableMeta.rowData}/>
+              <IconButton aria-label="ficha" onClick={handleOnClick(tableMeta.rowData[0])} className="text-black" >
+                <AssignmentIndIcon />
+              </IconButton>
+            </div>
+
+            </>
           )
         }
       }

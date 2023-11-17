@@ -86,7 +86,6 @@ const TablaResidentesEnfermero = () => {
                   <AssignmentIndIcon />
                 </IconButton>
               </div>
-              
             );
         }
       }

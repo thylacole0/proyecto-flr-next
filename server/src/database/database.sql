@@ -8,8 +8,8 @@ CREATE TABLE users(
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     estado_user BOOLEAN NOT NULL,
-    tipo_user VARCHAR(255) NOT NULL,
-);
+    tipo_user VARCHAR(255) NOT NULL
+)
 
 -- CREATE TABLE FUNDACION
 CREATE TABLE fundacion(
@@ -20,19 +20,19 @@ CREATE TABLE fundacion(
 
 -- CREATE TABLE VISITANTE
 CREATE TABLE visitante(
-    rut VARCHAR(13) NOT NULL PRIMARY KEY,
-    user_id VARCHAR(255) REFERENCES users(user_id),
+    rut_vis VARCHAR(50) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(200) REFERENCES users(user_id),
     nombres_vis VARCHAR(200) NOT NULL,
     apes_vis VARCHAR(200) NOT NULL,
     email_vis VARCHAR(200) NOT NULL,
     telefono_vis NUMERIC(9) NOT NULL,
     direccion_vis VARCHAR(200) NOT NULL,
-    rut_residente VARCHAR(13) NOT NULL
+    rut_res VARCHAR(12)  REFERENCES residente(rut_res)
 );
 
 -- CREATE TABLE RESIDENTE
 CREATE TABLE residente(
-    rut_res VARCHAR(13) NOT NULL PRIMARY KEY,
+    rut_res VARCHAR(12) NOT NULL PRIMARY KEY,
     nombres_res VARCHAR(200) NOT NULL,
     apes_res VARCHAR(200) NOT NULL,
     genero_res VARCHAR(10) NOT NULL,
@@ -105,9 +105,10 @@ CREATE TABLE reserva (
     fecha_reserva DATE NOT NULL,
     hora_reserva TIME NOT NULL,
     estado_reserva VARCHAR(255) NOT NULL,
-    rut_vis VARCHAR(12) REFERENCES Visitante(rut_vis),
-    rut_res VARCHAR(12) REFERENCES Residente(rut_res)
+    rut_vis VARCHAR(12) REFERENCES visitante(rut_vis),
+    rut_res VARCHAR(12) REFERENCES residente(rut_res)
 );
+
 
 -- INSERTAR VALORES DE PRUEBA
 
