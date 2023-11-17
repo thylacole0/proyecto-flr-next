@@ -96,7 +96,7 @@ CREATE TABLE portafolio (
     id_portafolio SERIAL PRIMARY KEY,
     nom_documento VARCHAR(100) NOT NULL,
     fecha_creacion DATE NOT NULL,
-    archivo VARCHAR(300) TEXT,
+    archivo VARCHAR(300),
     rut_res VARCHAR REFERENCES residente(rut_res)
 );
 
@@ -108,7 +108,6 @@ CREATE TABLE reserva (
     rut_vis VARCHAR(12) REFERENCES Visitante(rut_vis),
     rut_res VARCHAR(12) REFERENCES Residente(rut_res)
 );
-
 
 -- INSERTAR VALORES DE PRUEBA
 

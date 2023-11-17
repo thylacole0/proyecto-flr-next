@@ -82,6 +82,37 @@ const NurseForm = forwardRef((props, ref) => {
         }
     };
 
+    const formatRut = (rut) => {
+        let actual = rut.replace(/^0+/, "");
+        if (actual !== '' && actual.length > 1) {
+            let sinPuntos = actual.replace(/\./g, "");
+            let actualLimpio = sinPuntos.replace(/-/g, "");
+            let inicio = actualLimpio.substring(0, actualLimpio.length - 1);
+            let rutPuntos = "";
+            let i = 0;
+            let j = 1;
+            for (i = inicio.length - 1; i >= 0; i--) {
+                let letra = inicio.charAt(i);
+                rutPuntos = letra + rutPuntos;
+                if (j % 3 === 0 && j <= inicio.length - 1) {
+                    rutPuntos = "." + rutPuntos;
+                }
+                j++;
+            }
+            let dv = actualLimpio.substring(actualLimpio.length - 1);
+            rutPuntos = rutPuntos + "-" + dv;
+        }
+        return rutPuntos;
+    }
+    
+    const handleRutChange = (e) => {
+        let rut = e.target.value;
+        if (!/^0+(.0+)?$/.test(rut)) {
+            rut = formatRut(rut);
+        }
+        setRutNurse(rut);
+    };
+
     const handleChangeCelularAux = (e) => {
         const valor = e.target.value;
 
@@ -104,7 +135,7 @@ const NurseForm = forwardRef((props, ref) => {
                 <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ingrese la información del enfermero/a</h2>
                 <div className="mb-4">
                     <label htmlFor="rutNurse" className="block text-gray-700 font-bold mb-2">RUT:</label>
-                    <input type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={(e) => setRutNurse(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    <input type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={handleRutChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 </div>
 
                 <div className="mb-4">
