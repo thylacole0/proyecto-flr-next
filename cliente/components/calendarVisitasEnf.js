@@ -25,7 +25,7 @@ import moment from 'moment';
 
 import './reserva.module.css'
 
-const CalendarReservasAprobadas = () => {
+const CalendarVisitasEnfer = () => {
 
     const [residentes, setResidentes] = useState([]);
     const [events, setEvents] = useState([]);
@@ -95,11 +95,6 @@ const CalendarReservasAprobadas = () => {
         }
     };
 
-    const handleEventClick = (clickInfo) => {
-        setSelectedEvent(clickInfo.event);
-        setOpen(true);
-    };
-
     const handleChange = (event) => {
         setRutVinculado(event.target.value);
         obtReservas(event.target.value);
@@ -110,8 +105,8 @@ const CalendarReservasAprobadas = () => {
             const response = await axios.get('http://localhost:8080/reservation/' + rut_res);
             const jsonReservas = await response.data;
             console.log(jsonReservas);
+            let reservasAceptadas = jsonReservas.filter(reserva => reserva.estado_reserva !== 'Rechazado' && reserva.estado_reserva !== 'No asistio')
             setEvents([]);
-            let reservasAceptadas = jsonReservas.filter(reserva => reserva.estado_reserva == 'Aceptado')
             reservasAceptadas.map((reserva) => {
                 let color;
                 switch (reserva.estado_reserva) {
@@ -203,7 +198,6 @@ const CalendarReservasAprobadas = () => {
                                     slotMinTime="10:00:00"
                                     slotMaxTime="14:00:00"
                                     locale={esLocale}
-                                    eventClick={handleEventClick}
                                     slotLabelFormat={{
                                         hour: 'numeric',
                                         minute: '2-digit',
@@ -216,33 +210,7 @@ const CalendarReservasAprobadas = () => {
                                         return moment.duration(selectInfo.end - selectInfo.start).asHours() <= 0;
                                     }}
                                 />
-                                <Dialog open={open} onClose={handleCloseDialog} id='1'>
-                                    <DialogTitle>Confirmación de reserva</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText className='mb-5'>
-                                            ¿Desea confirmar la fecha y hora seleccionada?
-                                        </DialogContentText>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="status-label">Estado</InputLabel>
-                                            <Select
-                                                labelId="status-label"
-                                                id="status-select"
-                                                value={newStatus}
-                                                label="Estado"
-                                                onChange={(e) => setNewStatus(e.target.value)}
-                                            >
-                                                <MenuItem value="Asistio">Asistio</MenuItem>
-                                                <MenuItem value="No asistio">No asistio</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleCloseDialog}><span>Cancelar</span></Button>
-                                        <Button onClick={handleConfirmAsistencia} disabled={loading}>
-                                            {loading ? <CircularProgress size={24} /> : <span>Confirmar</span>}
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
+
                             </div>
                         </div>
                     </div>
@@ -257,4 +225,4 @@ const CalendarReservasAprobadas = () => {
     );
 };
 
-export default CalendarReservasAprobadas;
+export default CalendarVisitasEnfer;

@@ -11,7 +11,7 @@ import BotonesHomeGuardia from '../../components/botonesHomeGuardia.js';
 import styles from '../home_test/home_test.module.css'
 import FooterPage from '../../components/footer.js';
 import AdminPage from '@/components/adminComp';
-
+import HomeVisitante from '@/components/homeVisitante';
 
 
 const HomeTest = () => {
@@ -33,6 +33,7 @@ const HomeTest = () => {
           {tipo_user === 'Administrador' && <AdminPage className="shadow rounded-md h-auto m-5 mr-5" />}
           {tipo_user === 'Enfermero' && <BotonesHomeEnfer className="shadow rounded-md h-auto m-5 mr-5" />}
           {tipo_user === 'Guardia' && <BotonesHomeGuardia className="shadow rounded-md h-50 m-5 mr-5" />}
+          {tipo_user === 'Visitante' && <HomeVisitante/>}
         </div>
       </section>
       <FooterPage />

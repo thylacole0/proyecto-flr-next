@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import WhereToVoteRoundedIcon from '@mui/icons-material/WhereToVoteRounded';
 import ResidenteSelect from './selectResidente';
 import InfoGuardia from './acordionInfoGuardia';
 
@@ -21,11 +22,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import moment from 'moment';
 
 import './reserva.module.css'
 
-const CalendarReservasAprobadas = () => {
+const CalendarAdmin = () => {
 
     const [residentes, setResidentes] = useState([]);
     const [events, setEvents] = useState([]);
@@ -57,48 +60,54 @@ const CalendarReservasAprobadas = () => {
         }
     };
 
-    const handleConfirmAsistencia = async () => {
+    // const handleConfirmReserva = async () => {
 
-        if (newStatus === 'Rechazado' && !motivo) {
-            setErrorMotivo(true);
-            return;
-        }
-        setLoading(true);
-        const id_reserva = selectedEvent.id;
-        const estado_reserva = newStatus;
-        const motivoRes = newStatus === 'Rechazado' ? motivo : null;
-        const body = { estado_reserva, id_reserva }
-        try {
-            await axios.put(`http://localhost:8080/assistreserva/${id_reserva}`, body);
-            const updatedEvents = events.map(event => {
-                let color;
-                switch (estado_reserva) {
-                    case 'Asistio':
-                        color = '#0000c6';
-                        break;
-                    case 'No asistio':
-                        color = '#850000';
-                        break;
-                }
-                if (event.id == id_reserva) {
-                    return { ...event, title: estado_reserva, color: color };
-                }
-                return event;
-            });
-            setEvents(updatedEvents);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-            setOpen(false);
-            setNewStatus('');
-        }
-    };
+    //     if (newStatus === 'Rechazado' && !motivo) {
+    //         setErrorMotivo(true);
+    //         return;
+    //     }
 
-    const handleEventClick = (clickInfo) => {
-        setSelectedEvent(clickInfo.event);
-        setOpen(true);
-    };
+    //     setLoading(true);
+    //     const id_reserva = selectedEvent.id;
+    //     const estado_reserva = newStatus;
+    //     const motivoRes = newStatus === 'Rechazado' ? motivo : null;
+    //     const body = { estado_reserva, motivoRes, id_reserva }
+    //     try {
+    //         await axios.put(`http://localhost:8080/updatereserva/${id_reserva}`, body);
+    //         const updatedEvents = events.map(event => {
+    //             let color;
+    //             switch (estado_reserva) {
+    //                 case 'Pendiente':
+    //                     color = '#ffa500';
+    //                     break;
+    //                 case 'Aceptado':
+    //                     color = '#185403';
+    //                     break;
+    //                 case 'Rechazado':
+    //                     color = '#b50e00';
+    //                     break;
+    //                 default:
+    //                     color = '#00669f'; // color por defecto
+    //             }
+    //             if (event.id == id_reserva) {
+    //                 return { ...event, title: estado_reserva, color: color };
+    //             }
+    //             return event;
+    //         });
+    //         setEvents(updatedEvents);
+    //     } catch (error) {
+    //         console.log(error);
+    //     } finally {
+    //         setLoading(false);
+    //         setOpen(false);
+    //         setNewStatus('');
+    //     }
+    // };
+
+    // const handleEventClick = (clickInfo) => {
+    //     setSelectedEvent(clickInfo.event);
+    //     setOpen(true);
+    // };
 
     const handleChange = (event) => {
         setRutVinculado(event.target.value);
@@ -111,8 +120,7 @@ const CalendarReservasAprobadas = () => {
             const jsonReservas = await response.data;
             console.log(jsonReservas);
             setEvents([]);
-            let reservasAceptadas = jsonReservas.filter(reserva => reserva.estado_reserva == 'Aceptado')
-            reservasAceptadas.map((reserva) => {
+            jsonReservas.map((reserva) => {
                 let color;
                 switch (reserva.estado_reserva) {
                     case 'Pendiente':
@@ -176,11 +184,11 @@ const CalendarReservasAprobadas = () => {
     return (
         <>
             <div className=' grid grid-cols-6 gap-5 grid-flow-col'>
-                <section className='col-span-4 row-span-3'>
+                <section className='col-span-4 row-span-3 mb-8'>
                     <div className='flex justify-center'>
                         <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
-                            <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Asistencia de visitas</h1>
-                            <div className='border-t-2 border-black '>
+                            <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Calendario de visitas</h1>
+                            <div className='border-t-2 border-black'>
                                 <FullCalendar
                                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                                     headerToolbar={{
@@ -203,7 +211,6 @@ const CalendarReservasAprobadas = () => {
                                     slotMinTime="10:00:00"
                                     slotMaxTime="14:00:00"
                                     locale={esLocale}
-                                    eventClick={handleEventClick}
                                     slotLabelFormat={{
                                         hour: 'numeric',
                                         minute: '2-digit',
@@ -216,33 +223,6 @@ const CalendarReservasAprobadas = () => {
                                         return moment.duration(selectInfo.end - selectInfo.start).asHours() <= 0;
                                     }}
                                 />
-                                <Dialog open={open} onClose={handleCloseDialog} id='1'>
-                                    <DialogTitle>Confirmación de reserva</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText className='mb-5'>
-                                            ¿Desea confirmar la fecha y hora seleccionada?
-                                        </DialogContentText>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="status-label">Estado</InputLabel>
-                                            <Select
-                                                labelId="status-label"
-                                                id="status-select"
-                                                value={newStatus}
-                                                label="Estado"
-                                                onChange={(e) => setNewStatus(e.target.value)}
-                                            >
-                                                <MenuItem value="Asistio">Asistio</MenuItem>
-                                                <MenuItem value="No asistio">No asistio</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleCloseDialog}><span>Cancelar</span></Button>
-                                        <Button onClick={handleConfirmAsistencia} disabled={loading}>
-                                            {loading ? <CircularProgress size={24} /> : <span>Confirmar</span>}
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
                             </div>
                         </div>
                     </div>
@@ -257,4 +237,4 @@ const CalendarReservasAprobadas = () => {
     );
 };
 
-export default CalendarReservasAprobadas;
+export default CalendarAdmin;

@@ -67,6 +67,12 @@ const CalendarReservas = () => {
                     case 'Rechazado':
                         color = '#b50e00';
                         break;
+                    case 'Asistio':
+                        color = '#0000c6';
+                        break;
+                    case 'No asistio':
+                        color = '#850000';
+                        break;
                     default:
                         color = '#00669f'; // color por defecto
                 }
