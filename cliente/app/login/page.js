@@ -97,9 +97,6 @@ const Login = () => {
                                 </button>
                             </div>
                         </form>
-                        <div className="text-center">
-                            <a className="text-blue-500 hover:underline">Recuperar Contraseña</a>
-                        </div>
                     </div>
                 </div>
             </div>

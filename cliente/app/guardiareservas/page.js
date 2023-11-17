@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react';
 import CalendarGuardia from '../../components/calendarioGuardia';
 import WeatherForecast from '@/components/clima/clima';
