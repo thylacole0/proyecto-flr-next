@@ -12,6 +12,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import WhereToVoteRoundedIcon from '@mui/icons-material/WhereToVoteRounded';
 import ResidenteSelect from './selectResidente';
 import InfoGuardia from './acordionInfoGuardia';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 // Imports normales
 import React from 'react';
@@ -37,6 +39,8 @@ const CalendarGuardia = () => {
         setOpen(false);
         setNewStatus('');
     };
+
+    const [openSnack, setOpenSnack] = useState(false);
     const [rutVinculado, setRutVinculado] = useState('');
 
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -111,8 +115,19 @@ const CalendarGuardia = () => {
     };
 
     const handleEventClick = (clickInfo) => {
-        setSelectedEvent(clickInfo.event);
-        setOpen(true);
+        if (clickInfo.event.title === 'Pendiente' || clickInfo.event.title === 'Aceptado') {
+            setSelectedEvent(clickInfo.event);
+            setOpen(true);
+        } else {
+            setOpenSnack(true);
+        }
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnack(false);
     };
 
     const handleChange = (event) => {
@@ -130,19 +145,19 @@ const CalendarGuardia = () => {
                 let color;
                 switch (reserva.estado_reserva) {
                     case 'Pendiente':
-                        color = '#ffa500';
+                        color = '#dcc62a';
                         break;
                     case 'Aceptado':
-                        color = '#185403';
+                        color = '#00b300';
                         break;
                     case 'Rechazado':
                         color = '#b50e00';
                         break;
                     case 'Asistio':
-                        color = '#0000c6';
+                        color = '#d38300';
                         break;
                     case 'No asistio':
-                        color = '#850000';
+                        color = '#2d2d2d';
                         break;
                     default:
                         color = '#00669f'; // color por defecto
@@ -193,8 +208,8 @@ const CalendarGuardia = () => {
                 <section className='col-span-4 row-span-3'>
                     <div className='flex justify-center'>
                         <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
-                            <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Panel de reservas</h1>
-                            <div className='border-t-2 border-black '>
+                            <h1 className='flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Panel de reservas</h1>
+                            <div className='border-t-2 border-black'>
                                 <FullCalendar
                                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                                     headerToolbar={{
@@ -217,6 +232,7 @@ const CalendarGuardia = () => {
                                     slotMinTime="10:00:00"
                                     slotMaxTime="14:00:00"
                                     locale={esLocale}
+                                    themeSystem='Litera'
                                     eventClick={handleEventClick}
                                     slotLabelFormat={{
                                         hour: 'numeric',
@@ -268,6 +284,11 @@ const CalendarGuardia = () => {
                                         </Button>
                                     </DialogActions>
                                 </Dialog>
+                                <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal:'center' }}>
+                                    <Alert onClose={handleClose} severity="warning" sx={{ width: '100%', height: '80px' }} className='flex justify-center items-center'>
+                                        <span className='text-lg'>Esta reserva ya fue aceptada o rechazada</span>
+                                    </Alert>
+                                </Snackbar>
                             </div>
                         </div>
                     </div>

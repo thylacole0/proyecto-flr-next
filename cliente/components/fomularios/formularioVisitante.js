@@ -73,6 +73,39 @@ const VisitForm = forwardRef((props, ref) => {
         }
     };
 
+    const formatRut = (rut) => {
+        let actual = rut.replace(/^0+/, "");
+        let rutPuntos = "";
+        if (actual !== '' && actual.length > 1) {
+            let sinPuntos = actual.replace(/\./g, "");
+            let actualLimpio = sinPuntos.replace(/-/g, "");
+            let inicio = actualLimpio.slice(0, -1);
+            let i = 0;
+            let j = 1;
+            for (i = inicio.length - 1; i >= 0; i--) {
+                let letra = inicio.charAt(i);
+                rutPuntos = letra + rutPuntos;
+                if (j % 3 === 0 && j <= inicio.length - 1) {
+                    rutPuntos = "." + rutPuntos;
+                }
+                j++;
+            }
+            let dv = actualLimpio.slice(-1);
+            rutPuntos = rutPuntos + "-" + dv;
+        } else {
+            rutPuntos = actual;
+        }
+        return rutPuntos;
+    }
+    
+    const handleRutChange = (e) => {
+        let rut = e.target.value;
+        if (/^[0-9kK.-]+$/.test(rut) || rut === "") {
+            rut = formatRut(rut);
+            setRutVisit(rut);
+        }
+    };
+
     const handleChangeCorreo = (e) => {
         const valor = e.target.value;
         setCorreoVisit(valor);
@@ -88,7 +121,7 @@ const VisitForm = forwardRef((props, ref) => {
                 <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ingrese la información del visitante</h2>
                 <div className="mb-4">
                     <label htmlFor="rutVisit" className="block text-gray-700 font-bold mb-2">RUT:</label>
-                    <input type="text" id="rutVisit" name="rutVisit" value={rutVisit} onChange={(e) => setRutVisit(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    <input maxLength="12" type="text" id="rutVisit" name="rutVisit" value={rutVisit} onChange={handleRutChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 </div>
 
                 <div className="mb-4">

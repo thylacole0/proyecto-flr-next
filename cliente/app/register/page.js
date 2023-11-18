@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import RegisterPage from '../../components/registration.js';
 import { useSession } from 'next-auth/react';
 import Navbar from '@/components/navbar.js';
+import FooterPage from '@/components/footer.js';
 
 const RegistrationPage = () => {
     const { data: session, status } = useSession();
@@ -22,9 +23,10 @@ const RegistrationPage = () => {
     return (
         <>
         <Navbar />
-        <div>
+        <div className='min-h-screen'>
             <RegisterPage  />
         </div>
+        <FooterPage />
         </>
     );
 };

@@ -3,15 +3,17 @@ import React from 'react';
 import CalendarGuardia from '../../components/calendarioGuardia';
 import WeatherForecast from '@/components/clima/clima';
 import Navbar from '@/components/navbar.js';
+import FooterPage from '@/components/footer';
 
-export default async function GuardiasReservas() {
+export default function GuardiasReservas() {
 
   return (
     <>
       <Navbar />
-        <div>
+        <div className='min-h-screen'>
           <CalendarGuardia />
         </div>
+        <FooterPage />
     </>
   );
 }

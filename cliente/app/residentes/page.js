@@ -2,7 +2,8 @@
 import React, { useEffect } from 'react';
 import TablaResidentes from '../../components/tablaRes.js';
 import Navbar from '../../components/navbar';
-import styles from '../residentes/residentes.module.css';
+
+import FooterPage from '@/components/footer.js';
 
 const residentes = [];
 
@@ -12,9 +13,10 @@ const ResidentesPage = () => {
   return (
     <> 
       <Navbar /> 
-      <section>
+      <section className='min-h-screen'>
         <TablaResidentes residentes={residentes} />
       </section>
+      <FooterPage />
     </>
   )
 };

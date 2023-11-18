@@ -18,13 +18,10 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { Nunito } from 'next/font/google';
 import axios from 'axios';
 
-
 const nunito = Nunito({
     subsets: ['latin-ext'],
     weight: '700'
 })
-
-
 
 // const pages = ['Guardia', 'Enfermero', 'Residente', 'Visitante'];
 const pages = [{ name: 'Guardias', url: '/form_guardia' }, { name: 'Enfermeros', url: '/form_nurse' }, { name: 'Residentes', url: '/form_residente' }, { name: 'Visitantes', url: '/form_visitante' }]
@@ -40,7 +37,6 @@ const Navbar = () => {
     const [visitanteInfo, setVisitanteInfo] = useState([]);
 
     async function obtDatosVisitante(sesionUser) {
-
         try {
             if (sesionUser) {
                 console.log(sesionUser)
@@ -103,11 +99,11 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="bg-color_navbar flex items-center justify-center mb-10">
+            <nav className="bg-color_navbar flex justify-center items-center mb-10">
                 <div className="max-w-8xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center flex-gr hover:bg-gray-700 transition-colors duration-200">
-                            <div className="flex-shrink-0">
+                    <div className="flex items-center h-16">
+                        <div className="flex items-center transition-colors duration-200">
+                            <div className="flex-shrink-0 mx-14">
                                 <a href="/home_test" className="text-white">
                                     <img src="/Logo_horizontal.png" alt="logo_fundacion" width="150" height="150" />
                                 </a>

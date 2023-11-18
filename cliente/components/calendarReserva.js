@@ -31,17 +31,20 @@ const CalendarReservas = () => {
     const [fechaReserva, setFechaReserva] = useState(null);
     const [horaReserva, setHoraReserva] = useState(null);
     const [visitanteInfo, setVisitanteInfo] = useState(null);
-    const handleCloseDialog = () => setOpen(false);
-    const [sesion, setSesion] = useState([]);
     const { data: session, status } = useSession();
-    const [openErrorDialog, setOpenErrorDialog] = useState(false);
 
+    const handleCloseDialog = () => setOpen(false);
+    const handleCloseSuccessReserv = () => {
+        setOpenSuccessReserv(false)
+        window.location.reload();
+    }
+
+    const [openErrorDialog, setOpenErrorDialog] = useState(false);
+    const [openSuccessReserv, setOpenSuccessReserv] = useState(false);
 
     const handleOpenDialog = (info) => {
-
         let fecha_res = info.dateStr.split('T')[0];
         let hora_res = info.dateStr.split('T')[1].split('-')[0];
-
         setFechaReserva(fecha_res);
         setHoraReserva(hora_res);
         setOpen(true)
@@ -55,19 +58,19 @@ const CalendarReservas = () => {
                 let color;
                 switch (reserva.estado_reserva) {
                     case 'Pendiente':
-                        color = '#ffa500';
+                        color = '#dcc62a';
                         break;
                     case 'Aceptado':
-                        color = '#185403';
+                        color = '#00b300';
                         break;
                     case 'Rechazado':
                         color = '#b50e00';
                         break;
                     case 'Asistio':
-                        color = '#0000c6';
+                        color = '#d38300';
                         break;
                     case 'No asistio':
-                        color = '#850000';
+                        color = '#2d2d2d';
                         break;
                     default:
                         color = '#00669f'; // color por defecto
@@ -123,7 +126,8 @@ const CalendarReservas = () => {
     }
 
     function handleDateClick(info) {
-        if (selectedDate && visitanteInfo) {
+        console.log('visitanteInfo', visitanteInfo)
+        if (visitanteInfo) {
             const body = {
                 fecha_reserva: fechaReserva, // la fecha del clic
                 hora_reserva: horaReserva, // la hora del evento
@@ -150,6 +154,7 @@ const CalendarReservas = () => {
                     // Agregar el evento a la lista de eventos en el estado del componente
                     setEvents(events => [...events, newEvent]);
                     handleCloseDialog();
+                    setOpenSuccessReserv(true)
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -169,7 +174,7 @@ const CalendarReservas = () => {
     return (
         <div className='flex justify-center w-full h-full'>
             <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
-                <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Reserva de visitas</h1>
+                <h1 className='flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Reserva de visitas</h1>
                 <div className='border-t-2 border-black '>
                     <FullCalendar
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -179,7 +184,6 @@ const CalendarReservas = () => {
                             right: 'timeGridWeek,timeGridDay'
                         }}
                         initialView='timeGridWeek'
-                        editable={true}
                         selectMirror={true}
                         dayMaxEvents={true}
                         weekends={true}
@@ -232,14 +236,27 @@ const CalendarReservas = () => {
                                 ¿Desea confirmar la fecha y hora seleccionada?
                             </DialogContentText>
 
-                            <TextField margin="dense" id="2" label="Fecha de reserva" type="text" fullWidth variant="outlined" value={fechaReserva} onChange={(e) => setFechaReserva(e.target.value)}
+                            <TextField disabled={true} margin="dense" id="2" label="Fecha de reserva" type="text" fullWidth variant="outlined" value={fechaReserva} onChange={(e) => setFechaReserva(e.target.value)}
                             />
-                            <TextField margin="dense" id="3" label="Hora de reserva" type="text" fullWidth variant="outlined" value={horaReserva} onChange={(e) => setHoraReserva(e.target.value)}
+                            <TextField disabled={true} margin="dense" id="3" label="Hora de reserva" type="text" fullWidth variant="outlined" value={horaReserva} onChange={(e) => setHoraReserva(e.target.value)}
                             />
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleCloseDialog}><span>Cancelar</span></Button>
-                            <Button onClick={handleDateClick}><span>Confirmar</span></Button>
+                            <Button onClick={handleCloseDialog} variant="outlined" className='mb-3'><span>Cancelar</span></Button>
+                            <Button onClick={handleDateClick} variant='outlined' className='mb-3 mr-3'><span>Confirmar</span></Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={openSuccessReserv} onClose={() => setOpenErrorDialog(false)}>
+                        <DialogTitle>Reserva exitosa</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                ¡Se ha realizado la reserva con exito!
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => handleCloseSuccessReserv(false)} color="primary">
+                                Aceptar
+                            </Button>
                         </DialogActions>
                     </Dialog>
                 </div>

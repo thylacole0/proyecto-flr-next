@@ -37,7 +37,7 @@ const style = {
     p: 4,
 };
 
-const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
+const BotonesCrudGuard = ({ guardia, eliminarGuardia }) => {
 
 
     // const [rut_res, setRut_res] = useState('123123');
@@ -55,6 +55,7 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
     const [celGuard, setCelGuard] = useState(guardia[4]);
     const [celauxGuard, setCelauxGuard] = useState(guardia[5]);
     const [tipoContratoGuard, setTipoContratoGuard] = useState(guardia[6]);
+    const [estadoGuard, setEstadoGuard] = useState(guardia[7]);
 
     const [open, setOpen] = useState(false);
     const handleOpenDialog = () => setOpen(true);
@@ -71,10 +72,11 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
             console.error(error);
         }
     }
-    const currencies = [ { value: 'Completo', label: 'Completo' }, { value: 'Part-Time', label: 'Part-Time' }];
+    const currencies = [{ value: 'Completo', label: 'Completo' }, { value: 'Part-Time', label: 'Part-Time' }];
+    const estado = [{ value: 'Activo', label: 'Activo' }, { value: 'Inactivo', label: 'Inactivo' }]
     const primary = yellow[800];
     const secondary = red[900];
-    
+
     useEffect(() => {
     }, []);
 
@@ -82,7 +84,7 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
         <div className="items-center">
             <Stack direction="row" spacing={2}>
                 <Button onClick={handleOpenDialog} variant="outlined" style={{ color: primary, borderColor: primary }} startIcon={<ModeIcon />} >
-                     <span>Editar</span>
+                    <span>Editar</span>
                 </Button>
                 <Dialog open={open} onClose={handleCloseDialog} id={`id${guardia.rutGuard}`}>
                     <DialogTitle>Editar información del Guardia</DialogTitle>
@@ -91,10 +93,10 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
                             Aqui podras editar los datos del guardia
                         </DialogContentText>
 
-                        <TextField margin="dense" id="2" label="Nombres" type="text" fullWidth variant="outlined" value={nombresGuard} onChange={(e) => setNombresGuard(e.target.value)}
+                        {/* <TextField margin="dense" id="2" label="Nombres" type="text" fullWidth variant="outlined" value={nombresGuard} onChange={(e) => setNombresGuard(e.target.value)}
                         />
                         <TextField margin="dense" id="3" label="Apellidos" type="text" fullWidth variant="outlined" value={apellidosGuard} onChange={(e) => setApellidosGuard(e.target.value)}
-                        />
+                        /> */}
                         <TextField margin="dense" id="4" label="Correo" type="text" fullWidth variant="outlined" value={correoGuard} onChange={(e) => setCorreoGuard(e.target.value)}
                         />
                         <TextField margin="dense" id="5" label="Celular" type="text" fullWidth variant="outlined" value={celGuard} onChange={(e) => setCelGuard(e.target.value)}
@@ -108,15 +110,24 @@ const BotonesCrudGuard = ({ guardia , eliminarGuardia}) => {
                                 </MenuItem>
                             ))}
                         </TextField>
+
+                        <TextField fullWidth margin="dense" id="outlined-select-currency" select label="Tipo de Contrato" value={tipoContratoGuard} onChange={(e) => setTipoContratoGuard(e.target.value)}>
+                            {currencies.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseDialog}> <span>Cancel</span></Button>
                         <Button onClick={(e) => { modificarDatosGuardia(e); handleCloseDialog(); reload() }}> <span>Editar</span></Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={(e) => {eliminarGuardia(); reload()}} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
+                {/* <Button onClick={(e) => {eliminarGuardia(); reload()}} variant="outlined" style={{ color: secondary, borderColor: secondary }} endIcon={<DeleteIcon />}>
                     <span>Eliminar</span>
-                </Button>
+                </Button> */}
             </Stack>
         </div>
     );

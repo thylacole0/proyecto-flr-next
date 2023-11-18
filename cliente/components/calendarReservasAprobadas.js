@@ -116,19 +116,19 @@ const CalendarReservasAprobadas = () => {
                 let color;
                 switch (reserva.estado_reserva) {
                     case 'Pendiente':
-                        color = '#ffa500';
+                        color = '#dcc62a';
                         break;
                     case 'Aceptado':
-                        color = '#185403';
+                        color = '#00b300';
                         break;
                     case 'Rechazado':
                         color = '#b50e00';
                         break;
                     case 'Asistio':
-                        color = '#0000c6';
+                        color = '#d38300';
                         break;
                     case 'No asistio':
-                        color = '#850000';
+                        color = '#2d2d2d';
                         break;
                     default:
                         color = '#00669f'; // color por defecto
@@ -179,7 +179,7 @@ const CalendarReservasAprobadas = () => {
                 <section className='col-span-4 row-span-3'>
                     <div className='flex justify-center'>
                         <div className='w-full max-w-[80%] p-6 rounded-lg bg-white'>
-                            <h1 className='font-bold flex justify-center text-6xl pb-2 border-b-1 border-gray-300 '>Asistencia de visitas</h1>
+                            <h1 className='flex justify-center text-6xl pb-2 border-b-1 border-gray-300'>Asistencia de visitas</h1>
                             <div className='border-t-2 border-black '>
                                 <FullCalendar
                                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

@@ -51,9 +51,20 @@ const RegisterPage = () => {
     const [creacionUsuario, setCreacionUsuario] = useState('');
     const [open, setOpen] = useState(false);
 
+    const [openUserExist, setOpenUserExist] = useState(false);
+    const [openFichaExist, setOpenFichaExist] = useState(false);
+
     const handleClose = () => {
         setOpen(false);
         location.reload();
+    };
+
+    const handleCloseUserExist = () => {
+        setOpenUserExist(false);
+    };
+
+    const handleCloseFichaExist = () => {
+        setOpenFichaExist(false);
     };
 
     const [formData, setFormData] = useState({
@@ -114,6 +125,7 @@ const RegisterPage = () => {
                 setOpen(true);
             }
             catch (error) {
+                setOpenUserExist(true);
                 console.error(error);
             }
         }
@@ -128,6 +140,7 @@ const RegisterPage = () => {
             const response = await axios.post("http://localhost:8080/form_visitante", body);
         } catch (error) {
             console.log(error);
+            setOpenFichaExist(true);
         }
     }
 
@@ -157,6 +170,7 @@ const RegisterPage = () => {
 
         } catch (error) {
             console.error(error);
+            setOpenFichaExist(true);
         }
     }
 
@@ -186,6 +200,7 @@ const RegisterPage = () => {
 
         } catch (error) {
             console.error(error);
+            setOpenFichaExist(true);
         }
     }
 
@@ -214,7 +229,43 @@ const RegisterPage = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <div className="flex justify-center items-center">
+            <Dialog
+                open={openUserExist}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Error al crear la cuenta de usuario"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        El usuario ingresado ya se encuentra registrado en el sistema.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseUserExist} color="primary" autoFocus>
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={openFichaExist}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Error al crear la ficha"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        El rut ya se encuentra asociado a una fecha.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseFichaExist} color="primary" autoFocus>
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <div className="flex justify-center items-center mb-16">
                 <div className="bg-white p-11 rounded shadow-md w-[700px]">
                     <h1 className="text-2xl font-bold mb-2 text-center">Registrar nuevo usuario</h1>
                     <form onSubmit={submitRegistration}>

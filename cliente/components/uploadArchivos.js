@@ -154,7 +154,7 @@ const UploadArchivos = () => {
     return (
         <div className="relative rounded mt-5 w-5/6 h-5/6 m-auto max-h-[90%]">
                 <div className="relative rounded-t-md shadow-md z-10 bg-color_navbar flex justify-between items-center p-6 w-full">
-                    <h1 className="text-white font-bold text-xl">Archivos del residente</h1>
+                    <h1 className="text-white font-bold text-xl">Historial clinico del residente</h1>
                     <div>
                         <label htmlFor="file-upload">
                             {session?.tipo_user !== 'Visitante' && (

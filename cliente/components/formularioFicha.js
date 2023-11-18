@@ -195,7 +195,7 @@ const FormFicha = () => {
                         disabled={session?.tipo_user === 'Visitante' ? true : false}
                     />
                     <FormControl>
-                        <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Es alergico a algo?</FormLabel>
+                        <FormLabel className="mt-5" id="demo-row-radio-buttons-group-label">¿Es alérgico a algún medicamento?</FormLabel>
                         <RadioGroup margin="dense" row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={alergias.toString()} onChange={(e) => setAlergias(e.target.value === "true")}>
                             <FormControlLabel value="true" control={<Radio />} label="Si" disabled={session?.tipo_user === 'Visitante' ? true : false}/>
                             <FormControlLabel value="false" control={<Radio />} label="No" disabled={session?.tipo_user === 'Visitante' ? true : false}/>

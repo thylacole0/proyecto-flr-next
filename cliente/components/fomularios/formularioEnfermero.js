@@ -5,6 +5,8 @@ import Link from 'next/link';
 import 'tailwindcss/tailwind.css';
 import Select from 'react-select';
 import axios from 'axios';
+import { useRut } from 'react-rut-formatter';
+import { TextField } from '@mui/material';
 
 
 const NurseForm = forwardRef((props, ref) => {
@@ -22,6 +24,7 @@ const NurseForm = forwardRef((props, ref) => {
     const [turnoNurse, setTurnoNurse] = useState('');
     const [especialidadNurse, setEspecialidadNurse] = useState('');
     const [fotoNurse, setFotoNurse] = useState('');
+    const { rut, updateRut, isValid } = useRut();
 
     useImperativeHandle(ref, () => ({
         getFormData: () => ({
@@ -84,11 +87,11 @@ const NurseForm = forwardRef((props, ref) => {
 
     const formatRut = (rut) => {
         let actual = rut.replace(/^0+/, "");
+        let rutPuntos = "";
         if (actual !== '' && actual.length > 1) {
             let sinPuntos = actual.replace(/\./g, "");
             let actualLimpio = sinPuntos.replace(/-/g, "");
-            let inicio = actualLimpio.substring(0, actualLimpio.length - 1);
-            let rutPuntos = "";
+            let inicio = actualLimpio.slice(0, -1);
             let i = 0;
             let j = 1;
             for (i = inicio.length - 1; i >= 0; i--) {
@@ -99,18 +102,20 @@ const NurseForm = forwardRef((props, ref) => {
                 }
                 j++;
             }
-            let dv = actualLimpio.substring(actualLimpio.length - 1);
+            let dv = actualLimpio.slice(-1);
             rutPuntos = rutPuntos + "-" + dv;
+        } else {
+            rutPuntos = actual;
         }
         return rutPuntos;
     }
     
     const handleRutChange = (e) => {
         let rut = e.target.value;
-        if (!/^0+(.0+)?$/.test(rut)) {
+        if (/^[0-9kK.-]+$/.test(rut) || rut === "") {
             rut = formatRut(rut);
+            setRutNurse(rut);
         }
-        setRutNurse(rut);
     };
 
     const handleChangeCelularAux = (e) => {
@@ -135,7 +140,7 @@ const NurseForm = forwardRef((props, ref) => {
                 <h2 className="text-2xl font-bold mb-4 text-gray-700 text-center">Ingrese la información del enfermero/a</h2>
                 <div className="mb-4">
                     <label htmlFor="rutNurse" className="block text-gray-700 font-bold mb-2">RUT:</label>
-                    <input type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={handleRutChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    <input maxLength="12" type="text" id="rutNurse" name="rutNurse" value={rutNurse} onChange={handleRutChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                 </div>
 
                 <div className="mb-4">

@@ -124,19 +124,19 @@ const CalendarAdmin = () => {
                 let color;
                 switch (reserva.estado_reserva) {
                     case 'Pendiente':
-                        color = '#ffa500';
+                        color = '#dcc62a';
                         break;
                     case 'Aceptado':
-                        color = '#185403';
+                        color = '#00b300';
                         break;
                     case 'Rechazado':
                         color = '#b50e00';
                         break;
                     case 'Asistio':
-                        color = '#0000c6';
+                        color = '#d38300';
                         break;
                     case 'No asistio':
-                        color = '#850000';
+                        color = '#2d2d2d';
                         break;
                     default:
                         color = '#00669f'; // color por defecto

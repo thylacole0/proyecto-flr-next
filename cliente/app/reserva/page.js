@@ -6,6 +6,7 @@ import WeatherForecast from '@/components/clima/clima';
 import styles from '../reserva/reserva.module.css';
 import Navbar from '@/components/navbar';
 import InforReservaCard from '@/components/infoReserva';
+import FooterPage from '@/components/footer';
 
 export default function ReservasPage() {
 
@@ -14,16 +15,18 @@ export default function ReservasPage() {
       <Navbar />
       <section className={styles.layout}>
         <div >
-          <CalendarReservas className={styles.Calendario}/>
+          <CalendarReservas className={styles.Calendario} />
         </div>
 
         <div >
-        <div className='mb-10'>
-          <InforReservaCard className={styles.Clima}/>
+          <div className='mb-10'>
+            <InforReservaCard className={styles.Clima} />
+          </div>
+          <WeatherForecast className={styles.Clima} />
         </div>
-          <WeatherForecast className={styles.Clima}/>
-        </div>
+        
       </section>
-    </> 
+      <FooterPage/>
+    </>
   );
 }

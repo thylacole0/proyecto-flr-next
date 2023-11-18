@@ -10,6 +10,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { red, yellow } from '@mui/material/colors';
 import { Grid } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { Nunito } from 'next/font/google';
+import { Bree_Serif } from 'next/font/google';
+
+const nunito = Nunito({
+    subsets: ['latin-ext'],
+    weight: '900'
+});
+
+const bree = Bree_Serif({
+    subsets: ['latin-ext'],
+    weight: '400'
+})
 
 const images = [
     {
@@ -106,9 +118,10 @@ const BotonesHomeGuardia = () => {
 
     return (
         <div className="grid grid-cols-2 items-center justify-center mt-10 rounded-lg">
-            {images.map((image) => (
-                <div className="flex justify-center rounded-xl">
+            {images.map((image, index) => (
+                <div className="flex justify-center rounded-xl" key={index}>
                     <ImageButton
+                        
                         focusRipple
                         key={image.title}
                         className='rounded-3xl'
@@ -118,6 +131,7 @@ const BotonesHomeGuardia = () => {
                         <ImageBackdrop className="MuiImageBackdrop-root rounded-3xl" />
                         <Image className='rounded-3xl'>
                             <Typography
+                                className={`${bree.className} text-2xl font-bold`}
                                 component="span"
                                 variant="subtitle1"
                                 color="inherit"

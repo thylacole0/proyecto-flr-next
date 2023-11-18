@@ -5,6 +5,7 @@ import Navbar from '../../components/navbar';
 import React, { useEffect, useState } from 'react';
 import CalendarioRes from '@/components/bitacoraRes.js';
 import styles from '../ficha_residente/fichares.module.css';
+import FooterPage from '@/components/footer.js';
 
 
 const FichaPage = () => {
@@ -23,6 +24,7 @@ const FichaPage = () => {
           <CalendarioRes/>
         </div>
       </section>
+      <FooterPage />
     </>
   );
 };

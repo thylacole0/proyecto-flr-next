@@ -2,17 +2,18 @@
 import TablaResidentesEnfermero from '../../components/tablaResEnfermero.js';
 import styles from '../residentes/residentes.module.css';
 import Navbar from '../../components/navbar';
+import FooterPage from '@/components/footer.js';
 
 
 const ResidentesToEnfermero = () => {
     return (
-        <div>
+        <>
             <Navbar />
-            <section>
+            <section className='min-h-screen'>
                 <TablaResidentesEnfermero />
             </section>
-        </div>
-        
+            <FooterPage />
+        </>
         
     )
 };
