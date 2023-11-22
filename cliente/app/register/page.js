@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import Navbar from '@/components/navbar.js';
 import FooterPage from '@/components/footer.js';
 
+
 const RegistrationPage = () => {
     const { data: session, status } = useSession();
 
@@ -13,7 +14,7 @@ const RegistrationPage = () => {
         if (status === "authenticated") {
             if (session.tipo_user !== 'Administrador') {
                 console.log('No tienes permisos para acceder a esta pagina')
-                redirect('/home_test')
+                window.location.href = '/home_test'
             } else {
                 console.log('Tienes acceso a esta página')
             }

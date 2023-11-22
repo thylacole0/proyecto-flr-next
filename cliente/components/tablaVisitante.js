@@ -50,7 +50,7 @@ const TablaVisitantes = () => {
     // Columnas de la tabla
     const columns = [
       {
-        name: "rut",
+        name: "rut_vis",
         label: "RUT",
       },
       {
@@ -74,7 +74,7 @@ const TablaVisitantes = () => {
         label: "Dirección",
       },
       {
-        name: "rut_residente",
+        name: "rut_res",
         label: "Rut Residente Asociado",
       },
       {

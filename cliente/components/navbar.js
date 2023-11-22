@@ -105,7 +105,7 @@ const Navbar = () => {
                         <div className="flex items-center transition-colors duration-200">
                             <div className="flex-shrink-0 mx-14">
                                 <a href="/home_test" className="text-white">
-                                    <img src="/Logo_horizontal.png" alt="logo_fundacion" width="150" height="150" />
+                                    <img src="/flr_hortrans-rojo.png" alt="logo_fundacion" width="150" height="150"/>
                                 </a>
                             </div>
                         </div>

@@ -53,6 +53,7 @@ CREATE TABLE residente(
     foto_res VARCHAR(300),
     id_fundacion integer references fundacion(id_fundacion)
 );
+
 -- CREATE TABLE GUARDIA
 CREATE TABLE guardia(
     rut_guardia VARCHAR(13) NOT NULL PRIMARY KEY,
